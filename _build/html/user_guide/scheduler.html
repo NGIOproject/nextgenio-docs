@@ -82,9 +82,17 @@
             
               <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hardware.html">System Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="connect.html">Connecting to the System</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Job Scheduler</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Job Scheduler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#slurm">Slurm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-commands">Basic Commands</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#slurm-on-nextgenio">Slurm on NextgenIO</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="iosimulator.html">I/O Simulator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="perftools.html">Perftools</a></li>
 </ul>
@@ -157,12 +165,199 @@
            <div itemprop="articleBody">
             
   <div class="section" id="job-scheduler">
-<h1>Job Scheduler<a class="headerlink" href="#job-scheduler" title="Permalink to this headline">¶</a></h1>
-<p>The NextgenIO system makes use of the <a class="reference external" href="https://slurm.schedmd.com/overview.html">Slurm workload manager</a>, adapted to make use of the various
+<span id="sec-ref-scheduler"></span><h1>Job Scheduler<a class="headerlink" href="#job-scheduler" title="Permalink to this headline">¶</a></h1>
+<p>The NextgenIO system makes use of the an adapted version of the <a class="reference external" href="https://slurm.schedmd.com/overview.html">Slurm
+workload manager</a>. The
+adaptations make it possible for the user to make use of the various
 implementations of SCM (Storage Class Memory).</p>
 <p>This section will first introduce the basic usage of Slurm, with the help
-of some simple examples. The second part of the section will focus expand
-on this, and introduce the new usage of Slurm on the NextgenIO system.</p>
+of some simple examples. The second part of the will expand on this, and
+introduce the new usage of Slurm on the NextgenIO system.</p>
+<div class="section" id="slurm">
+<h2>Slurm<a class="headerlink" href="#slurm" title="Permalink to this headline">¶</a></h2>
+<p>This section will provide a short overview of some of the basic commands
+required to run jobs with Slurm.</p>
+<p>Please note: the NextgenIO system comes equiped with OpenMPI (version
+3.1.0) and Intel MPI (version 2019.3.199). The usage of Slurm should
+reflect the choice of MPI flavour, as will indicated in the guides in
+this section where relevant.</p>
+<p>For a detailed manual on the use of Slurm, please consult the <a class="reference external" href="https://slurm.schedmd.com/documentation.html">Slurm
+documentation pages</a>.</p>
+<div class="section" id="basic-commands">
+<h3>Basic Commands<a class="headerlink" href="#basic-commands" title="Permalink to this headline">¶</a></h3>
+<p><strong>System Status</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>sinfo</td>
+<td><div class="first last line-block">
+<div class="line">list available partitions, nodes on these partitions and the status of</div>
+<div class="line">these components. Availability is listed as either <em>up</em> or <em>down</em>.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td>squeue</td>
+<td><div class="first last line-block">
+<div class="line">list the jobs currently submitted to the system. Basic functionality</div>
+<div class="line">returns all jobs, provides the JOBID, the job owner, the requested</div>
+<div class="line">number of nodes and either the allocated nodes or the reason for being</div>
+<div class="line">queued.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Submitting Jobs</strong></p>
+<p>Submitting a job using the scheduler comprises two steps: allocating
+resources and specifying the job itself. Slurm support three main
+methods for launching jobs: <a class="reference external" href="https://slurm.schedmd.com/srun.html">srun</a>,
+<a class="reference external" href="https://slurm.schedmd.com/salloc.html">salloc</a>, and <a class="reference external" href="https://slurm.schedmd.com/sbatch.html">sbatch</a>.</p>
+<p>OpenMPI jobs can be run using all three method, and for Intel
+MPI jobs the <code class="docutils literal notranslate"><span class="pre">srun</span></code> method is recommended. Slurm is compatible
+with the mpirun method for both flavours.</p>
+<p>Below is a quick overview of the command usage, with more
+detailed examples listed further down.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>srun</td>
+<td><div class="first last line-block">
+<div class="line">submit a job by allocating resources and specifying the executable.</div>
+<div class="line">Basic example, running ‘mycode’ on 2 nodes:</div>
+<div class="line-block">
+<div class="line">$&gt; srun -N2 mycode</div>
+</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td>salloc</td>
+<td><div class="first last line-block">
+<div class="line">allocate resources. Adding ‘sh’ at the end of the command launches an</div>
+<div class="line">interactive shell, whence to start the job. Basic example, requesting 4</div>
+<div class="line">nodes:</div>
+<div class="line-block">
+<div class="line">$&gt; salloc -n4 sh</div>
+<div class="line">&gt; srun mycode (OR: mpirun mycode)</div>
+</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>sbatch</td>
+<td><div class="first last line-block">
+<div class="line">submit a batch script to the scheduler. Resource allocation can be</div>
+<div class="line">specified in the command line. The batch file should contain a statement</div>
+<div class="line">the job. A script can contain multiple srun/mpirun commands:</div>
+<div class="line-block">
+<div class="line">$&gt; sbatch -N 4 myscript.sh</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The commands and examples listed in this section are intended only
+to show the basic functionality of the scheduler. All commands have
+many available options and switches, and are therefore highly adaptable
+to user requirements. The Slurm documentation provides full details
+and examples for the interested reader.</p>
+<p><strong>Example Subsmission Scripts</strong></p>
+<p>The following examples (based on the helpful tutorial found <a class="reference external" href="https://support.ceci-hpc.be/doc/_contents/QuickStart/SubmittingJobs/SlurmTutorial.html">here</a>) are batch scripts for different examples
+of parallel runs.</p>
+<p>In all cases the scripts illustrate the basic usage of the scheduler:
+allocate resources, specify the job to be run, and then run it. We will
+also specify the job output location. The default location for both
+standard out and standard error is the file “slurm-j[JOB_ID]”. In the
+case of using batch scripts, the commands to be passed to the scheduler
+are preceded by the the <cite>#SBATCH</cite> comment.</p>
+<p>Upon submission of the script the job will be added to the queue, until
+the requested resources become available and the job is launched.</p>
+<p><em>1) Submitting a single job many times (without shared memory)</em></p>
+<p>This type of parallellism is usually associated with embarrassingly
+parallel problems.</p>
+<p>The first lines of the bash script (“myscript.sh”) allocates
+resources. Note that the default allocation of CPUs is one per
+taks. Default units for the memory per CPU are MB. The ‘array’
+option creates multiple instances of the same task (in this
+example 10 instances). The task IDs are stored in the variable
+SLURM_ARRAY_TASK_ID. We will also set the maximum run time to
+one hour per cpu.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#SBATCH --ntasks=4</span>
+<span class="c1">#SBATCH --time=60:00</span>
+<span class="c1">#SBATCH --mem-per-cpu=150</span>
+<span class="c1">#SBATCH --array=1-10</span>
+</pre></div>
+</div>
+<p>The next lines specify the job name and output filename:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#SBATCH --job-name=par_tasks</span>
+<span class="c1">#SBATCH --output=op_file.txt</span>
+</pre></div>
+</div>
+<p>And finally we tell the scheduler to run the job, passing
+the task IDs to the <code class="docutils literal notranslate"><span class="pre">srun</span></code> command.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>srun mycode $SLURM_ARRAY_TASK_ID
+</pre></div>
+</div>
+<p>We then submit the script with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sbatch</span> <span class="n">myscript</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p><em>2) Submitting a single job with shared memory using OpenMP</em></p>
+<p>In case the script to be run uses multithreading, multiple
+CPUs can be asigned to the same task. For the job to run
+properly, we do need to explicitly tell Slurm to set the
+OPM_NUM_THREADS parameter.</p>
+<p>The rest of the script looks very similar to the previous
+case:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=
+#SBATCH --time=60:00
+#SBATCH --mem-per-cpu=150
+#
+#SBATCH --job-name=openmp_task
+#SBATCH --output=op_file.txt
+
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+srun mycode
+</pre></div>
+</div>
+<p>The script is submitted by entering:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sbatch</span> <span class="n">myscript</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p><em>3) Submitting an MPI job</em></p>
+<p>When submitting an MPI job the script only needs to specify
+the number of tasks and the amount of memory per core.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#SBATCH --ntasks=10</span>
+<span class="c1">#SBATCH --time=60:00</span>
+<span class="c1">#SBATCH --mem-per-cpu=150</span>
+<span class="c1">#</span>
+<span class="c1">#SBATCH --job-name=mpi_task</span>
+<span class="c1">#SBATCH --output=op_file.txt</span>
+
+<span class="n">srun</span> <span class="n">mycode</span>
+</pre></div>
+</div>
+<p>The script is submitted by entering:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sbatch</span> <span class="n">myscript</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="slurm-on-nextgenio">
+<h2>Slurm on NextgenIO<a class="headerlink" href="#slurm-on-nextgenio" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Some</span> <span class="n">examples</span> <span class="n">are</span> <span class="n">probably</span> <span class="n">the</span> <span class="n">quickest</span> <span class="n">to</span> <span class="n">show</span> <span class="n">the</span> <span class="n">way</span> <span class="n">here</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

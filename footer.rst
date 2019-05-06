@@ -1,3 +1,4 @@
 
-.. image:: images/epccuoe_logo.png
-
+.. image:: images/NEXTGenIO_logo_reflect_BW.jpg
+    :scale: 15 %
+    :align: right

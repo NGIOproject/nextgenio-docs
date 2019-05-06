@@ -3,7 +3,8 @@ NEXTGenIO Documentation
 
 This repository contains the documentation (in progress) for the NEXTGenIO prototype, aimed at publication on ReadTheDocs once finalised. 
 
-The text format is `reStructuredText <http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html>`_ and the HTML document is built using `Sphinx <http://www.sphinx-doc.org/en/master/>`_.
+
+The text format is `reStructured Text <http://sphinx-doc.org/rest.html>`_ and the HTML document is built using `Sphinx <http://www.sphinx-doc.org/en/master/>`_. You can test your build locally by running ``make html``. The easiest way to learn what files should look like is to read the ``rst`` files already in the repository.
 
 The structure and some of the content of this document is based on the ReadTheDocs entry for Cirrus: `Cirrus Documentation (HTML) on ReadTheDocs <http://cirrus.readthedocs.io/>`_. The instructions listed below are from the Cirrus documentation repository on GitHub.
 

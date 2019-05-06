@@ -69,20 +69,20 @@ file. Replace the name of the identifile with the name of your private key (e.g.
 made with a different encryption):
 
 ::
-
-     HostName hydra-vpn.epcc.ed.ac.uk
-      User [username]
-      ForwardX11 yes
-      ForwardAgent yes
-      IdentityFile ~/.ssh/id_rsa
+     Host hydra-vpn
+        HostName hydra-vpn.epcc.ed.ac.uk
+        User [username]
+        ForwardX11 yes
+        ForwardAgent yes
+        IdentityFile ~/.ssh/id_rsa
 
      Host nextgenio
-      ProxyCommand ssh -W %h:%p hydra-vpn
-      HostName nextgenio-login1
-      ForwardAgent yes
-      ForwardX11 yes
-      ForwardX11Trusted yes
-      User [username]
+        ProxyCommand ssh -W %h:%p hydra-vpn
+        HostName nextgenio-login1
+        ForwardAgent yes
+        ForwardX11 yes
+        ForwardX11Trusted yes
+        User [username]
 
 Note that it is not neccesary to copy your public key to NextgenIO.
 

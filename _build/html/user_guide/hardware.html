@@ -36,7 +36,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Connecting to the System" href="connect.html" />
-    <link rel="prev" title="NEXTGenIO" href="../index.html" /> 
+    <link rel="prev" title="Glossary" href="glossary.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -82,9 +82,11 @@
             
               <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">System Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#hardware">Hardware</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#memory-modes">Memory Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hardware">Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memory-modes">Memory Modes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#memory-configurations">Memory Configurations</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#layout">Layout</a></li>
@@ -167,25 +169,92 @@
 <h1>System Overview<a class="headerlink" href="#system-overview" title="Permalink to this headline">¶</a></h1>
 <p>This section will provide an overview of the system hardware, as well as
 a diagrammatic sketch of the sytem layout.</p>
-<p>There are multiple ways in which the new memory can be applied, and the
-different modes each have specific uses and methods associated with them.
-The various applications of the memory are summarised in the section <a class="reference internal" href="#memory-modes">Memory
-Modes</a>.</p>
+<p>There are multiple ways in which the new byte addressable storage class
+memory (SCM)can be applied, and the different modes each have specific
+uses and user instructions associated with them. The various applications
+of the memory are summarised in the section <a class="reference internal" href="#memory-modes">Memory Modes</a>.</p>
 <div class="section" id="hardware">
 <h2>Hardware<a class="headerlink" href="#hardware" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Table</span> <span class="n">of</span> <span class="n">basic</span> <span class="n">numbers</span> <span class="p">(</span><span class="n">number</span> <span class="n">of</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">omnipath</span> <span class="n">bandwidth</span> <span class="n">etc</span><span class="o">.</span><span class="p">)</span>
-</pre></div>
+<p><strong>Login/Management Node</strong>:</p>
+<ul class="simple">
+<li>2x Xeon Platinum 8260 24C 2.4GHz</li>
+<li>6x 16GB DRAM</li>
+<li>2x 256GB NVDIMM</li>
+<li>3x SATA-SSD ~2TB</li>
+</ul>
+<p><strong>Compute Node</strong>:</p>
+<ul class="simple">
+<li>2x Xeon Platinum 8260 24C 2.4GHz</li>
+<li>12x 16GB DRAM</li>
+<li>12x 256GB NVDIMM</li>
+<li><em>No internal SSD/HDD</em>: remote boot</li>
+</ul>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/cpu_dram_nvram.png"><img alt="diagramme of a single node" src="../_images/cpu_dram_nvram.png" style="width: 433.4px; height: 300.3px;" /></a>
+<p class="caption"><span class="caption-text"><strong>Figure 1</strong> The structure of the Compute Nodes: two Intel Skylake (Cascade Lake?)
+CPUs, combining DRAM and NVRAM in each memory channel. DIMMs sharing the same
+channel to the CPU will also share the channel’s bandwidth.</span></p>
+</div>
 </div>
 <div class="section" id="memory-modes">
-<h3>Memory Modes<a class="headerlink" href="#memory-modes" title="Permalink to this headline">¶</a></h3>
-<p>Different uses of the memory: NVRAM: MemDirect, AppDirect (?), and storage.</p>
+<h2>Memory Modes<a class="headerlink" href="#memory-modes" title="Permalink to this headline">¶</a></h2>
+<p>In general the SCM can operate in a variety of ways: as an extension of
+traditional DRAM, as storage, and as a new class of persistent memory (NVRAM).
+This means that in the NextgenIO system, the SCM can be applied in a number
+of configurations.</p>
+<p>The SCM is included in the system in the form of NVRAM DIMMs (NVDIMMs), and is
+always combined with DRAM DIMMS (see Figure 1). The difference between configurations
+lies in the modes in which the NVRAM is applied. The modes are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Not</span> <span class="n">too</span> <span class="n">sure</span> <span class="n">about</span> <span class="n">the</span> <span class="n">nomenclature</span> <span class="n">here</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><strong>MemDirect</strong>: Main memory is seperated into two spaces, occupied by DRAM and
+NVRAM respectively. The DRAM will represent the main memory visible to the OS,
+and is accessed via standard memory APIs. The NVRAM operates as the non-volatile
+section of the memory, and is accessed using the standard file system APIs. Both
+memory spaces are accessible to applications.</li>
+<li><strong>AppDirect</strong>: the NVRAM functions as the only main memory, and the DRAM functions
+as a cache for the NVRAM. In this mode all actively used data is stored in DRAM,
+and moved NVRAM as soon as it is not  directly needed by the CPU. Applying the
+volatile DRAM as cache means that the persistance of the contents of the NVRAM
+can not be guaranteed. Although still benefitting from  the increased size of
+the NVRAM, the non-volatility is therefore not used.</li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Include &#39;striped persistent AppDirect&#39;?
+</pre></div>
+</div>
+<div class="section" id="memory-configurations">
+<h3>Memory Configurations<a class="headerlink" href="#memory-configurations" title="Permalink to this headline">¶</a></h3>
+<p>There is a large number of possible configurations of the system, as different
+nodes can be set up with different uses of the NVRAM. The main setups used
+in the NextgenIO system are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>There are multiple options, which ones should be included?
+</pre></div>
+</div>
+<p>User control over the configuration in which the nodes are booted is
+described in the section on the <a class="reference internal" href="scheduler.html#sec-ref-scheduler"><span class="std std-ref">Job Scheduler</span></a>.</p>
 </div>
 </div>
 <div class="section" id="layout">
 <h2>Layout<a class="headerlink" href="#layout" title="Permalink to this headline">¶</a></h2>
-<p>Schematic overview of the system (possibly again for the different memory
-modes).</p>
-</div>
+<p>A schematic overview of the NextgenIO system is shown in the diagram below.
+Access to the system is controlled via hydra-vpn, which connects to the
+system’s two login nodes. The 34 computing nodes (CN) are accessed via an
+Omnipath Switch (OPA 1), which also connects to the storage (SS1 and SS2).</p>
+<p>Note that all MPI communication runs over a <em>separate</em> Omnipath network, which
+is controlled by a second switch (OPA 2).</p>
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=5,IE=9" ><![endif]-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>hardware_diagram</title>
+<meta charset="utf-8"/>
+</head>
+<body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile modified=\&quot;2019-05-03T09:22:15.800Z\&quot; host=\&quot;www.draw.io\&quot; agent=\&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/9.3.1 Chrome/66.0.3359.181 Electron/3.0.6 Safari/537.36\&quot; etag=\&quot;I-Kep0jAYNbfJRU9sNQ8\&quot; version=\&quot;10.6.6\&quot; type=\&quot;device\&quot;&gt;&lt;diagram id=\&quot;9lSNk3AwIxgHqZDRzclg\&quot; name=\&quot;Page-1\&quot;&gt;7VvbcuI4EP0aqnYfkrJlg+ExIbfdmkyoZSc7sy9TGixs7QiLESJAvn4lW75h4zjgW1LhBasly3Kf091SS+4Z48X2lsGle09tRHpAs7c946oHgG4AS/xJyS6QjEwlcBi2VaNYMMXPSAk1JV1jG61SDTmlhONlWjijnodmPCWDjNFNutmckvRTl9BBGcF0BklW+g+2uRtILU2L5XcIO6568qivKhYwbKsEKxfadJMQGdc9Y8wo5cHVYjtGROouVEtw382B2mhcDHm8zA2LP/91Hpn3t36FhvPn5cNY+2GeGWpsfBe+L7LF66siZdylDvUguY6ll4yuPRvJXjVRitt8onQphLoQ/oc43yks4ZpTIXL5gqhatMX8q7z9vK9K3xI1V1vVs1/YJQoTxPACccRCmcfZ7muy8C3uVRbjrvzSLlnKdmZfSLqIokc9FEhuMCGqfsUZ/RlRQKB3mQVAYbKiazZDBVoPeQyZg3hBOxC0k5AkHqDgvUVUjJ/tRAOGCOT4Kc1YqIjvRO1icogLxY9XcMXsDle0I7jyWnhtuHL9ketVYF0dhurWCcViKEBTjhaEDmkXOqh0DwHX1E17RIhGcTw31HifIFmrN+iBARGqupxTf5gxawa/1jSsOFv5uF+IBvpwuY0rxZUj/+92NoNnj5PPYXdidEGPQX2GklkcE2QSLngp2y22jgxW53NCNzMXMn5OBB+/E7zAstONizmaLqGP60a0lKMVVBlTQpn/GMO6vJEhwLgUHdlYkCJRN/d/RaR5QoyjbSEdwlo9DatuqvImjkX6UMncRBwaaocZdJIXADlIV4MB9DzKhQ1Q77u8BxLseKIhQXMJylJSF7HrJ6HMleqLqfaiONIqUrgFhKdJqbyfVXm/n9U4MCtQOXKJ8bCkfPTLZX/dPbD759svZ/3uON4XgnQYkPVkQI4KHQjHufrNCce57cy2wnHRqCt3uZ+ogz1ZW9blpqmW5zyT5p/BrciDHvK6FRg6SDtWMMpxrCDHsQ7qsnLrbVu51nUrB2/SyvPCbZVWDhqy8pbmT5G5dsbMR62aeXINFZn8MSvueJFdzvibs3OzpJ0PO2XnZoen1XOCl48KKXl913thUXzKdDuyvNam23pW9V2PxFpZYzQ7EYqHJU00XPx2xEaHNcXih8lFMN/W5PiAdoVXP18flvUKwvLN2ADGS5PyKszeTIdlMy+t0WhY1lvNbuq9U+Ny/dnNhiy0XHpz2K8tv1n4npXb/nRaep0tzQvPBLvgD0QmdIVVjF5g2/bpGDa4UCE+qih0AeHMYQaZfcCFBC9xBSSVIJspOut5DkT8XpzXk70XmCHPp3I0N4kEFbiaPU8zyFsAmI16mnb33JKe5qCfMatzNCf4lsa2TlIMsYyGXUur6d23G3la2lgbag3To64873RaOvfzEXkqiDyW1XrkGeRQaQ/qk1cQ/q/+FYSxZ5YmyGo3OkOU1K5Rn3qtjHrHE1H+TG0k/sIB15ZTNYzRqBHVgxKLNytH9bVlbEBWtR3N2KSC33GxcwK5cFGe34fMGpwUREtnYkZVR9vTTC2bikmZmp7hwzsxtbzVS6OmFhLhgOaNbBrlfWje0tvWPHiJ1E2tAo4+ddnBBLPVKbeWMx9LxjGltg/UT0W9W1t/oDgh9IF6Rah3awoDitM+VaP+qp3//AM+nUIdlN3m75qLH3zA3gjsHfPxxaf7PmCvCvaOOfm8Yz11HBm4n/zxvk8M9Aclkk6NnhgAdR0HmXLK5EeJQPstOAmiCTuDu9/bOalZKqFbbk/n+M9ehjnfYOR+9lIf2tm8RzVof1khJqGeTu/qQTiFTWfy9/sngEJrqsGcRTH+yjbYlos/VTau/wc=&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+<script type="text/javascript" src="https://www.draw.io/js/viewer.min.js"></script>
+</body>
+</html></div>
 </div>
 
 
@@ -199,7 +268,7 @@ modes).</p>
         <a href="connect.html" class="btn btn-neutral float-right" title="Connecting to the System" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral float-left" title="NEXTGenIO" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="glossary.html" class="btn btn-neutral float-left" title="Glossary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

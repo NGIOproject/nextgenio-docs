@@ -7,6 +7,7 @@ NEXTGenIO
    :maxdepth: 2
    :caption: User Guide
 
+   user_guide/glossary
    user_guide/hardware
    user_guide/connect
    user_guide/scheduler
