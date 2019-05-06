@@ -52,17 +52,9 @@ lies in the modes in which the NVRAM is applied. The modes are:
 
    Not too sure about the nomenclature here
 
-1. **Memory mode**: Main memory is seperated into two spaces, occupied by DRAM and
-   NVRAM respectively. The DRAM will represent the main memory visible to the OS,
-   and is accessed via standard memory APIs. The NVRAM operates as the non-volatile
-   section of the memory, and is accessed using the standard file system APIs. Both
-   memory spaces are accessible to applications.
-2. **AppDirect mode**: the NVRAM functions as the only main memory, and the DRAM functions
-   as a cache for the NVRAM. In this mode all actively used data is stored in DRAM,
-   and moved NVRAM as soon as it is not  directly needed by the CPU. Applying the
-   volatile DRAM as cache means that the persistance of the contents of the NVRAM 
-   can not be guaranteed. Although still benefitting from  the increased size of 
-   the NVRAM, the non-volatility is therefore not used.
+
+1. **Memory mode**: In Memory mode, also known as two-level memory mode, the byte-addressable persistent memory is transparent to applications and represents the main memory space, while DRAM effectively becomes the last level cache. In this mode, the persistent properties of the technology are not exploited because coherence between DRAM and persistent memory cannot be guaranteed. Applications do not have to be modified to use the persistent memory in this mode. All data objects are placed into DCPMM by default.
+2. **App Direct mode**: In AppDirect mode, also referred to as one-level memory mode, the persistent memory is only accessible via direct load and store operations and its primary use is as very fast byte-addressable non- volatile local storage. In this mode, applications can only exploit the persistent memory either if they manage it directly or if system software provides an interface (e.g. through a file system that is mounted on the persistent memory).
 
 ::
 
