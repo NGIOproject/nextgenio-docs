@@ -230,25 +230,22 @@ the ssh command allows for X11 forwarding over the connection.</p>
 SSH Public Key</span></a>), add the following lines to your .ssh/config
 file. Replace the name of the identifile with the name of your private key (e.g. if
 made with a different encryption):</p>
-<dl class="docutils">
-<dt>::</dt>
-<dd><dl class="first last docutils">
-<dt>Host hydra-vpn</dt>
-<dd>HostName hydra-vpn.epcc.ed.ac.uk
-User [username]
-ForwardX11 yes
-ForwardAgent yes
-IdentityFile ~/.ssh/id_rsa</dd>
-<dt>Host nextgenio</dt>
-<dd>ProxyCommand ssh -W %h:%p hydra-vpn
-HostName nextgenio-login1
-ForwardAgent yes
-ForwardX11 yes
-ForwardX11Trusted yes
-User [username]</dd>
-</dl>
-</dd>
-</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Host</span> <span class="n">hydra</span><span class="o">-</span><span class="n">vpn</span>
+   <span class="n">HostName</span> <span class="n">hydra</span><span class="o">-</span><span class="n">vpn</span><span class="o">.</span><span class="n">epcc</span><span class="o">.</span><span class="n">ed</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span>
+   <span class="n">User</span> <span class="p">[</span><span class="n">username</span><span class="p">]</span>
+   <span class="n">ForwardX11</span> <span class="n">yes</span>
+   <span class="n">ForwardAgent</span> <span class="n">yes</span>
+   <span class="n">IdentityFile</span> <span class="o">~/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span>
+
+<span class="n">Host</span> <span class="n">nextgenio</span>
+   <span class="n">ProxyCommand</span> <span class="n">ssh</span> <span class="o">-</span><span class="n">W</span> <span class="o">%</span><span class="n">h</span><span class="p">:</span><span class="o">%</span><span class="n">p</span> <span class="n">hydra</span><span class="o">-</span><span class="n">vpn</span>
+   <span class="n">HostName</span> <span class="n">nextgenio</span><span class="o">-</span><span class="n">login1</span>
+   <span class="n">ForwardAgent</span> <span class="n">yes</span>
+   <span class="n">ForwardX11</span> <span class="n">yes</span>
+   <span class="n">ForwardX11Trusted</span> <span class="n">yes</span>
+   <span class="n">User</span> <span class="p">[</span><span class="n">username</span><span class="p">]</span>
+</pre></div>
+</div>
 <p>Note that it is not neccesary to copy your public key to NextgenIO.</p>
 </div>
 </div>
