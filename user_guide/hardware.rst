@@ -32,7 +32,7 @@ Hardware
     :scale: 55 % 
     :alt: diagramme of a single node
 
-    **Figure 1** The structure of the Compute Nodes: two Intel Skylake (Cascade Lake?) 
+    **Figure 1** The structure of the Compute Nodes: two Cascade Lake
     CPUs, combining DRAM and NVRAM in each memory channel. DIMMs sharing the same 
     channel to the CPU will also share the channel's bandwidth.
 
@@ -53,8 +53,8 @@ lies in the modes in which the NVRAM is applied. The modes are:
    Not too sure about the nomenclature here
 
 
-1. **Memory mode**: In Memory mode, also known as two-level memory mode, the byte-addressable persistent memory is transparent to applications and represents the main memory space, while DRAM effectively becomes the last level cache. In this mode, the persistent properties of the technology are not exploited because coherence between DRAM and persistent memory cannot be guaranteed. Applications do not have to be modified to use the persistent memory in this mode. All data objects are placed into DCPMM by default.
-2. **App Direct mode**: In AppDirect mode, also referred to as one-level memory mode, the persistent memory is only accessible via direct load and store operations and its primary use is as very fast byte-addressable non- volatile local storage. In this mode, applications can only exploit the persistent memory either if they manage it directly or if system software provides an interface (e.g. through a file system that is mounted on the persistent memory).
+1. **Memory mode**: In Memory mode, also known as two-level memory mode, the byte-addressable persistent memory is transparent to applications and represents the main memory space, while DRAM effectively becomes the last level cache. In this mode, the persistent properties of the technology are not exploited because coherence between DRAM and persistent memory cannot be guaranteed. Applications do not have to be modified to use the persistent memory in this mode. All data objects are stored by default in the DCPMM and must be handled as volatile like DRAM data.
+2. **App Direct mode**: In AppDirect mode, also referred to as one-level memory mode, the persistent memory is only accessible via direct load and store operations and its primary use is as very fast byte-addressable non- volatile local storage. In this mode, applications can only exploit the persistent memory either if they manage it directly or if system software provides an interface (e.g. through a file system that is mounted on the persistent memory).In this mode, the DRAM is available as low latency main memory. 
 
 ::
 
