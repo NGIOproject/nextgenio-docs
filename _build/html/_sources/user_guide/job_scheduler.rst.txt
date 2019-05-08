@@ -64,13 +64,13 @@ detailed examples listed further down.
 | salloc  || allocate resources. Adding 'sh' at the end of the command launches an   |
 |         || interactive shell, whence to start the job. Basic example, requesting 4 |
 |         || nodes:                                                                  |
-|         ||    $> salloc -n4 sh                                                     |
+|         ||    $> salloc -N4 sh                                                     |
 |         ||    > srun mycode (OR: mpirun mycode)                                    |
 +---------+--------------------------------------------------------------------------+
 | sbatch  || submit a batch script to the scheduler. Resource allocation can be      |
 |         || specified in the command line. The batch file should contain a statement|
 |         || the job. A script can contain multiple srun/mpirun commands:            |
-|         ||    $> sbatch -N 4 myscript.sh                                           |
+|         ||    $> sbatch -N4 myscript.sh                                            |
 +---------+--------------------------------------------------------------------------+
 
 The commands and examples listed in this section are intended only
@@ -151,7 +151,7 @@ case:
 
    #!/bin/bash
    #SBATCH --ntasks=1
-   #SBATCH --cpus-per-task=
+   #SBATCH --cpus-per-task=8
    #SBATCH --time=60:00
    #SBATCH --mem-per-cpu=150
    #

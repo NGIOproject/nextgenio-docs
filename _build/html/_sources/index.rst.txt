@@ -10,16 +10,25 @@ NEXTGenIO
    user_guide/glossary
    user_guide/hardware
    user_guide/connect
-   user_guide/scheduler
-   user_guide/iosimulator
+   user_guide/compilers
+   user_guide/job_scheduler
+   user_guide/data_scheduler
+   user_guide/file_systems
    user_guide/perftools
+   user_guide/pycompss
    
 .. toctree::
    :maxdepth: 2
-   :caption: Software 
+   :caption: Applications 
 
-   software/hadoop
-   software/tensorflow
+   apps/castep
+   apps/halvade
+   apps/kmeans
+   apps/monc
+   apps/isf
+   apps/openfoam
+   apps/ospray
+   apps/tiramisu
 
 
 .. Indices and tables

@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="I/O Simulator" href="iosimulator.html" />
-    <link rel="prev" title="Connecting to the System" href="connect.html" /> 
+    <link rel="next" title="Data Scheduler" href="data_scheduler.html" />
+    <link rel="prev" title="Compilers" href="compilers.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -85,6 +85,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hardware.html">System Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="connect.html">Connecting to the System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compilers.html">Compilers</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Job Scheduler</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#slurm">Slurm</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#basic-commands">Basic Commands</a></li>
@@ -93,13 +94,21 @@
 <li class="toctree-l2"><a class="reference internal" href="#slurm-on-nextgenio">Slurm on NextgenIO</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="iosimulator.html">I/O Simulator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="perftools.html">Perftools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Software</span></p>
+<p class="caption"><span class="caption-text">Applications</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../software/hadoop.html">Hadoop</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../software/tensorflow.html">Tensorflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/castep.html">CASTEP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/halvade.html">Halvade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/kmeans.html">K-Means</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/monc.html">MONC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/isf.html">RSF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/openfoam.html">OpenFOAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/ospray.html">OSPRay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/tiramisu.html">Tiramisu</a></li>
 </ul>
 
             
@@ -151,7 +160,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/user_guide/scheduler.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/user_guide/job_scheduler.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -242,7 +251,7 @@ detailed examples listed further down.</p>
 <div class="line">interactive shell, whence to start the job. Basic example, requesting 4</div>
 <div class="line">nodes:</div>
 <div class="line-block">
-<div class="line">$&gt; salloc -n4 sh</div>
+<div class="line">$&gt; salloc -N4 sh</div>
 <div class="line">&gt; srun mycode (OR: mpirun mycode)</div>
 </div>
 </div>
@@ -254,7 +263,7 @@ detailed examples listed further down.</p>
 <div class="line">specified in the command line. The batch file should contain a statement</div>
 <div class="line">the job. A script can contain multiple srun/mpirun commands:</div>
 <div class="line-block">
-<div class="line">$&gt; sbatch -N 4 myscript.sh</div>
+<div class="line">$&gt; sbatch -N4 myscript.sh</div>
 </div>
 </div>
 </td>
@@ -317,7 +326,7 @@ OPM_NUM_THREADS parameter.</p>
 case:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=
+#SBATCH --cpus-per-task=8
 #SBATCH --time=60:00
 #SBATCH --mem-per-cpu=150
 #
@@ -368,10 +377,10 @@ the number of tasks and the amount of memory per core.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="iosimulator.html" class="btn btn-neutral float-right" title="I/O Simulator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="data_scheduler.html" class="btn btn-neutral float-right" title="Data Scheduler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="connect.html" class="btn btn-neutral float-left" title="Connecting to the System" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="compilers.html" class="btn btn-neutral float-left" title="Compilers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

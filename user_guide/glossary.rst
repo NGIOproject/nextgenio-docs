@@ -1,8 +1,11 @@
 Glossary
 ========
 
+
 +-----------------------+--------------------------------------------------------------+
-|  NVDIMM               || Non-Volatile Dual In-line Memory module; a DIMM using NVRAM |
+| DCPMM                 ||                                                             |
++-----------------------+--------------------------------------------------------------+
+| NVDIMM                || Non-Volatile Dual In-line Memory module; a DIMM using NVRAM |
 |                       || instead of standard DRAM                                    |
 +-----------------------+--------------------------------------------------------------+
 | NVRAM                 || Non-Volatile Random Access Memory; persistent memory,       |

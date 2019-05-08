@@ -45,36 +45,65 @@ This means that in the NextgenIO system, the SCM can be applied in a number
 of configurations.
 
 The SCM is included in the system in the form of NVRAM DIMMs (NVDIMMs), and is
-always combined with DRAM DIMMS (see Figure 1). The difference between configurations
-lies in the modes in which the NVRAM is applied. The modes are:
+always combined with DRAM DIMMs (see Figure 1). The difference between configurations
+lies in the modes in which the NVRAM is applied. At the platform level, nodes can
+be booted in two different modes. Switching between platform modes requires
+a reboot of the nodes. At the NVDIMM level these modes are made possible by the 
+separation of namespaces in the available memory. The choice of platform mode 
+impacts the usage of these different reserved spaces on the NVDIMM.
 
-::
-
-   Not too sure about the nomenclature here
-
+The platform level modes are:
 
 1. **Memory mode**: In Memory mode, also known as two-level memory mode, the byte-addressable persistent memory is transparent to applications and represents the main memory space, while DRAM effectively becomes the last level cache. In this mode, the persistent properties of the technology are not exploited because coherence between DRAM and persistent memory cannot be guaranteed. Applications do not have to be modified to use the persistent memory in this mode. All data objects are stored by default in the DCPMM and must be handled as volatile like DRAM data.
-2. **App Direct mode**: In AppDirect mode, also referred to as one-level memory mode, the persistent memory is only accessible via direct load and store operations and its primary use is as very fast byte-addressable non- volatile local storage. In this mode, applications can only exploit the persistent memory either if they manage it directly or if system software provides an interface (e.g. through a file system that is mounted on the persistent memory).In this mode, the DRAM is available as low latency main memory. 
+2. **App Direct mode**: In AppDirect mode, also referred to as one-level memory mode, the persistent memory is only accessible via direct load and store operations and its primary use is as very fast byte-addressable non- volatile local storage. In this mode, applications can only exploit the persistent memory either if they manage it directly or if system software provides an interface (e.g. through a file system that is mounted on the persistent memory). In this mode, the DRAM is available as low latency main memory. 
+
+The effect of the platform modes on NVDIMM usage can be illustrated with an
+example. Consider an NVDIMM where half of the persistent memory space is
+reserved for App Direct use, and half is reserved for use in Memory mode.
+
+When booting the platform in Memory mode an application can see the full 
+available NVRAM, but cannot see the DRAM. The DRAM is used as cache. The 
+namespace reserved for App Direct needs to be made available by mounting
+it with a file system (such as DAX). This mode is illustrated in the diagram
+below, which shows a single NVDIMM (*top*) and DRAM DIMM (*bottom*).
+
+.. raw:: html
+    :file: ../images/NVDIMM_Memmode.html
+
+When booting the platform in App direct mode, the NVDIMM namespace reserved
+for Memory mode usage is not visible to the application, and cannot be accessed.
+The App Direct reserved space on the NVDIMM functions as persistent memory
+(NVRAM). The DRAM is directly available to the application, and is used as 
+regular, low-latecy, memory. NVDIMM use in this mode is illustrated below.
+
+.. raw:: html
+    :file: ../images/NVDIMM_Appdirect.html
 
 ::
 
-   Include 'striped persistent AppDirect'? 
+   Should we include 'striped persistent AppDirect'? 
 
 
 Memory Configurations
 ---------------------
 
 There is a large number of possible configurations of the system, as different
-nodes can be set up with different uses of the NVRAM. The main setups used
-in the NextgenIO system are:
+nodes can be set up with different uses of the NVRAM, and the space allocation
+on the NVDIMMs can be different as well. The main setups used in the NextgenIO 
+system are:
 
 ::
 
     There are multiple options, which ones should be included?
 
+::
+
+    Should it be possible for users to change the namespace partitions 
+    on the NVDIMMs? If so, and explanation should be included here.
 
 User control over the configuration in which the nodes are booted is
 described in the section on the :ref:`sec-ref-scheduler`.
+
 
 Layout
 ~~~~~~
