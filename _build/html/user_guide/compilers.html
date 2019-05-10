@@ -85,18 +85,31 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hardware.html">System Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="connect.html">Connecting to the System</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Compilers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Compilers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#c-and-c">C and C++</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#openmp">OpenMP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mpi">MPI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#fortran">Fortran</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Job Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems</a></li>
-<li class="toctree-l1"><a class="reference internal" href="iosimulator.html">I/O Workload Simulator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Software</span></p>
+<p class="caption"><span class="caption-text">Applications</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../software/hadoop.html">Hadoop</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../software/tensorflow.html">Tensorflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/castep.html">CASTEP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/halvade.html">Halvade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/kmeans.html">K-Means</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/monc.html">MONC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/isf.html">RSF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/openfoam.html">OpenFOAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/ospray.html">OSPRay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/tiramisu.html">Tiramisu</a></li>
 </ul>
 
             
@@ -163,6 +176,31 @@
             
   <div class="section" id="compilers">
 <h1>Compilers<a class="headerlink" href="#compilers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="c-and-c">
+<h2>C and C++<a class="headerlink" href="#c-and-c" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="openmp">
+<h3>OpenMP<a class="headerlink" href="#openmp" title="Permalink to this headline">¶</a></h3>
+<p>Code including OpenMP based multithreading can be compiled
+using <code class="docutils literal notranslate"><span class="pre">gcc</span></code> and the flag <em>-fopenmp</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gcc</span> <span class="n">openmp_code</span><span class="o">.</span><span class="n">c</span> <span class="o">-</span><span class="n">fopenmp</span> <span class="o">-</span><span class="n">o</span> <span class="n">openmp_exec</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mpi">
+<h3>MPI<a class="headerlink" href="#mpi" title="Permalink to this headline">¶</a></h3>
+<p>MPI code can be compiled as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mpicc</span> <span class="n">mpi_code</span><span class="o">.</span><span class="n">c</span> <span class="o">-</span><span class="n">o</span> <span class="n">mpi_exec</span>
+</pre></div>
+</div>
+<p>And for combined MPI and OpenMP applications:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mpicc</span> <span class="n">mix_code</span><span class="o">.</span><span class="n">c</span> <span class="o">-</span><span class="n">fopenmp</span> <span class="o">-</span><span class="n">o</span> <span class="n">mix_exec</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="fortran">
+<h2>Fortran<a class="headerlink" href="#fortran" title="Permalink to this headline">¶</a></h2>
+</div>
 </div>
 
 

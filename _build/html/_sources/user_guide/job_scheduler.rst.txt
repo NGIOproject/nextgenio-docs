@@ -142,7 +142,7 @@ We then submit the script with the following command:
 In case the script to be run uses multithreading, multiple 
 CPUs can be asigned to the same task. For the job to run 
 properly, we do need to explicitly tell Slurm to set the 
-OPM_NUM_THREADS parameter.
+OPM_NUM_THREADS environment variable.
 
 The rest of the script looks very similar to the previous
 case:

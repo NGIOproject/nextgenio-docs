@@ -1,15 +1,52 @@
+.. _sec-ref-filesystems:
+
 File Systems
 ============
 
-In order to make use non-volatile memory (NWM) NextgenIO
-makes use of newly developed file systems: `Echofs`_ and 
-`GekkoFS`_.
+In order to make use non-volatile memory (NMV) NextgenIO
+makes use of a variety of file systems.
 
-Echofs
+Management of data transfer by the Data Scheduler is 
+facilitated by two newly developed file systems: `echofs`_ 
+and `GekkoFS`_.
+
+DAX
+~~~
+
+
+DevDAX
 ~~~~~~
 
+
+DataClay
+~~~~~~~~
+
+
+echofs
+~~~~~~
+
+This file system allows for NVRAM based storage, and
+is used by the Data Scheduler to prefetch (stage-in)
+data from the parallel file system (PFS/storage) to the 
+computing nodes, and to write data from the computing
+nodes to the PFS upon completion (stage-out).
+
+echofs operates as a temporary, ad-hoc file system on
+the computing nodes and on the PFS. It exists only as 
+long as the batch job needs it. It hides any memory
+hierarchies present in the computing node (section
+:ref:`sec-ref-memmodes`)
 
 
 GekkoFS
 ~~~~~~~
 
+
+
+
+::
+
+    Questions:
+    - When using App Direct reserved NVDIMM space in Platform Memory Mode,
+      what filing system is used to mount this memory?
+    - Are DAX and DataClay both used?

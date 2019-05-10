@@ -206,7 +206,7 @@ channel to the CPU will also share the channel’s bandwidth.</span></p>
 </div>
 </div>
 <div class="section" id="memory-modes">
-<h2>Memory Modes<a class="headerlink" href="#memory-modes" title="Permalink to this headline">¶</a></h2>
+<span id="sec-ref-memmodes"></span><h2>Memory Modes<a class="headerlink" href="#memory-modes" title="Permalink to this headline">¶</a></h2>
 <p>In general the SCM can operate in a variety of ways: as an extension of
 traditional DRAM, as storage, and as a new class of persistent memory (NVRAM).
 This means that in the NextgenIO system, the SCM can be applied in a number
@@ -215,22 +215,45 @@ of configurations.</p>
 always combined with DRAM DIMMs (see Figure 1). The difference between configurations
 lies in the modes in which the NVRAM is applied. At the platform level, nodes can
 be booted in two different modes. Switching between platform modes requires
-a reboot of the nodes. At the NVDIMM level these modes are made possible by the
-separation of namespaces in the available memory. The choice of platform mode
-impacts the usage of these different reserved spaces on the NVDIMM.</p>
-<p>The platform level modes are:</p>
+a reboot of the nodes.</p>
+<p>At the NVDIMM level the SCM can be partitioned. This implies that different
+memory modes can exist in different partitions on the same NVDIMM at the same time.
+These partitions are managed by the memory controller, but a more abstract level
+of access is made possible through the use of namespaces. The namespaces contain
+the different memory modes available on the NVDIMM, and determine the way in which
+the OS and applications see that particular memory partition.</p>
+<p>Namespaces are subdivisions of Memory Pools, which are BIOS mapped physical
+memory ranges. The Memory Pools are classed as either volatile or persistent,
+and switching between the two requires rebooting the node. Namespaces, on the other
+hand, can be reallocated within existing Memory Pools without a reboot.</p>
+<p>The choice of platform mode impacts the usage of the different reserved
+namespaces on the NVDIMM. The platform level modes are:</p>
 <ol class="arabic simple">
 <li><strong>Memory mode</strong>: In Memory mode, also known as two-level memory mode, the byte-addressable persistent memory is transparent to applications and represents the main memory space, while DRAM effectively becomes the last level cache. In this mode, the persistent properties of the technology are not exploited because coherence between DRAM and persistent memory cannot be guaranteed. Applications do not have to be modified to use the persistent memory in this mode. All data objects are stored by default in the DCPMM and must be handled as volatile like DRAM data.</li>
 <li><strong>App Direct mode</strong>: In AppDirect mode, also referred to as one-level memory mode, the persistent memory is only accessible via direct load and store operations and its primary use is as very fast byte-addressable non- volatile local storage. In this mode, applications can only exploit the persistent memory either if they manage it directly or if system software provides an interface (e.g. through a file system that is mounted on the persistent memory). In this mode, the DRAM is available as low latency main memory.</li>
 </ol>
-<p>The effect of the platform modes on NVDIMM usage can be illustrated with an
-example. Consider an NVDIMM where half of the persistent memory space is
-reserved for App Direct use, and half is reserved for use in Memory mode.</p>
+<p>The functionality of the NVDIMMs under these different platform modes is
+shown in schematic form in figure 2. The left side of the figure shows use
+in Memory mode, and the right side use in App Direct mode. Note that the
+use of any storage namespace on the nodes is unaffected by the choice of
+platform mode.</p>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/mem_use.png"><img alt="diagramme of NVDIMM partitions and usage" src="../_images/mem_use.png" style="width: 670.45px; height: 440.55px;" /></a>
+<p class="caption"><span class="caption-text"><strong>Figure 2</strong> The different possible namespace partitions on the NVDIMMs
+(storage, space for Memory mode, and App Direct mode) and the way these
+partitions are visible to the OS and applications in the different
+platform modes.</span></p>
+</div>
+<p>The effect of the platform modes on NVDIMM usage can be further illustrated
+with an example: consider an NVDIMM where half of the persistent memory
+space is reserved for App Direct use, and half is reserved for use in Memory
+mode.</p>
 <p>When booting the platform in Memory mode an application can see the full
 available NVRAM, but cannot see the DRAM. The DRAM is used as cache. The
 namespace reserved for App Direct needs to be made available by mounting
-it with a file system (such as DAX). This mode is illustrated in the diagram
-below, which shows a single NVDIMM (<em>top</em>) and DRAM DIMM (<em>bottom</em>).</p>
+it with a file system (such as DAX, see <a class="reference internal" href="file_systems.html#sec-ref-filesystems"><span class="std std-ref">File Systems</span></a>). This
+mode is illustrated in the diagram below, which shows a single NVDIMM
+(<em>top</em>) and DRAM DIMM (<em>bottom</em>).</p>
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=5,IE=9" ><![endif]-->
 <!DOCTYPE html>
 <html>
@@ -269,7 +292,7 @@ system are:</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Should it be possible for users to change the namespace partitions
-on the NVDIMMs? If so, and explanation should be included here.
+on the NVDIMMs? If so, an explanation should be included here.
 </pre></div>
 </div>
 <p>User control over the configuration in which the nodes are booted is

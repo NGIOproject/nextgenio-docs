@@ -3,11 +3,7 @@ Performance Tools
 
 ::
 
-   Are there more tools that should be described here, e.g. Vampyr?
-
-Kronos
-~~~~~~
-
+   Are there more tools that should be described here?
 
 Score-P
 ~~~~~~~

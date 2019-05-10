@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="I/O Workload Simulator" href="iosimulator.html" />
+    <link rel="next" title="Performance Tools" href="perftools.html" />
     <link rel="prev" title="Data Scheduler" href="data_scheduler.html" /> 
 </head>
 
@@ -89,18 +89,26 @@
 <li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Job Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">File Systems</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#echofs">Echofs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dax">DAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#devdax">DevDAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dataclay">DataClay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#echofs">echofs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#gekkofs">GekkoFS</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="iosimulator.html">I/O Workload Simulator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Software</span></p>
+<p class="caption"><span class="caption-text">Applications</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../software/hadoop.html">Hadoop</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../software/tensorflow.html">Tensorflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/castep.html">CASTEP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/halvade.html">Halvade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/kmeans.html">K-Means</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/monc.html">MONC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/isf.html">RSF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/openfoam.html">OpenFOAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/ospray.html">OSPRay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/tiramisu.html">Tiramisu</a></li>
 </ul>
 
             
@@ -166,15 +174,42 @@
            <div itemprop="articleBody">
             
   <div class="section" id="file-systems">
-<h1>File Systems<a class="headerlink" href="#file-systems" title="Permalink to this headline">¶</a></h1>
-<p>In order to make use non-volatile memory (NWM) NextgenIO
-makes use of newly developed file systems: <a class="reference internal" href="#echofs">Echofs</a> and
-<a class="reference internal" href="#gekkofs">GekkoFS</a>.</p>
+<span id="sec-ref-filesystems"></span><h1>File Systems<a class="headerlink" href="#file-systems" title="Permalink to this headline">¶</a></h1>
+<p>In order to make use non-volatile memory (NMV) NextgenIO
+makes use of a variety of file systems.</p>
+<p>Management of data transfer by the Data Scheduler is
+facilitated by two newly developed file systems: <a class="reference internal" href="#echofs">echofs</a>
+and <a class="reference internal" href="#gekkofs">GekkoFS</a>.</p>
+<div class="section" id="dax">
+<h2>DAX<a class="headerlink" href="#dax" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="devdax">
+<h2>DevDAX<a class="headerlink" href="#devdax" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="dataclay">
+<h2>DataClay<a class="headerlink" href="#dataclay" title="Permalink to this headline">¶</a></h2>
+</div>
 <div class="section" id="echofs">
-<h2>Echofs<a class="headerlink" href="#echofs" title="Permalink to this headline">¶</a></h2>
+<h2>echofs<a class="headerlink" href="#echofs" title="Permalink to this headline">¶</a></h2>
+<p>This file system allows for NVRAM based storage, and
+is used by the Data Scheduler to prefetch (stage-in)
+data from the parallel file system (PFS/storage) to the
+computing nodes, and to write data from the computing
+nodes to the PFS upon completion (stage-out).</p>
+<p>echofs operates as a temporary, ad-hoc file system on
+the computing nodes and on the PFS. It exists only as
+long as the batch job needs it. It hides any memory
+hierarchies present in the computing node (section
+<a class="reference internal" href="hardware.html#sec-ref-memmodes"><span class="std std-ref">Memory Modes</span></a>)</p>
 </div>
 <div class="section" id="gekkofs">
 <h2>GekkoFS<a class="headerlink" href="#gekkofs" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Questions:
+- When using App Direct reserved NVDIMM space in Platform Memory Mode,
+  what filing system is used to mount this memory?
+- Are DAX and DataClay both used?
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -186,7 +221,7 @@ makes use of newly developed file systems: <a class="reference internal" href="#
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="iosimulator.html" class="btn btn-neutral float-right" title="I/O Workload Simulator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="perftools.html" class="btn btn-neutral float-right" title="Performance Tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="data_scheduler.html" class="btn btn-neutral float-left" title="Data Scheduler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

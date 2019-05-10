@@ -89,14 +89,19 @@
 <li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Job Scheduler</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Data Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems</a></li>
-<li class="toctree-l1"><a class="reference internal" href="iosimulator.html">I/O Workload Simulator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Software</span></p>
+<p class="caption"><span class="caption-text">Applications</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../software/hadoop.html">Hadoop</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../software/tensorflow.html">Tensorflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/castep.html">CASTEP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/halvade.html">Halvade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/kmeans.html">K-Means</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/monc.html">MONC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/isf.html">RSF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/openfoam.html">OpenFOAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/ospray.html">OSPRay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/tiramisu.html">Tiramisu</a></li>
 </ul>
 
             
@@ -163,10 +168,43 @@
             
   <div class="section" id="data-scheduler">
 <h1>Data Scheduler<a class="headerlink" href="#data-scheduler" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li>openZFS?</li>
-<li>DAOS</li>
-</ul>
+<p>The Data Scheduler (DS) is designed to work together with the Job
+Scheduler to allow for energy efficient and time efficient job
+execution. The main purpose of the Data Scheduler is to manage
+the transfer of data to nodes in preparation for the job execution
+(stage-in), and the transfer of data from the nodes upon completion
+(stage-out).</p>
+<p>The systems used for the data management by the Scheduler are
+<em>GekkoFS</em> and <em>echofs</em> (see the section <a class="reference internal" href="file_systems.html#sec-ref-filesystems"><span class="std std-ref">File Systems</span></a>).
+Both systems make use of the large amount of memory available in
+the NVDIMMs to operate them as a burst-buffer: a relatively low
+latency intermediary between storage and the CPU’s main memory.</p>
+<p>The DS operates as s Slurm plugin, mirroring the Slurm structure
+of a controller daemon (in the login node) and daemons in the
+computing nodes. In order for the Scheduler to be able to
+access the SCM, the NVDIMM namespace needs to be mounted with
+a file system.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/data_sch_diag.png"><img alt="Diagramme of the Data Scheduler architecture" src="../_images/data_sch_diag.png" style="width: 691.2px; height: 518.4px;" /></a>
+<p class="caption"><span class="caption-text"><strong>Figure 1</strong> The architecture of the Data Scheduler</span></p>
+</div>
+<p>The DS communicates with Slurm, receiving information on the job
+requirements as well as I/O hints (see below), with the NVDIMM
+file system, as well as with the Lustre file system that operates
+the storage space.</p>
+<p>Once a job in the queue is deemed close enough
+to execution time, the relevant data are prefetched onto the node(s)
+selected for that job. Once the data is present, the job is executed.
+If the job reaches the front of the queue before the prefetching is
+completed, the job is pushed back in the queue.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Relevant</span> <span class="n">to</span> <span class="n">Users</span><span class="p">:</span> <span class="n">I</span><span class="o">/</span><span class="n">O</span> <span class="n">hints</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Questions:
+- Node configuration managed by Slurm or by Data Scheduler?
+- Data extraction upon completion performed by DS?
+</pre></div>
+</div>
 </div>
 
 
