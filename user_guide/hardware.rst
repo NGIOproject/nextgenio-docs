@@ -41,7 +41,7 @@ Hardware
 Memory Modes
 ~~~~~~~~~~~~
 
-In general the SCM can operate in a variety of ways: as an extension of 
+In general the SCM can operate in a variety of modes: as an extension of 
 traditional DRAM, as storage, and as a new class of persistent memory (NVRAM). 
 This means that in the NextgenIO system, the SCM can be applied in a number
 of configurations.
@@ -52,7 +52,8 @@ lies in the modes in which the NVRAM is applied. At the platform level, nodes ca
 be booted in two different modes. Switching between platform modes requires
 a reboot of the nodes. 
 
-At the NVDIMM level the SCM can be partitioned. This implies that different
+At the NVDIMM level the SCM can be partitioned, reserving sections of the SCM to 
+operate in one of the modes listed above. This implies that different
 memory modes can exist in different partitions on the same NVDIMM at the same time.
 These partitions are managed by the memory controller, but a more abstract level
 of access is made possible through the use of namespaces. The namespaces contain

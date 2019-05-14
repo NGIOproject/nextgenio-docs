@@ -88,7 +88,7 @@
 <li class="toctree-l1"><a class="reference internal" href="compilers.html">Compilers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Job Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems and Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
 </ul>
@@ -193,23 +193,37 @@
 </div>
 </td>
 </tr>
-<tr class="row-even"><td>NVDIMM</td>
+<tr class="row-even"><td>FSDAX</td>
+<td><div class="first last line-block">
+<div class="line">File System (enabled) Direct Access; byte level access to</div>
+<div class="line">NVM provided by a mounted file system (ext4)</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>NVDIMM</td>
 <td><div class="first last line-block">
 <div class="line">Non-Volatile Dual In-line Memory module; a DIMM using NVRAM</div>
 <div class="line">instead of standard DRAM</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td>NVM</td>
+<tr class="row-even"><td>NVM</td>
 <td><div class="first last line-block">
 <div class="line">Non-Volatile Memory</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td>NVRAM</td>
+<tr class="row-odd"><td>NVRAM</td>
 <td><div class="first last line-block">
 <div class="line">Non-Volatile Random Access Memory; persistent memory,</div>
 <div class="line">SCM used in a processor’s main memory</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td>PMDK</td>
+<td><div class="first last line-block">
+<div class="line">Persistent Memory Development Kit; Libraries allowing for</div>
+<div class="line">operations on NVRAM (<a class="reference external" href="http://pmem.io/">pmem.io</a>)</div>
 </div>
 </td>
 </tr>

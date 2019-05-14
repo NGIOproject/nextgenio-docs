@@ -22,7 +22,7 @@ a file system.
 
 .. figure:: ../images/data_sch_diag.png
     :align: center
-    :scale: 60%
+    :scale: 50%
     :alt: Diagramme of the Data Scheduler architecture
 
     **Figure 1** The architecture of the Data Scheduler
