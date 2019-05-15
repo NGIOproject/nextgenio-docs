@@ -4,10 +4,11 @@ File Systems and Storage
 ========================
 
 In order to make use non-volatile memory (NVM) NextgenIO
-makes use of a variety of file systems: `echofs`_ is used
-by the Data Schduler for stage-in and stage-out operations,
-`GekkoFS`_ will be able to be used by the Data Scheduler
-to perform similar functions on multiple nodes 
+makes use of a variety of file systems: both `EchoFS`_ and
+`GekkoFS`_ can be used by the Data Scheduler for stage-in 
+and stage-out operations. The use of GekkoFS will be 
+favoured over that of of EchoFS, as GekkoFS has a higher
+performance and can be mounted on multiple nodes 
 simultaneously.
 
 `dataClay`_ provides object class storage and can be used
@@ -37,8 +38,13 @@ reserved for direct access), applications can access
 the memory with the use of the memory mapping function
 ( mmap( ) ) provided by the PMDK.
 
-The burst-buffer echofs makes use of file system 
-enabled DAX.
+The burst-buffers EchoFS and GekkoFS make use of file
+system enabled DAX. In the case of EchoFS Device DAX is
+possible on the side of the system itself, but currently
+not possible as the FS relies on FUSE to access memory.
+DevDAX implementation for GekkoFS may also be developed
+in the furure.
+
 
 DevDAX
 ------
@@ -52,7 +58,7 @@ intervention of a file system.
    Is there a specified method for this type of access?
 
 
-echofs
+EchoFS
 ~~~~~~
 
 This file system allows for POSIX-like NVM based 
@@ -60,10 +66,10 @@ storage, and is used by the Data Scheduler to prefetch
 (stage-in) data from the parallel file system 
 (PFS/storage) to the computing nodes, and to write 
 data from the computing nodes to the PFS upon completion
-(stage-out). In contrast to GekkoFS, echofs is mounted
+(stage-out). In contrast to GekkoFS, EchoFS is mounted
 on single nodes.
 
-echofs operates as a temporary, ad-hoc file system on
+EchoFS operates as a temporary, ad-hoc file system on
 the computing nodes and on the PFS. It exists only as 
 long as the batch job needs it. It hides any memory
 hierarchies present in the computing node (see the section
@@ -72,15 +78,15 @@ as a virtual storage device with a single mount point.
 
 Following the submission of a batch job, provided the 
 required resources are available, the Data Scheduler creates
-an instance on echofs on each of the allocated computing 
-nodes. echofs prefetches the required data, based on the
+an instance of EchoFS on each of the allocated computing 
+nodes. EchoFS prefetches the required data, based on the
 job's data requirements passed on by the Scheduler.
 
 Once stage-in has been completed, the batch job can 
 execute. The application can access the loaded files
 via standard POSIX I/O functions, making the system
-compatible with legacy applications. The NVRAM will
-function as a faster form of traditional storage.
+compatible with legacy applications. The NVRAM functions
+as a faster form of traditional storage.
 
 Any new files created during the job are written into 
 the NVM buffers, only transferring to storage 
@@ -89,8 +95,6 @@ operates as a burst buffer.
 
 ::
 
-   - Will the data scheduler use GekkoFS in stead of
-     echofs?
    - Can a choice between the two be specfied by the
      users? (i.e.: do users need to understand the 
      difference between them?)
@@ -100,7 +104,8 @@ GekkoFS
 
 This file system allows for POSIX-like NVM storage operations, 
 and acts as an ad-hoc file-system for the lifetime of a single
-batch job. GekkoFS can therefore operate as a burst-buffer, 
+batch job. POSIX compliance has been tested on OpenFOAM and python
+applications [1]_. GekkoFS can therefore operate as a burst-buffer, 
 performing stage-in and stage-out data transfers for the scheduled
 batch job. In these ways it is similar to echofs. 
 
@@ -118,7 +123,8 @@ illustrated in figure 1.
 The interception of file-system operation commands is performed by
 the GekkoFS client, which is pre-loaded by the job application when
 launched. The client also holds a file map, containing all data 
-storage locations across the nodes. The client therefore maintains 
+storage locations across the nodes. Like the other meta-data, this 
+file map is distributed over the nodes. The client maintains 
 an overview of all data and can send requests to individual deamons
 to perform I/O operations.
 
@@ -131,19 +137,14 @@ to perform I/O operations.
     **Figure 1** The architecture of the GekkoFS distributed file
     system. All comunication between the application and the FS runs
     via the GekkoFS client, which redirects commands to the daemons.
-    The GekkoFS daemons run on each file system node. Image from [1]_
+    The GekkoFS daemons run on each file system node. Image from Vef
+    et al [2]_
 
-::
-
-   - Is the POSIX interface ready?
-   - What (if any) is the DAX filesystem on the nodes required by
-     GekkoFS?  
-   - Is the the file-map for the client stored in the memory of
-     the login node?
-
-
-.. [1] Vef, M.-A. et al., *GekkoFS - A Temporary Distributed File 
+.. [1] As of May 2019
+.. [2] Vef, M.-A. et al., *GekkoFS - A Temporary Distributed File 
        System for HPC Applications*, CLUSTER (Proceedings) (2018)
+
+.. _ref-sec-dataclay:
 
 dataClay
 ~~~~~~~~
@@ -159,7 +160,9 @@ development/software-and-apps/software-list/dataclay/documentation>`_.
 A main functionality of the data store is to allow users to
 make any application created object persistent in memory. Storing
 an object in this manner not only saves it for later use, but 
-also allows the object to be called from other applications.
+also allows the object to be called from other applications. 
+dataClay is able to make use of both FSDAX and DevDAX to access
+NVRAM.
 
 The structure of dataClay consists of two main components: a logic 
 module and the data service. The logic module provides centralised
@@ -189,16 +192,6 @@ to improve performance of dataClay in combination with
 | obj.get_all_locations( )        || Find all data service locations where obj or its    |
 |                                 || its copies are stored                               |
 +---------------------------------+------------------------------------------------------+
-| obj.new_replicas( )             || Create a copy of obj                                |
+| obj.new_replica( )              || Create a copy of obj                                |
 +---------------------------------+------------------------------------------------------+
-
-
-
-::
-
-   - Are Java and Python still the two backends supported for 
-     DataClay?
-   - Does DataClay depend on FSDAX?
-
-
 

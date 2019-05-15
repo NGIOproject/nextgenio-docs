@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Performance Tools &mdash; nextgenio-docs  documentation</title>
+  <title>Performance Analysis Tools &mdash; nextgenio-docs  documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PyCOMPSs" href="pycompss.html" />
-    <link rel="prev" title="File Systems and Storage" href="file_systems.html" /> 
+    <link rel="next" title="CASTEP" href="../apps/castep.html" />
+    <link rel="prev" title="PyCOMPSs" href="pycompss.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,13 +89,13 @@
 <li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Job Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems and Storage</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Performance Tools</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Performance Analysis Tools</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#score-p">Score-P</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#vampir">Vampir</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#allinea-map">Allinea-MAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#allinea-arm-map">Allinea/ARM MAP</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Applications</span></p>
 <ul>
@@ -152,7 +152,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Performance Tools</li>
+      <li>Performance Analysis Tools</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -171,19 +171,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="performance-tools">
-<h1>Performance Tools<a class="headerlink" href="#performance-tools" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Are there more tools that should be described here?
-</pre></div>
-</div>
+  <div class="section" id="performance-analysis-tools">
+<h1>Performance Analysis Tools<a class="headerlink" href="#performance-analysis-tools" title="Permalink to this headline">¶</a></h1>
+<p>Various performance analysis tools are installed on the
+NextgenIO system.</p>
 <div class="section" id="score-p">
 <h2>Score-P<a class="headerlink" href="#score-p" title="Permalink to this headline">¶</a></h2>
+<p>Score-P provides an infrastructure to use various measurement
+tools, including <a class="reference internal" href="#vampir">Vampir</a>, for parallel applications.
+The official documentation for Score-P can be found <a class="reference external" href="https://www.vi-hps.org/projects/score-p/">here</a>.</p>
 </div>
 <div class="section" id="vampir">
 <h2>Vampir<a class="headerlink" href="#vampir" title="Permalink to this headline">¶</a></h2>
+<p>Vampir provides an interactive event trace visualiser, allowing
+the post mortem analysis of parallel application runs. The website
+for Vampir can be found <a class="reference external" href="https://vampir.eu">here</a>, and a tutorial
+can be accessed <a class="reference external" href="https://vampir.eu/tutorial">here</a>.</p>
 </div>
-<div class="section" id="allinea-map">
-<h2>Allinea-MAP<a class="headerlink" href="#allinea-map" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="allinea-arm-map">
+<h2>Allinea/ARM MAP<a class="headerlink" href="#allinea-arm-map" title="Permalink to this headline">¶</a></h2>
+<p>ARM Map is an application profiler, designed to evaluate parallel
+applications. The official website is located <a class="reference external" href="https://www.arm.com/products/development-tools/server-and-hpc/forge/map">here</a>, and an
+introduction can be found <a class="reference external" href="https://developer.arm.com/docs/101136/latest/map/getting-started">here</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- Are there more tools that should be described here?
+- Inlude examples of use?
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -195,10 +208,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pycompss.html" class="btn btn-neutral float-right" title="PyCOMPSs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../apps/castep.html" class="btn btn-neutral float-right" title="CASTEP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="file_systems.html" class="btn btn-neutral float-left" title="File Systems and Storage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pycompss.html" class="btn btn-neutral float-left" title="PyCOMPSs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

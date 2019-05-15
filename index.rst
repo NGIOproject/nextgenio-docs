@@ -14,8 +14,8 @@ NEXTGenIO
    user_guide/job_scheduler
    user_guide/data_scheduler
    user_guide/file_systems
-   user_guide/perftools
    user_guide/pycompss
+   user_guide/perftools
    
 .. toctree::
    :maxdepth: 2

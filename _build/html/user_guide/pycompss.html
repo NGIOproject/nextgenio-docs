@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="CASTEP" href="../apps/castep.html" />
-    <link rel="prev" title="Performance Tools" href="perftools.html" /> 
+    <link rel="next" title="Performance Analysis Tools" href="perftools.html" />
+    <link rel="prev" title="File Systems and Storage" href="file_systems.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,8 +89,8 @@
 <li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Job Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems and Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Tools</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">PyCOMPSs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Analysis Tools</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Applications</span></p>
 <ul>
@@ -168,6 +168,26 @@
             
   <div class="section" id="pycompss">
 <span id="sec-ref-pycompss"></span><h1>PyCOMPSs<a class="headerlink" href="#pycompss" title="Permalink to this headline">¶</a></h1>
+<p>PyCOMPSs is the Python binding for the COMPSs library, which
+aims to ease the use of parallel programming for distributed
+infrastructures. The COMPSs library provides a programming
+model and a runtime. A brief description of the framework is
+given below. Please refer to the <a class="reference external" href="https://pypi.org/project/pycompss/">PyCOMPSs documentation</a> for a full overview.</p>
+<p>The PyCOMPSs programming model allows users to write code for
+applications sequentially, splitting the operations of the
+programme over PyCOMPSs tasks. During execution the runtime
+library will automatically (i.e. without required user input)
+split these tasks over any available nodes, attempting to optimise
+usage of resources.</p>
+<p>On the NextgenIO system PyCOMPSs can be implemented by users by
+importing the library. The object store <a class="reference internal" href="file_systems.html#ref-sec-dataclay"><span class="std std-ref">dataClay</span></a>
+has been optmised for use in combination with PyCOMPSs.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- Do users need to load a module in order to ne able to load
+  the library?
+- Does PyCOMPSs have special implementations involving SCM?
+=&gt; Include worked examples of applications using PyCOMPSs
+</pre></div>
+</div>
 </div>
 
 
@@ -178,10 +198,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../apps/castep.html" class="btn btn-neutral float-right" title="CASTEP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="perftools.html" class="btn btn-neutral float-right" title="Performance Analysis Tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="perftools.html" class="btn btn-neutral float-left" title="Performance Tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="file_systems.html" class="btn btn-neutral float-left" title="File Systems and Storage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

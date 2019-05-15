@@ -24,6 +24,10 @@ Glossary
 | PMDK                  || Persistent Memory Development Kit; Libraries allowing for   |
 |                       || operations on NVRAM (`pmem.io <http://pmem.io/>`_)          |
 +-----------------------+--------------------------------------------------------------+
+| PyCOMPSs              || Python binding for COMPSs (COMP Superscalar); a programming |
+|                       || model designed to ease parallel programming in distrbuted   |
+|                       || architectures                                               |
++-----------------------+--------------------------------------------------------------+
 | SCM                   || Storage Class Memory; byte-addressable non-volatile memory  |
 +-----------------------+--------------------------------------------------------------+
 | Slurm                 || Job Scheduler: allocates resources, provides commands for   |
