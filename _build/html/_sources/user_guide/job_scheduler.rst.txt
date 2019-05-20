@@ -34,6 +34,7 @@ Basic Commands
 +---------+--------------------------------------------------------------------------+
 | sinfo   || list available partitions, nodes on these partitions and the status of  |
 |         || these components. Availability is listed as either *up* or *down*.      |
+|         || For a full list of node-by-node status enter: *sinfo --long --Node*     |
 +---------+--------------------------------------------------------------------------+
 | squeue  || list the jobs currently submitted to the system. Basic functionality    |
 |         || returns all jobs, provides the JOBID, the job owner, the requested      |
@@ -78,6 +79,10 @@ to show the basic functionality of the scheduler. All commands have
 many available options and switches, and are therefore highly adaptable
 to user requirements. The Slurm documentation provides full details
 and examples for the interested reader.
+
+To cancel a submitted job, use `scancel <https://slurm.schedmd.com/
+scancel.html>`_, followed either by the JobID or by cancelling all
+of a user's jobs with ``scancel -u [username]``.
 
 **Example Subsmission Scripts**
 

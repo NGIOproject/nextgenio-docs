@@ -46,6 +46,6 @@ on job specifications.
 ::
 
    Questions:
-   - Node configuration managed by Slurm or by Data Scheduler?
+   - Are node configuration managed by Slurm or by Data Scheduler?
    - Can/should users set I/O hints?
    

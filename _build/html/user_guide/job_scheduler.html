@@ -36,7 +36,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Data Scheduler" href="data_scheduler.html" />
-    <link rel="prev" title="Compilers" href="compilers.html" /> 
+    <link rel="prev" title="Connecting to the System" href="connect.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -85,7 +85,6 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hardware.html">System Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="connect.html">Connecting to the System</a></li>
-<li class="toctree-l1"><a class="reference internal" href="compilers.html">Compilers</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Job Scheduler</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#slurm">Slurm</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#basic-commands">Basic Commands</a></li>
@@ -96,8 +95,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems and Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compilers.html">Modules and Compilers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Analysis Tools</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Applications</span></p>
 <ul>
@@ -205,6 +205,7 @@ documentation pages</a>.</p>
 <td><div class="first last line-block">
 <div class="line">list available partitions, nodes on these partitions and the status of</div>
 <div class="line">these components. Availability is listed as either <em>up</em> or <em>down</em>.</div>
+<div class="line">For a full list of node-by-node status enter: <em>sinfo –long –Node</em></div>
 </div>
 </td>
 </tr>
@@ -275,6 +276,8 @@ to show the basic functionality of the scheduler. All commands have
 many available options and switches, and are therefore highly adaptable
 to user requirements. The Slurm documentation provides full details
 and examples for the interested reader.</p>
+<p>To cancel a submitted job, use <a class="reference external" href="https://slurm.schedmd.com/scancel.html">scancel</a>, followed either by the JobID or by cancelling all
+of a user’s jobs with <code class="docutils literal notranslate"><span class="pre">scancel</span> <span class="pre">-u</span> <span class="pre">[username]</span></code>.</p>
 <p><strong>Example Subsmission Scripts</strong></p>
 <p>The following examples (based on the helpful tutorial found <a class="reference external" href="https://support.ceci-hpc.be/doc/_contents/QuickStart/SubmittingJobs/SlurmTutorial.html">here</a>) are batch scripts for different examples
 of parallel runs.</p>
@@ -380,7 +383,7 @@ the number of tasks and the amount of memory per core.</p>
         <a href="data_scheduler.html" class="btn btn-neutral float-right" title="Data Scheduler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="compilers.html" class="btn btn-neutral float-left" title="Compilers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="connect.html" class="btn btn-neutral float-left" title="Connecting to the System" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
