@@ -33,9 +33,10 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="CASTEP" href="../apps/castep.html" />
+    <link rel="next" title="FAQs and Common Issues" href="faq.html" />
     <link rel="prev" title="PyCOMPSs" href="pycompss.html" /> 
 </head>
 
@@ -85,7 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hardware.html">System Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="connect.html">Connecting to the System</a></li>
-<li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Job Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Submitting Jobs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems and Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compilers.html">Modules and Compilers</a></li>
@@ -100,6 +101,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQs and Common Issues</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Applications</span></p>
 <ul>
@@ -230,7 +232,7 @@ manually.</p>
 <h3>MAP profiling an OpenMP programme<a class="headerlink" href="#map-profiling-an-openmp-programme" title="Permalink to this headline">¶</a></h3>
 <p>Job submission can be done either directly, by selecting
 <em>Run</em>, or by submitting a batch job to the queue (see section
-see <a class="reference internal" href="job_scheduler.html#sec-ref-scheduler"><span class="std std-ref">Job Scheduler</span></a>).</p>
+see <a class="reference internal" href="job_scheduler.html#sec-ref-scheduler"><span class="std std-ref">Submitting Jobs</span></a>).</p>
 </div>
 <div class="section" id="map-profiling-an-mpi-programme">
 <h3>MAP profiling an MPI programme<a class="headerlink" href="#map-profiling-an-mpi-programme" title="Permalink to this headline">¶</a></h3>
@@ -251,7 +253,7 @@ see <a class="reference internal" href="job_scheduler.html#sec-ref-scheduler"><s
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../apps/castep.html" class="btn btn-neutral float-right" title="CASTEP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="faq.html" class="btn btn-neutral float-right" title="FAQs and Common Issues" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="pycompss.html" class="btn btn-neutral float-left" title="PyCOMPSs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -289,7 +291,18 @@ see <a class="reference internal" href="job_scheduler.html#sec-ref-scheduler"><s
   
   
     
-   
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
 
 </body>
 </html>

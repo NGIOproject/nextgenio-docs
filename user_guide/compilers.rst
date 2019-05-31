@@ -136,12 +136,23 @@ The available C/C++ compilers are ``icc`` (the Intel
 compiler) and ``gcc`` (the GNU compiler), and the available
 MPI libraries are *openmpi* and *impi* (Intel's MPI 
 library). The MPI libraries are used by the compiler 
-through the ``mpicc`` command, and the library is selected
-by loading the relevant module.
+through the ``mpicc`` and ``mpigcc`` wrappers, and the
+library is selected by loading the relevant module.
 
 The MPI modules are simply named ``openmpi`` and ``impi``.
-Both modules use ``icc`` as the standard C/C++ compiler,
-but ``gcc`` is available for both.
+The modules use ``icc`` as the standard C/C++ compiler,
+but ``gcc`` is available for both. To switch the compiler
+used by the ``mpicc`` wrapper to ``gcc`` in the ``openmpi``
+module:
+
+::
+
+   export OMPI_CC=gcc
+
+This option may be the preferred way of using the ``gcc``
+compiler when running mpi code, as executables created
+with the ``mpigcc`` wrapper appear to have trouble 
+running on the NextgenIO system.
 
 Fortran Compilers
 ~~~~~~~~~~~~~~~~~
@@ -157,7 +168,7 @@ performance, using the :ref:`sec-ref-castep` as a trial
 application.
 
 OpenMP
-^^^^^^
+------
 
 Code including OpenMP based multithreading can be compiled
 using ``gcc`` and the flag *-fopenmp*:
@@ -167,7 +178,7 @@ using ``gcc`` and the flag *-fopenmp*:
     gcc openmp_code.c -fopenmp -o openmp_exec
 
 MPI
-^^^
+---
 
 MPI code can be compiled as follows:
 

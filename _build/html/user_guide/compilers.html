@@ -33,6 +33,7 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="PyCOMPSs" href="pycompss.html" />
@@ -85,7 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hardware.html">System Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="connect.html">Connecting to the System</a></li>
-<li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Job Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Submitting Jobs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems and Storage</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modules and Compilers</a><ul>
@@ -96,11 +97,16 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#c-c-compilers">C/C++ Compilers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#fortran-compilers">Fortran Compilers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#compiling-examples">Compiling Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#compiling-examples">Compiling Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#openmp">OpenMP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mpi">MPI</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Analysis Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQs and Common Issues</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Applications</span></p>
 <ul>
@@ -287,11 +293,20 @@ can be used, although performance may vary.</p>
 compiler) and <code class="docutils literal notranslate"><span class="pre">gcc</span></code> (the GNU compiler), and the available
 MPI libraries are <em>openmpi</em> and <em>impi</em> (Intel’s MPI
 library). The MPI libraries are used by the compiler
-through the <code class="docutils literal notranslate"><span class="pre">mpicc</span></code> command, and the library is selected
-by loading the relevant module.</p>
+through the <code class="docutils literal notranslate"><span class="pre">mpicc</span></code> and <code class="docutils literal notranslate"><span class="pre">mpigcc</span></code> wrappers, and the
+library is selected by loading the relevant module.</p>
 <p>The MPI modules are simply named <code class="docutils literal notranslate"><span class="pre">openmpi</span></code> and <code class="docutils literal notranslate"><span class="pre">impi</span></code>.
-Both modules use <code class="docutils literal notranslate"><span class="pre">icc</span></code> as the standard C/C++ compiler,
-but <code class="docutils literal notranslate"><span class="pre">gcc</span></code> is available for both.</p>
+The modules use <code class="docutils literal notranslate"><span class="pre">icc</span></code> as the standard C/C++ compiler,
+but <code class="docutils literal notranslate"><span class="pre">gcc</span></code> is available for both. To switch the compiler
+used by the <code class="docutils literal notranslate"><span class="pre">mpicc</span></code> wrapper to <code class="docutils literal notranslate"><span class="pre">gcc</span></code> in the <code class="docutils literal notranslate"><span class="pre">openmpi</span></code>
+module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">OMPI_CC</span><span class="o">=</span><span class="n">gcc</span>
+</pre></div>
+</div>
+<p>This option may be the preferred way of using the <code class="docutils literal notranslate"><span class="pre">gcc</span></code>
+compiler when running mpi code, as executables created
+with the <code class="docutils literal notranslate"><span class="pre">mpigcc</span></code> wrapper appear to have trouble
+running on the NextgenIO system.</p>
 </div>
 <div class="section" id="fortran-compilers">
 <h2>Fortran Compilers<a class="headerlink" href="#fortran-compilers" title="Permalink to this headline">¶</a></h2>
@@ -303,11 +318,16 @@ code that uses both MPI and multithreading, using the
 <a class="reference external" href="https://github.com/olcf/XC30-Training/blob/master/affinity/Xthi.c">xthi</a> example, as well as possible effects on
 performance, using the <a class="reference internal" href="../apps/castep.html#sec-ref-castep"><span class="std std-ref">CASTEP</span></a> as a trial
 application.</p>
+<div class="section" id="openmp">
+<h3>OpenMP<a class="headerlink" href="#openmp" title="Permalink to this headline">¶</a></h3>
 <p>Code including OpenMP based multithreading can be compiled
 using <code class="docutils literal notranslate"><span class="pre">gcc</span></code> and the flag <em>-fopenmp</em>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gcc</span> <span class="n">openmp_code</span><span class="o">.</span><span class="n">c</span> <span class="o">-</span><span class="n">fopenmp</span> <span class="o">-</span><span class="n">o</span> <span class="n">openmp_exec</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="mpi">
+<h3>MPI<a class="headerlink" href="#mpi" title="Permalink to this headline">¶</a></h3>
 <p>MPI code can be compiled as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mpicc</span> <span class="n">mpi_code</span><span class="o">.</span><span class="n">c</span> <span class="o">-</span><span class="n">o</span> <span class="n">mpi_exec</span>
 </pre></div>
@@ -318,6 +338,7 @@ using <code class="docutils literal notranslate"><span class="pre">gcc</span></c
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- How to run mpicc with gcc rather than icc?
 </pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -368,7 +389,18 @@ using <code class="docutils literal notranslate"><span class="pre">gcc</span></c
   
   
     
-   
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
 
 </body>
 </html>

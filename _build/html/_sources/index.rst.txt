@@ -16,6 +16,7 @@ NEXTGenIO
    user_guide/compilers
    user_guide/pycompss
    user_guide/perftools
+   user_guide/faq
    
 .. toctree::
    :maxdepth: 2

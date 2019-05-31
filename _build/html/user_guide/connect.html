@@ -33,9 +33,10 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Job Scheduler" href="job_scheduler.html" />
+    <link rel="next" title="Submitting Jobs" href="job_scheduler.html" />
     <link rel="prev" title="System Overview" href="hardware.html" /> 
 </head>
 
@@ -104,12 +105,13 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Job Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Submitting Jobs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems and Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compilers.html">Modules and Compilers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Analysis Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQs and Common Issues</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Applications</span></p>
 <ul>
@@ -190,7 +192,8 @@
 <p>This section covers the basic methods for connecting to the NEXTGenIO prototype.
 The first part describes how to set up the initial connection, and gives a
 summary of how to ease the connecting process (after the initial login) using
-SSH keys.</p>
+SSH keys. This section is designed for people familiar with using SSH and SSH
+config files.</p>
 <p>The second part of this section provides more information on using SSH: using SSH
 on different platforms, managing keys, and the SSH agent.</p>
 <div class="section" id="quick-setup">
@@ -499,7 +502,7 @@ SSH configuration file.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="job_scheduler.html" class="btn btn-neutral float-right" title="Job Scheduler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="job_scheduler.html" class="btn btn-neutral float-right" title="Submitting Jobs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="hardware.html" class="btn btn-neutral float-left" title="System Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -537,7 +540,18 @@ SSH configuration file.</p>
   
   
     
-   
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
 
 </body>
 </html>

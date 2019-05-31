@@ -26,7 +26,6 @@ Hardware
 - 12x 256GB NVDIMM
 - *No internal SSD/HDD*: remote boot
 
-
 .. figure:: ../images/cpu_dram_nvram.png
     :align: center
     :scale: 55 % 
@@ -148,6 +147,10 @@ Omnipath Switch (OPA 1), which also connects to the storage (SS1 and SS2).
 
 Note that all MPI communication runs over a *separate* Omnipath network, which 
 is controlled by a second switch (OPA 2). 
+
+The login and compute nodes nodes consist of 48 physical cores each.  
+Hyperthreading doubles this number to 96 available logical cores per node.
+
 
 .. raw:: html
     :file: ../images/hardware_diagram.html

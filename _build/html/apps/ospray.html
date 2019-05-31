@@ -33,6 +33,7 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Tiramisu" href="tiramisu.html" />
@@ -85,12 +86,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../user_guide/glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user_guide/hardware.html">System Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user_guide/connect.html">Connecting to the System</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user_guide/job_scheduler.html">Job Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/job_scheduler.html">Submitting Jobs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user_guide/data_scheduler.html">Data Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user_guide/file_systems.html">File Systems and Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user_guide/compilers.html">Modules and Compilers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user_guide/pycompss.html">PyCOMPSs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user_guide/perftools.html">Performance Analysis Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/faq.html">FAQs and Common Issues</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Applications</span></p>
 <ul class="current">
@@ -216,7 +218,18 @@
   
   
     
-   
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
 
 </body>
 </html>

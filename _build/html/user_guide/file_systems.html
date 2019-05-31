@@ -33,6 +33,7 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Modules and Compilers" href="compilers.html" />
@@ -85,7 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hardware.html">System Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="connect.html">Connecting to the System</a></li>
-<li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Job Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Submitting Jobs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">File Systems and Storage</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#direct-access-dax">Direct Access (DAX)</a><ul>
@@ -101,6 +102,7 @@
 <li class="toctree-l1"><a class="reference internal" href="compilers.html">Modules and Compilers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Analysis Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQs and Common Issues</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Applications</span></p>
 <ul>
@@ -416,7 +418,18 @@ to improve performance of dataClay in combination with
   
   
     
-   
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
 
 </body>
 </html>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data Scheduler &mdash; nextgenio-docs  documentation</title>
+  <title>FAQs and Common Issues &mdash; nextgenio-docs  documentation</title>
   
 
   
@@ -36,8 +36,8 @@
   <link rel="stylesheet" href="../_static/_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="File Systems and Storage" href="file_systems.html" />
-    <link rel="prev" title="Submitting Jobs" href="job_scheduler.html" /> 
+    <link rel="next" title="CASTEP" href="../apps/castep.html" />
+    <link rel="prev" title="Performance Analysis Tools" href="perftools.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -87,12 +87,16 @@
 <li class="toctree-l1"><a class="reference internal" href="hardware.html">System Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="connect.html">Connecting to the System</a></li>
 <li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Submitting Jobs</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems and Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compilers.html">Modules and Compilers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Analysis Tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQs and Common Issues</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">FAQs and Common Issues</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#batch-job-submission-failed-requested-node-configuration-is-not-available">Batch job submission failed: Requested node configuration is not available:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#slurmstepd-error-execve-hello-no-such-file-or-directory">Slurmstepd: error: execve(): hello: No such file or directory</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Applications</span></p>
 <ul>
@@ -149,13 +153,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Data Scheduler</li>
+      <li>FAQs and Common Issues</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/user_guide/data_scheduler.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/user_guide/faq.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -168,45 +172,59 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="data-scheduler">
-<h1>Data Scheduler<a class="headerlink" href="#data-scheduler" title="Permalink to this headline">¶</a></h1>
-<p>The Data Scheduler (DS) is designed to work together with the Job
-Scheduler to allow for energy efficient and time efficient job
-execution. The main purpose of the Data Scheduler is to manage
-the transfer of data to nodes in preparation for the job execution
-(stage-in), and the transfer of data from the nodes upon completion
-(stage-out).</p>
-<p>The DS operates as s Slurm plugin, mirroring the Slurm structure
-of a controller daemon (in the login node) and daemons in the
-computing nodes. In order for the Scheduler to be able to
-access the SCM, the NVDIMM namespace needs to be mounted with
-a file system.</p>
-<p>The file systems used by the Scheduler are <em>GekkoFS</em> and <em>EchoFS</em>
-(see the section <a class="reference internal" href="file_systems.html#sec-ref-filesystems"><span class="std std-ref">File Systems and Storage</span></a>). Both systems make
-use of the large amount of memory available in the NVDIMMs to
-operate them as a burst-buffer: a relatively low latency
-intermediary between storage and the CPU’s main memory.</p>
-<div class="figure align-center" id="id1">
-<a class="reference internal image-reference" href="../_images/data_sch_diag.png"><img alt="Diagramme of the Data Scheduler architecture" src="../_images/data_sch_diag.png" style="width: 691.2px; height: 518.4px;" /></a>
-<p class="caption"><span class="caption-text"><strong>Figure 1</strong> The architecture of the Data Scheduler</span></p>
+  <div class="section" id="faqs-and-common-issues">
+<h1>FAQs and Common Issues<a class="headerlink" href="#faqs-and-common-issues" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="#ref-qconfig"><span class="std std-ref">Batch job submission failed: Requested node configuration is not available:</span></a></li>
+<li><a class="reference internal" href="#ref-nojobfile"><span class="std std-ref">Slurmstepd: error: execve(): hello: No such file or directory</span></a></li>
+</ul>
+<div class="section" id="batch-job-submission-failed-requested-node-configuration-is-not-available">
+<span id="ref-qconfig"></span><h2>Batch job submission failed: Requested node configuration is not available:<a class="headerlink" href="#batch-job-submission-failed-requested-node-configuration-is-not-available" title="Permalink to this headline">¶</a></h2>
+<p>When trying to submit my batch job, I receive the error message:</p>
+<div class="admonition error">
+<p class="first admonition-title">Error</p>
+<p class="last">sbatch: error: Batch job submission failed: Requested node configuration is not available</p>
 </div>
-<p>The basic principles of the Data Scheduler’s operation are shown
-in figure 1. The DS communicates with Slurm, receiving information
-on the job requirements as well as I/O hints (see below), with the
-NVDIMM file system, as well as with the Lustre file system that
-operates the storage space.</p>
-<p>Once a job in the queue is deemed close enough to execution time,
-the relevant data are prefetched onto the node(s) selected for
-that job. Once the data is present, the job is executed. If the
-job reaches the front of the queue before the prefetching is
-completed, the job is pushed back in the queue.</p>
-<p>Upon completion the DS writes data into persistent memory or
-tranfers data to the parallel file system for storage, depending
-on job specifications.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Questions:
-- Are node configuration managed by Slurm or by Data Scheduler?
-- Can/should users set I/O hints?
+<div class="toggle docutils container">
+<div class="header docutils container">
+<strong>Answer:</strong></div>
+<div class="text docutils container">
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>It is possible that the batch scripts requests more cores per node than can
+be allocated. When using the <code class="docutils literal notranslate"><span class="pre">cpus-per-task</span></code> option in the batch script,
+the maximum number of cores to be requested per task is 48 (the number of
+physical cpus on the node).</p>
+<p>If the intention is (e.g.) to use the total number of available logical
+cores in a single node, split over two MPI processes , the following code
+will request the correct resources:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#SBATCH --nodes=1            ##Just for clarity here</span>
+<span class="c1">#SBATCH --ntasks=2</span>
+<span class="c1">#SBATCH --overcommit</span>
+<span class="c1">#SBATCH --cpus-per-task=48</span>
 </pre></div>
+</div>
+<p>For this example, the total number of logical cpus requested is ntasks *
+cpus-per-task = 96. This is the maximum number available on a node.</p>
+</div>
+</div>
+</div>
+<div class="section" id="slurmstepd-error-execve-hello-no-such-file-or-directory">
+<span id="ref-nojobfile"></span><h2>Slurmstepd: error: execve(): hello: No such file or directory<a class="headerlink" href="#slurmstepd-error-execve-hello-no-such-file-or-directory" title="Permalink to this headline">¶</a></h2>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<strong>Answer</strong></div>
+<div class="text docutils container">
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>This error occurs when the job scheduler cannot find the executable to run.
+Make sure that the path specified following mpirun/srun command is correct.
+Note that when the job is not submitted from the directory containin the
+executable, the full path needs to be specified.</p>
+</div>
+</div>
 </div>
 </div>
 
@@ -218,10 +236,10 @@ on job specifications.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="file_systems.html" class="btn btn-neutral float-right" title="File Systems and Storage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../apps/castep.html" class="btn btn-neutral float-right" title="CASTEP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="job_scheduler.html" class="btn btn-neutral float-left" title="Submitting Jobs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="perftools.html" class="btn btn-neutral float-left" title="Performance Analysis Tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

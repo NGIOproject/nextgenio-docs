@@ -33,6 +33,7 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Connecting to the System" href="connect.html" />
@@ -93,12 +94,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="connect.html">Connecting to the System</a></li>
-<li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Job Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Submitting Jobs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems and Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compilers.html">Modules and Compilers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Analysis Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQs and Common Issues</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Applications</span></p>
 <ul>
@@ -297,7 +299,7 @@ on the NVDIMMs? If so, an explanation should be included here.
 </pre></div>
 </div>
 <p>User control over the configuration in which the nodes are booted is
-described in the section on the <a class="reference internal" href="job_scheduler.html#sec-ref-scheduler"><span class="std std-ref">Job Scheduler</span></a>.</p>
+described in the section on the <a class="reference internal" href="job_scheduler.html#sec-ref-scheduler"><span class="std std-ref">Submitting Jobs</span></a>.</p>
 </div>
 </div>
 <div class="section" id="layout">
@@ -308,6 +310,8 @@ system’s two login nodes. The 34 computing nodes (CN) are accessed via an
 Omnipath Switch (OPA 1), which also connects to the storage (SS1 and SS2).</p>
 <p>Note that all MPI communication runs over a <em>separate</em> Omnipath network, which
 is controlled by a second switch (OPA 2).</p>
+<p>The login and compute nodes nodes consist of 48 physical cores each.
+Hyperthreading doubles this number to 96 available logical cores per node.</p>
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=5,IE=9" ><![endif]-->
 <!DOCTYPE html>
 <html>
@@ -367,7 +371,18 @@ is controlled by a second switch (OPA 2).</p>
   
   
     
-   
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
 
 </body>
 </html>

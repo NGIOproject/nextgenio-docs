@@ -6,7 +6,8 @@ Connecting to the System
 This section covers the basic methods for connecting to the NEXTGenIO prototype. 
 The first part describes how to set up the initial connection, and gives a 
 summary of how to ease the connecting process (after the initial login) using 
-SSH keys. 
+SSH keys. This section is designed for people familiar with using SSH and SSH
+config files.
 
 The second part of this section provides more information on using SSH: using SSH
 on different platforms, managing keys, and the SSH agent.
