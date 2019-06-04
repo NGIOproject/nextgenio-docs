@@ -33,7 +33,7 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="CASTEP" href="../apps/castep.html" />
@@ -94,7 +94,8 @@
 <li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Analysis Tools</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">FAQs and Common Issues</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#batch-job-submission-failed-requested-node-configuration-is-not-available">Batch job submission failed: Requested node configuration is not available:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#slurmstepd-error-execve-hello-no-such-file-or-directory">Slurmstepd: error: execve(): hello: No such file or directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#slurmstepd-error-execve-exec-name-no-such-file-or-directory">Slurmstepd: error: execve(): [exec-name] : No such file or directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-running-make-install-during-castep-build">Error running <em>make install</em> during CASTEP build</a></li>
 </ul>
 </li>
 </ul>
@@ -176,7 +177,8 @@
 <h1>FAQs and Common Issues<a class="headerlink" href="#faqs-and-common-issues" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><a class="reference internal" href="#ref-qconfig"><span class="std std-ref">Batch job submission failed: Requested node configuration is not available:</span></a></li>
-<li><a class="reference internal" href="#ref-nojobfile"><span class="std std-ref">Slurmstepd: error: execve(): hello: No such file or directory</span></a></li>
+<li><a class="reference internal" href="#ref-qnojobfile"><span class="std std-ref">Slurmstepd: error: execve(): [exec-name] : No such file or directory</span></a></li>
+<li><a class="reference internal" href="#ref-qcastepinstall"><span class="std std-ref">Error running make install during CASTEP build</span></a></li>
 </ul>
 <div class="section" id="batch-job-submission-failed-requested-node-configuration-is-not-available">
 <span id="ref-qconfig"></span><h2>Batch job submission failed: Requested node configuration is not available:<a class="headerlink" href="#batch-job-submission-failed-requested-node-configuration-is-not-available" title="Permalink to this headline">¶</a></h2>
@@ -197,8 +199,10 @@ be allocated. When using the <code class="docutils literal notranslate"><span cl
 the maximum number of cores to be requested per task is 48 (the number of
 physical cpus on the node).</p>
 <p>If the intention is (e.g.) to use the total number of available logical
-cores in a single node, split over two MPI processes , the following code
-will request the correct resources:</p>
+cores in a single node, by using hyperthreading, the following code can be
+used to request the correct resources. In this example we request a single
+node, with two MPI processes (one process per socket, unless the scheduler
+is instructe otherwise):</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#SBATCH --nodes=1            ##Just for clarity here</span>
 <span class="c1">#SBATCH --ntasks=2</span>
 <span class="c1">#SBATCH --overcommit</span>
@@ -209,9 +213,12 @@ will request the correct resources:</p>
 cpus-per-task = 96. This is the maximum number available on a node.</p>
 </div>
 </div>
+<div class="line-block">
+<div class="line"><br /></div>
 </div>
-<div class="section" id="slurmstepd-error-execve-hello-no-such-file-or-directory">
-<span id="ref-nojobfile"></span><h2>Slurmstepd: error: execve(): hello: No such file or directory<a class="headerlink" href="#slurmstepd-error-execve-hello-no-such-file-or-directory" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="slurmstepd-error-execve-exec-name-no-such-file-or-directory">
+<span id="ref-qnojobfile"></span><h2>Slurmstepd: error: execve(): [exec-name] : No such file or directory<a class="headerlink" href="#slurmstepd-error-execve-exec-name-no-such-file-or-directory" title="Permalink to this headline">¶</a></h2>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <strong>Answer</strong></div>
@@ -224,6 +231,29 @@ Make sure that the path specified following mpirun/srun command is correct.
 Note that when the job is not submitted from the directory containin the
 executable, the full path needs to be specified.</p>
 </div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="error-running-make-install-during-castep-build">
+<span id="ref-qcastepinstall"></span><h2>Error running <em>make install</em> during CASTEP build<a class="headerlink" href="#error-running-make-install-during-castep-build" title="Permalink to this headline">¶</a></h2>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<strong>Answer</strong></div>
+<div class="text docutils container">
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The error is likely to occur when building some of the support utilities
+for CASTEP. However, the initial command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">COMMS_ARCH=mpi</span> <span class="pre">FFTW=fftw3</span>
+<span class="pre">MATHLIBS=mkl10</span></code> should have built an executable <code class="docutils literal notranslate"><span class="pre">castep.mpi</span></code> and similarly
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> will have produced a functional executable <code class="docutils literal notranslate"><span class="pre">castep.serial</span></code>.
+The latter may be of use for performing dryruns on any input files.</p>
+</div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
 </div>
 </div>
 </div>

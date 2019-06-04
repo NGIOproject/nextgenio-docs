@@ -33,7 +33,7 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Data Scheduler" href="data_scheduler.html" />
@@ -90,6 +90,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#slurm">Slurm</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#basic-commands">Basic Commands</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#example-subsmission-scripts">Example Subsmission Scripts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#should-i-use-mpirun-or-srun">Should I Use <em>mpirun</em> or <em>srun</em>?</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#slurm-on-nextgenio">Slurm on NextgenIO</a></li>
@@ -411,12 +412,12 @@ hyperthreading</em>.</p>
 <code class="docutils literal notranslate"><span class="pre">--cpus-per-task</span></code>, mpirun will allocate this as the number of
 <strong>logical</strong> cores, whereas srun will use this number to allocate
 <strong>physical</strong> cores, unless the option <em>–overcommit</em> is passed to it.</p>
-<p>Passing the option to srun in a batch script can be done by adding the
+<p>Passing this option to srun in a batch script can be done by adding the
 line <code class="docutils literal notranslate"><span class="pre">#SBATCH</span> <span class="pre">--overcommit</span></code>  to the script.</p>
 <p class="last">If one attempts to request all available logical cores on a node
 using srun, this may result in the error <a class="reference internal" href="faq.html#ref-qconfig"><span class="std std-ref">Batch job submission failed: Requested node configuration is not available:</span></a>.</p>
 </div>
-<p><strong>5) Pinning processes and threads</strong></p>
+<p><strong>5) Pinning processes and binding threads</strong></p>
 <p>If components of a job need to be pinned to specific nodes or cores, this
 can be specified in the batch script as well. See also the <a class="reference external" href="https://slurm.schedmd.com/mc_support.html">Slurm documentation
 on Multi-core support</a>.</p>
@@ -482,6 +483,25 @@ second sets the distribution of the threads. The <code class="docutils literal n
 default allocation style of the job scheduler. As with the other pinning and
 allocation settings described in this section, these options should only be invoked
 by users wishing to create a specific configuration.</p>
+</div>
+<div class="section" id="should-i-use-mpirun-or-srun">
+<h3>Should I Use <em>mpirun</em> or <em>srun</em>?<a class="headerlink" href="#should-i-use-mpirun-or-srun" title="Permalink to this headline">¶</a></h3>
+<p>Both <code class="docutils literal notranslate"><span class="pre">mpirun</span></code> and <code class="docutils literal notranslate"><span class="pre">srun</span></code> can be used to tell the job scheduler to run
+an executable. Although the <code class="docutils literal notranslate"><span class="pre">srun</span></code> command makes use of <code class="docutils literal notranslate"><span class="pre">mpirun</span></code> to
+execute a job, there are subtle differences in the way settings, such as
+environment variables set in a batch script or shell, are passed to each
+command. Below is a list of differences to be aware off when switching
+between the two commands:</p>
+<ul class="simple">
+<li>mpirun has its own set of commands to pass task distribution commands
+to the scheduler: <code class="docutils literal notranslate"><span class="pre">-n</span></code> sets the number of tasks (MPI processes) to be
+created and <code class="docutils literal notranslate"><span class="pre">-ppn</span></code> sets the number of processes to be placed per node.
+The <code class="docutils literal notranslate"><span class="pre">-hosts</span></code> option can be used to specify the specific nodes to be used.
+Note, however, that all these setting are <em>overwritten</em> by the job scheduler
+if task allocation instructions are passed to the scheduler directly (e.g. by
+setting <code class="docutils literal notranslate"><span class="pre">-ntasks</span></code> in the submission script or shell).</li>
+<li>…</li>
+</ul>
 </div>
 </div>
 <div class="section" id="slurm-on-nextgenio">

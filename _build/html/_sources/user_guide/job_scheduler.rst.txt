@@ -243,13 +243,13 @@ to physical cores (i.e. not making use of hyperthreading).
    **logical** cores, whereas srun will use this number to allocate 
    **physical** cores, unless the option *--overcommit* is passed to it.
 
-   Passing the option to srun in a batch script can be done by adding the 
+   Passing this option to srun in a batch script can be done by adding the 
    line ``#SBATCH --overcommit``  to the script.
   
    If one attempts to request all available logical cores on a node
    using srun, this may result in the error :ref:`ref-qconfig`. 
 
-**5) Pinning processes and threads**
+**5) Pinning processes and binding threads**
 
 If components of a job need to be pinned to specific nodes or cores, this
 can be specified in the batch script as well. See also the `Slurm documentation
@@ -331,6 +331,29 @@ second sets the distribution of the threads. The ``cyclic:block`` matches the
 default allocation style of the job scheduler. As with the other pinning and 
 allocation settings described in this section, these options should only be invoked
 by users wishing to create a specific configuration.
+
+
+Should I Use *mpirun* or *srun*?
+--------------------------------
+
+Both ``mpirun`` and ``srun`` can be used to tell the job scheduler to run 
+an executable. Although the ``srun`` command makes use of ``mpirun`` to 
+execute a job, there are subtle differences in the way settings, such as 
+environment variables set in a batch script or shell, are passed to each 
+command. Below is a list of differences to be aware off when switching 
+between the two commands:
+
+- mpirun has its own set of commands to pass task distribution commands
+  to the scheduler: ``-n`` sets the number of tasks (MPI processes) to be
+  created and ``-ppn`` sets the number of processes to be placed per node.
+  The ``-hosts`` option can be used to specify the specific nodes to be used.
+  Note, however, that all these setting are *overwritten* by the job scheduler
+  if task allocation instructions are passed to the scheduler directly (e.g. by
+  setting ``-ntasks`` in the submission script or shell).
+- ... 
+
+
+
 
 Slurm on NextgenIO
 ~~~~~~~~~~~~~~~~~~

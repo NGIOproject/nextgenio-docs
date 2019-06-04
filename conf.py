@@ -183,5 +183,5 @@ epub_exclude_files = ['search.html']
 todo_include_todos = True
 
 def setup(app):
-    app.add_stylesheet('_static/custom.css')
+    app.add_stylesheet('custom.css')
 

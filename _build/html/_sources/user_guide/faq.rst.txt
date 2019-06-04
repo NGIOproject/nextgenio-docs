@@ -3,7 +3,8 @@ FAQs and Common Issues
 
 
 - :ref:`ref-qconfig`
-- :ref:`ref-nojobfile`
+- :ref:`ref-qnojobfile`
+- :ref:`ref-qcastepinstall`
 
 .. _ref-qconfig:
 
@@ -31,8 +32,10 @@ When trying to submit my batch job, I receive the error message:
      physical cpus on the node). 
 
      If the intention is (e.g.) to use the total number of available logical 
-     cores in a single node, split over two MPI processes , the following code 
-     will request the correct resources:
+     cores in a single node, by using hyperthreading, the following code can be
+     used to request the correct resources. In this example we request a single
+     node, with two MPI processes (one process per socket, unless the scheduler 
+     is instructe otherwise):
 
      .. code:: python
 
@@ -44,10 +47,12 @@ When trying to submit my batch job, I receive the error message:
      For this example, the total number of logical cpus requested is ntasks * 
      cpus-per-task = 96. This is the maximum number available on a node.
 
-.. _ref-nojobfile:
+|
 
-Slurmstepd: error: execve(): hello: No such file or directory
--------------------------------------------------------------
+.. _ref-qnojobfile:
+
+Slurmstepd: error: execve(): [exec-name] : No such file or directory
+--------------------------------------------------------------------
 
 .. container:: toggle
 
@@ -63,3 +68,29 @@ Slurmstepd: error: execve(): hello: No such file or directory
      Make sure that the path specified following mpirun/srun command is correct.
      Note that when the job is not submitted from the directory containin the 
      executable, the full path needs to be specified.
+
+|
+
+.. _ref-qcastepinstall:
+
+Error running *make install* during CASTEP build
+------------------------------------------------
+
+.. container:: toggle
+
+   .. container:: header
+
+      **Answer**
+
+   .. container:: text
+
+      |
+
+      The error is likely to occur when building some of the support utilities
+      for CASTEP. However, the initial command ``make COMMS_ARCH=mpi FFTW=fftw3 
+      MATHLIBS=mkl10`` should have built an executable ``castep.mpi`` and similarly 
+      ``make install`` will have produced a functional executable ``castep.serial``.
+      The latter may be of use for performing dryruns on any input files.
+
+|
+
