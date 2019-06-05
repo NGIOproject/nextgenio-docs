@@ -98,7 +98,8 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CASTEP</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#building-castep">Building CASTEP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#executing-castep-jobs">Executing CASTEP jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#preparing-a-castep-job">Preparing a CASTEP job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#executing-a-castep-job">Executing a CASTEP job</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="halvade.html">Halvade</a></li>
@@ -185,9 +186,11 @@ From the main CASTEP-[version] directory run the following command:</p>
 </pre></div>
 </div>
 <p>and follow the install instructions set in the makefile.</p>
+<p>In the following we will make use of two trial datasets, provided on
+the CASTEP website: <a class="reference external" href="http://www.castep.org/CASTEP/TiN">TiN</a> and <a class="reference external" href="http://www.castep.org/CASTEP/DNA">DNA</a>.</p>
 </div>
-<div class="section" id="executing-castep-jobs">
-<h2>Executing CASTEP jobs<a class="headerlink" href="#executing-castep-jobs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="preparing-a-castep-job">
+<h2>Preparing a CASTEP job<a class="headerlink" href="#preparing-a-castep-job" title="Permalink to this headline">¶</a></h2>
 <p>Basic information about the content of the input files and way CASTEP
 will execute the job can be found by doing a dryrun of the job first:
 <code class="docutils literal notranslate"><span class="pre">castep.serial</span> <span class="pre">[job-name]</span> <span class="pre">-dryrun</span></code></p>
@@ -202,7 +205,7 @@ command specified above, with the command <code class="docutils literal notransl
 This may result in the <a class="reference internal" href="../user_guide/faq.html#ref-qcastepinstall"><span class="std std-ref">Error running make install during CASTEP build</span></a>, however the castep.serial
 executable should be created nonetheless.</p>
 </div>
-<p>Various parameters for the run can be set in the [job-name].param file.
+<p>Various parameters for the run can be set in the <em>[job-name].param file</em>.
 Possibly relevant parameters (from the perspective of performance) are
 <code class="docutils literal notranslate"><span class="pre">max_scf_cycles</span></code>, the number of iterations over the grid, and
 <code class="docutils literal notranslate"><span class="pre">write_checkpoint</span></code>,  which writes the full analysis to file in a time
@@ -215,14 +218,45 @@ line to the .param file :</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iprint</span> <span class="p">:</span> <span class="mi">3</span>
 </pre></div>
 </div>
-<p>The recommended number of cores to request for a CASTEP run
+<p>The recommended minimum number of cores to request for a CASTEP run
 is the total number of k-points (representing the sampling grid
 of electron wave vectors). The k-points for a specific run setup can be
-found by doing a dryrun first.</p>
-<p>The number of k-points for the standard configuration of the test runs
-TiN and DNA are 8 and […] respectively.</p>
-<p>One level below the number of k-points is the number of plane waves
-to be calculated.</p>
+found by doing a dryrun first. Per k-point the calculation is spread
+further (to solve for the plane waves), and split among the available
+threads.</p>
+</div>
+<div class="section" id="executing-a-castep-job">
+<h2>Executing a CASTEP job<a class="headerlink" href="#executing-a-castep-job" title="Permalink to this headline">¶</a></h2>
+<p>The following is an example batch script to submit to the job scheduler
+that will run the analysis of the TiN dataset:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+
+#SBATCH --nodes=1
+#SBATCH --ntasks=8
+#SBATCH --cpus-per-task=6
+
+#SBATCH -D /path/to/TiN-directory
+#SBATCH -o /path/to/TiN-directory/TiN.out.%A.%N.log
+#SBATCH -e /path/to/TiN-directoryTiN.err.%A.%N.log
+#SBATCH --job-name=castep-tin
+
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+
+srun &quot;/path/to/castep-build/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi&quot; &quot;path/to/TiN-directory/TiN-mp&quot;
+</pre></div>
+</div>
+<p>For the TiN and DNA test sets, in the standard configuration, the
+number of k-poins is 8 and […] respectively. In the example above
+one MPI process is assigned per k-point, and the plane wave calculations
+are spread over six cpus, each running one thread.</p>
+<p>Performance of the system will depend both on the paralellisation of
+the run and on the memory mode selected.</p>
+<p>The type of parallelisation can be controlled in the batch script using
+the <code class="docutils literal notranslate"><span class="pre">--ntasks</span></code> option and the <code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREADS</span></code> variable. Some effects
+of different parallellisation are explored in <a class="reference internal" href="../user_guide/perftools.html#sec-ref-perftools"><span class="std std-ref">Performance Analysis Tools</span></a>.</p>
+<p>Initial results indicate that running CASTEP on a node, or nodes, in App
+Direct mode has a considerable performance benefit over a run in Memory
+mode.</p>
 </div>
 </div>
 

@@ -322,7 +322,9 @@ one hour per cpu.</p>
 </pre></div>
 </div>
 <p>The next lines specify the job name, the  output filename,
-and the directory the input and output are stored:</p>
+and the directory the input and output are stored. The most
+reliable method is to always specify the full path (see also
+<a class="reference internal" href="faq.html#ref-qnojobfile"><span class="std std-ref">Slurmstepd: error: execve(): [exec-name] : No such file or directory</span></a>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#SBATCH --job-name=par_job</span>
 <span class="c1">#SBATCH --output=op_file.txt</span>
 <span class="c1">#SBATCH -D /path/to/directory</span>

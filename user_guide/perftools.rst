@@ -1,3 +1,5 @@
+.. _sec-ref-perftools:
+
 Performance Analysis Tools
 ==========================
 

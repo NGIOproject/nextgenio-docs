@@ -163,9 +163,8 @@ Compiling Examples
 Below we consider several examples of ways to compile
 code that uses both MPI and multithreading, using the
 `xthi <https://github.com/olcf/XC30-Training/blob/master/
-affinity/Xthi.c>`_ example, as well as possible effects on 
-performance, using the :ref:`sec-ref-castep` as a trial
-application.
+affinity/Xthi.c>`_ example. This script will display the 
+core affinity of the job.
 
 OpenMP
 ------

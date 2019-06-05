@@ -19,9 +19,12 @@ From the main CASTEP-[version] directory run the following command:
 
 and follow the install instructions set in the makefile.
 
+In the following we will make use of two trial datasets, provided on
+the CASTEP website: `TiN <http://www.castep.org/CASTEP/TiN>`_ and `DNA 
+<http://www.castep.org/CASTEP/DNA>`_.
 
-Executing CASTEP jobs
----------------------
+Preparing a CASTEP job
+----------------------
 
 Basic information about the content of the input files and way CASTEP
 will execute the job can be found by doing a dryrun of the job first:
@@ -39,7 +42,7 @@ does not appear to be able to perform a dryrun
    This may result in the :ref:`ref-qcastepinstall`, however the castep.serial
    executable should be created nonetheless.
 
-Various parameters for the run can be set in the [job-name].param file.
+Various parameters for the run can be set in the *[job-name].param file*.
 Possibly relevant parameters (from the perspective of performance) are 
 ``max_scf_cycles``, the number of iterations over the grid, and 
 ``write_checkpoint``,  which writes the full analysis to file in a time 
@@ -55,16 +58,53 @@ line to the .param file :
 
    iprint : 3
 
-
-The recommended number of cores to request for a CASTEP run
+The recommended minimum number of cores to request for a CASTEP run
 is the total number of k-points (representing the sampling grid
 of electron wave vectors). The k-points for a specific run setup can be
-found by doing a dryrun first. 
+found by doing a dryrun first. Per k-point the calculation is spread
+further (to solve for the plane waves), and split among the available
+threads.
 
-The number of k-points for the standard configuration of the test runs
-TiN and DNA are 8 and [...] respectively. 
+Executing a CASTEP job
+----------------------
 
-One level below the number of k-points is the number of plane waves
-to be calculated. 
+The following is an example batch script to submit to the job scheduler
+that will run the analysis of the TiN dataset:
+
+.. code:: bash
+
+   #!/bin/bash
+
+   #SBATCH --nodes=1
+   #SBATCH --ntasks=8
+   #SBATCH --cpus-per-task=6
+
+   #SBATCH -D /path/to/TiN-directory
+   #SBATCH -o /path/to/TiN-directory/TiN.out.%A.%N.log
+   #SBATCH -e /path/to/TiN-directoryTiN.err.%A.%N.log
+   #SBATCH --job-name=castep-tin
+
+   export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+
+   srun "/path/to/castep-build/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi" "path/to/TiN-directory/TiN-mp"
+
+
+For the TiN and DNA test sets, in the standard configuration, the 
+number of k-poins is 8 and 1 respectively. In the example above
+one MPI process is assigned per k-point, and the plane wave calculations
+are spread over six cpus, each running one thread.
+
+Performance of the system will depend both on the paralellisation of
+the run and on the memory mode selected.
+
+The type of parallelisation can be controlled in the batch script using
+the ``--ntasks`` option and the ``OMP_NUM_THREADS`` variable. Some effects
+of different parallellisation are explored in :ref:`sec-ref-perftools`.
+
+Initial results indicate that running CASTEP on a node, or nodes, in App
+Direct mode has a considerable performance benefit over a run in Memory
+mode.
+
+
 
 

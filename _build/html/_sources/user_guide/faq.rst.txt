@@ -66,8 +66,16 @@ Slurmstepd: error: execve(): [exec-name] : No such file or directory
 
      This error occurs when the job scheduler cannot find the executable to run.
      Make sure that the path specified following mpirun/srun command is correct.
-     Note that when the job is not submitted from the directory containin the 
+     Note that when the job is not submitted from the directory containing the 
      executable, the full path needs to be specified.
+
+     .. note:: 
+
+        Please note that lines in a batch script starting with *#SBATCH* are not 
+        interpreted by bash. It is therefor not possible to reduce the amount of
+        repetitious writing by specifying an environment variable for the start of 
+        the path (as e.g. $MY_PATH will not be evaluated). Writing the full path 
+        is the most reliable method.
 
 |
 

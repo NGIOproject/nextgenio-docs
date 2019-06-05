@@ -130,7 +130,9 @@ one hour per cpu.
     #SBATCH --array=1-10
 
 The next lines specify the job name, the  output filename,
-and the directory the input and output are stored:
+and the directory the input and output are stored. The most 
+reliable method is to always specify the full path (see also
+:ref:`ref-qnojobfile`):
 
 ::
 
