@@ -93,9 +93,13 @@
 <li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="perftools.html">Performance Analysis Tools</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">FAQs and Common Issues</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#batch-job-submission-failed-requested-node-configuration-is-not-available">Batch job submission failed: Requested node configuration is not available:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#slurmstepd-error-execve-exec-name-no-such-file-or-directory">Slurmstepd: error: execve(): [exec-name] : No such file or directory</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#error-running-make-install-during-castep-build">Error running <em>make install</em> during CASTEP build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#faqs">FAQs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#some-common-issues">Some Common Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#batch-job-submission-failed-requested-node-configuration-is-not-available">Batch job submission failed: Requested node configuration is not available:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#slurmstepd-error-execve-exec-name-no-such-file-or-directory">Slurmstepd: error: execve(): [exec-name] : No such file or directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#error-running-make-install-during-castep-build">Error running <em>make install</em> during CASTEP build</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -180,8 +184,13 @@
 <li><a class="reference internal" href="#ref-qnojobfile"><span class="std std-ref">Slurmstepd: error: execve(): [exec-name] : No such file or directory</span></a></li>
 <li><a class="reference internal" href="#ref-qcastepinstall"><span class="std std-ref">Error running make install during CASTEP build</span></a></li>
 </ul>
+<div class="section" id="faqs">
+<h2>FAQs<a class="headerlink" href="#faqs" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="some-common-issues">
+<h2>Some Common Issues<a class="headerlink" href="#some-common-issues" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="batch-job-submission-failed-requested-node-configuration-is-not-available">
-<span id="ref-qconfig"></span><h2>Batch job submission failed: Requested node configuration is not available:<a class="headerlink" href="#batch-job-submission-failed-requested-node-configuration-is-not-available" title="Permalink to this headline">¶</a></h2>
+<span id="ref-qconfig"></span><h3>Batch job submission failed: Requested node configuration is not available:<a class="headerlink" href="#batch-job-submission-failed-requested-node-configuration-is-not-available" title="Permalink to this headline">¶</a></h3>
 <p>When trying to submit my batch job, I receive the error message:</p>
 <div class="admonition error">
 <p class="first admonition-title">Error</p>
@@ -218,7 +227,7 @@ cpus-per-task = 96. This is the maximum number available on a node.</p>
 </div>
 </div>
 <div class="section" id="slurmstepd-error-execve-exec-name-no-such-file-or-directory">
-<span id="ref-qnojobfile"></span><h2>Slurmstepd: error: execve(): [exec-name] : No such file or directory<a class="headerlink" href="#slurmstepd-error-execve-exec-name-no-such-file-or-directory" title="Permalink to this headline">¶</a></h2>
+<span id="ref-qnojobfile"></span><h3>Slurmstepd: error: execve(): [exec-name] : No such file or directory<a class="headerlink" href="#slurmstepd-error-execve-exec-name-no-such-file-or-directory" title="Permalink to this headline">¶</a></h3>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <strong>Answer</strong></div>
@@ -245,7 +254,7 @@ is the most reliable method.</p>
 </div>
 </div>
 <div class="section" id="error-running-make-install-during-castep-build">
-<span id="ref-qcastepinstall"></span><h2>Error running <em>make install</em> during CASTEP build<a class="headerlink" href="#error-running-make-install-during-castep-build" title="Permalink to this headline">¶</a></h2>
+<span id="ref-qcastepinstall"></span><h3>Error running <em>make install</em> during CASTEP build<a class="headerlink" href="#error-running-make-install-during-castep-build" title="Permalink to this headline">¶</a></h3>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <strong>Answer</strong></div>
@@ -262,6 +271,7 @@ The latter may be of use for performing dryruns on any input files.</p>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
+</div>
 </div>
 </div>
 </div>

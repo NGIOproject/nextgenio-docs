@@ -90,7 +90,7 @@ that will run the analysis of the TiN dataset:
 
 
 For the TiN and DNA test sets, in the standard configuration, the 
-number of k-poins is 8 and [...] respectively. In the example above
+number of k-poins is 8 and 1 respectively. In the example above
 one MPI process is assigned per k-point, and the plane wave calculations
 are spread over six cpus, each running one thread.
 

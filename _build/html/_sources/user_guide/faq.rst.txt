@@ -6,10 +6,17 @@ FAQs and Common Issues
 - :ref:`ref-qnojobfile`
 - :ref:`ref-qcastepinstall`
 
+
+FAQs
+----
+
+Some Common Issues
+------------------
+
 .. _ref-qconfig:
 
 Batch job submission failed: Requested node configuration is not available:
----------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When trying to submit my batch job, I receive the error message:
   
@@ -52,7 +59,7 @@ When trying to submit my batch job, I receive the error message:
 .. _ref-qnojobfile:
 
 Slurmstepd: error: execve(): [exec-name] : No such file or directory
---------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. container:: toggle
 
@@ -82,7 +89,7 @@ Slurmstepd: error: execve(): [exec-name] : No such file or directory
 .. _ref-qcastepinstall:
 
 Error running *make install* during CASTEP build
-------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. container:: toggle
 

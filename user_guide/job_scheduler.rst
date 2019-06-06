@@ -145,7 +145,7 @@ the task IDs to the ``srun`` command.
 
 ::
 
-    srun mycode $SLURM_ARRAY_TASK_ID
+    srun myexec $SLURM_ARRAY_TASK_ID
 
 We then submit the script with the following command:
 
@@ -175,7 +175,7 @@ case:
    #SBATCH --output=op_file.txt
 
    export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
-   srun mycode
+   srun myexec
 
 The script is submitted by entering:
 
@@ -199,7 +199,7 @@ the number of tasks and, if desired, the amount of memory per core.
    #SBATCH --job-name=mpi_job
    #SBATCH --output=op_file.txt
 
-   srun mycode
+   srun myexec
 
 The script is submitted by entering:
 
@@ -231,7 +231,7 @@ to physical cores (i.e. not making use of hyperthreading).
 
    export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
-   srun mycode
+   srun myexec
    
 .. Warning:: **Hyperthreading: difference between srun and mpirun**
 
@@ -245,8 +245,8 @@ to physical cores (i.e. not making use of hyperthreading).
    **logical** cores, whereas srun will use this number to allocate 
    **physical** cores, unless the option *--overcommit* is passed to it.
 
-   Passing this option to srun in a batch script can be done by adding the 
-   line ``#SBATCH --overcommit``  to the script.
+   Passing the option to srun in a batch script can be done by adding the 
+   line ``#SBATCH --overcommit``.
   
    If one attempts to request all available logical cores on a node
    using srun, this may result in the error :ref:`ref-qconfig`. 
@@ -257,6 +257,23 @@ If components of a job need to be pinned to specific nodes or cores, this
 can be specified in the batch script as well. See also the `Slurm documentation
 on Multi-core support <https://slurm.schedmd.com/mc_support.html>`_.
 
+.. note::
+
+   If you would like to seem more information on CPU affinity of MPI processes
+   add the following line to the batch script:
+
+   .. code:: bash
+
+      export I_MPI_DEBUG=5
+ 
+   For more information on thread affinity, inlclude the *verbose* option in the
+   *KMP_AFFINITY* variable:
+
+   .. code:: bash
+
+      export KMP_AFFINITY=verbose
+
+
 The number identification of the cores is on a per node basis. The physical cores
 are therefore labelled 0--47. When using hyperthreading (which is enabled by 
 default on the NextgenIO system) the logical cores are labelled 48-95, where core
@@ -265,17 +282,28 @@ default on the NextgenIO system) the logical cores are labelled 48-95, where cor
 *Pinning MPI processes*
 
 When using mpirun, the MPI processes can be pinned to a specfic core by setting
-the environment variable *I_MPI_PIN_PROCESSOR_LIST*. To pin the MPI process
-to (e.g.) the first CPU among the allocated CPUs, add the following line to the
+the environment variable *I_MPI_PIN_PROCESSOR_LIST*. To pin four MPI processes
+to (e.g.) the first four CPUs among the allocated CPUs, add the following line to the
 batch script:
 
 .. code:: bash
 
-   export I_MPI_PIN_PROCESSOR_LIST=0
+   export I_MPI_PIN_PROCESSOR_LIST=0-3
 
 When using srun, the pinning of MPI processes can be done by setting the
 option ``--cpu-bind=map_cpu:[cpu_id(s)]``, where *[cpu_id(s)]* is a comma
-separated list of cores to which the processes should be bound. 
+separated list of cores to which the processes should be bound. Note that it
+is not possible to specify a range of CPUs in the same manner as when using
+mpirun: it will be necessary to write out the list of cpu_ids in full.
+
+.. note:: 
+
+   When pinning MPI processes to specific cores, any threads the process will 
+   create will run on *the same physical core* as the MPI process. When running
+   mutiple threads per MPI process, the more reliable way of fixing core affinity
+   is to allow the job scheduler to allocate the CPUs for the MPI processes 
+   (possibly modified with the ``--distribution`` option, see below), and then to
+   bind the threads within each proces.
 
 *Binding threads*
 
@@ -290,7 +318,7 @@ assigned to, but allows them to migrate between the two logical cores on each
 physical core. Setting ``OMP_NUM_PLACES=thread`` pins threads to the logical
 core to which they are set.
 
-The following example submission scrips populates every logical core on two 
+The following example submission scrip populates every logical core on two 
 nodes (total number of cores = 2*48*2 = 192) with a single thread, and pins
 the thread to that logical core. The threads are spread over four MPI processes
 (set using ``--ntasks=4``), therefore the variable *OMP_NUM_THREADS* needs to be
@@ -301,13 +329,52 @@ set to to 48 (= 192 / 4).
    #!/bin/bash
    #SBATCH --nodes=2
    #SBATCH --ntasks=4
+   #SBATCH --overcommit             ##Neccessary because we use srun with hyperthreading
 
    #SBATCH --job-name=mpi_omp_run
    #SBATCH --output=opmix.txt
-
+   
    export OMP_NUM_THREADS=48
    export OMP_PROC_BIND=TRUE
    export OMP_PLACES=threads
+   export KMP_AFFINITY=compact      
+
+   srun /path/to/myexec
+
+One level above the manual pinning of threads is the setting of the core affinity
+for the multithreading. This can be done by setting the ``KMP_AFFINITY`` environment
+variable. Note that including the option *verbose* for this variable prints additiional
+core affinity information to output.
+
+The most important option for ``KMP_AFFINITY`` are *compact* and *scatter*. *compact* 
+places subsequent threads on CPUs as closely together as possible. *scatter* distributes
+threads by placing them on CPUs that are spaced apart as much as possible. To use these
+options via a batch script and show the results in output, add (e.g.) the following line:
+
+.. code:: bash
+
+   export KMP_AFFINITY=verbose,compact
+
+The level on which these options take effect can be specified with the *granularity* 
+option. This can be set to *fine* for distribution on the level of physical CPUs, and
+to *thread* for hyperthreading.
+
+The ``KMP_AFFINITY`` variable also allows for the explicit binding of threads to cores,
+using the *explicit* option, followed by the *proclist* options specifying the cpu_id(s) 
+(note the double quotes arround the options in this case):
+
+.. code:: bash
+
+   export KMP_AFFINITY="explicit,proclist=[cpu_id1,cpu_id2,...,cpu_idN]"
+
+Unfortunately, pinning of threads within MPI processes does not seem to be possible using
+this option. This option would therefore only be of use for job consisting of a single
+process (with mutiple threads).
+   
+Some further examples of usage of ``KMP_AFFINITY`` are provided on the website for
+`NASA's HECC <https://www.nas.nasa.gov/hecc/support/kb/using-intel-openmp-thread-affinity-for-pinning_285.html>`_.
+This website also includes a visual example of the effects of *compact* and *scatter*
+on thread distribution.
 
 *Other task distribution options*
 
