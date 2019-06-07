@@ -96,12 +96,12 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#c-c-compilers">C/C++ Compilers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fortran-compilers">Fortran Compilers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#compiling-examples">Compiling Examples</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#openmp">OpenMP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#mpi">MPI</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#fortran-compilers">Fortran Compilers</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
@@ -307,16 +307,39 @@ module:</p>
 compiler when running mpi code, as executables created
 with the <code class="docutils literal notranslate"><span class="pre">mpigcc</span></code> wrapper appear to have trouble
 running on the NextgenIO system.</p>
-</div>
-<div class="section" id="fortran-compilers">
-<h2>Fortran Compilers<a class="headerlink" href="#fortran-compilers" title="Permalink to this headline">¶</a></h2>
+<p>An (incomplete) overview of flags that can be set for both
+<code class="docutils literal notranslate"><span class="pre">mpicc</span></code> and <code class="docutils literal notranslate"><span class="pre">mpigcc</span></code></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Flag</th>
+<th class="head">Implication</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>-o</td>
+<td>Specify name of output executable</td>
+</tr>
+<tr class="row-odd"><td>-g</td>
+<td>Enable debugging</td>
+</tr>
+<tr class="row-even"><td>-fopenmp</td>
+<td>Include OpenMP libraries</td>
+</tr>
+<tr class="row-odd"><td>-O[N]</td>
+<td>Set the optimisation level N (=0-3)</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="compiling-examples">
 <h2>Compiling Examples<a class="headerlink" href="#compiling-examples" title="Permalink to this headline">¶</a></h2>
 <p>Below we consider several examples of ways to compile
-code that uses both MPI and multithreading, using the
-<a class="reference external" href="https://github.com/olcf/XC30-Training/blob/master/affinity/Xthi.c">xthi</a> example. This script will display the
-core affinity of the job.</p>
+code that uses multithreading, MPI or a combination of
+the two.</p>
 <div class="section" id="openmp">
 <h3>OpenMP<a class="headerlink" href="#openmp" title="Permalink to this headline">¶</a></h3>
 <p>Code including OpenMP based multithreading can be compiled
@@ -335,10 +358,59 @@ using <code class="docutils literal notranslate"><span class="pre">gcc</span></c
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mpicc</span> <span class="n">mix_code</span><span class="o">.</span><span class="n">c</span> <span class="o">-</span><span class="n">fopenmp</span> <span class="o">-</span><span class="n">o</span> <span class="n">mix_exec</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- How to run mpicc with gcc rather than icc?
-</pre></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Although there are multiple possible combinations to compile
+code on the NextgenIO system, all executables should be able to
+run using <em>srun</em> and <em>mpirun</em>  with the job scheduler.</p>
+<p>The table below gives a brief summary of compilations setting
+combinations that do and do not work with the two executions
+command. Only combining <code class="docutils literal notranslate"><span class="pre">mpigcc</span></code> and openmpi results in an
+error (<a class="reference internal" href="faq.html#ref-qsymbollookup"><span class="std std-ref">Symbol Lookup Error</span></a>) when executed.</p>
+<table border="1" class="last docutils">
+<colgroup>
+<col width="40%" />
+<col width="30%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Compiler Combination</th>
+<th class="head">srun</th>
+<th class="head">mpirun</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>icc + impi (mpicc)</td>
+<td><div class="first last">&#10004;</div></td>
+<td><div class="first last">&#10004;</div></td>
+</tr>
+<tr class="row-odd"><td>gcc + impi (mpicc)</td>
+<td><div class="first last">&#10004</div></td>
+<td><div class="first last">&#10004</div></td>
+</tr>
+<tr class="row-even"><td>gcc + impi (mpigcc)</td>
+<td><div class="first last">&#10004;</div></td>
+<td><div class="first last">&#10004;</div></td>
+</tr>
+<tr class="row-odd"><td>icc + openmpi (mpicc)</td>
+<td><div class="first last">&#10004;</div></td>
+<td><div class="first last">&#10004</div></td>
+</tr>
+<tr class="row-even"><td>gcc + openmpi (mpicc)</td>
+<td><div class="first last">&#10004;</div></td>
+<td><div class="first last">&#10004;</div></td>
+</tr>
+<tr class="row-odd"><td>gcc + openmpi (mpigcc)</td>
+<td><div class="first last">&#10008;</div></td>
+<td><div class="first last">&#10008;</div></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
+</div>
+<div class="section" id="fortran-compilers">
+<h2>Fortran Compilers<a class="headerlink" href="#fortran-compilers" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 

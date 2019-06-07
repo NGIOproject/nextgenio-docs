@@ -402,6 +402,26 @@ allocation settings described in this section, these options should only be invo
 by users wishing to create a specific configuration.
 
 
+Debugging
+---------
+
+If code compiles but the executable still requires debugging, *impi* allows
+for additional debuggin information to be set using the `I_MPI_DEBUG 
+<https://software.intel.com/en-us/mpi-developer-reference-linux-other-environment-variables>`_
+environment variable. The argument for for the variable is the level of
+debugging. Setting the variable to zero disables the printing of debugging
+information, and positive integers enable printing, with increasing level
+of detail.
+
+This option can be included in a batch script by adding the following line (e.g):
+
+.. code:: bash
+
+   export I_MPI_DEBUG=5
+
+
+.. _srun_or_mpirun:
+
 Should I Use *mpirun* or *srun*?
 --------------------------------
 
@@ -419,7 +439,7 @@ between the two commands:
   Note, however, that all these setting are *overwritten* by the job scheduler
   if task allocation instructions are passed to the scheduler directly (e.g. by
   setting ``-ntasks`` in the submission script or shell).
-- ... 
+- ...  
 
 
 

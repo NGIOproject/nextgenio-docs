@@ -95,8 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#score-p">Score-P</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#vampir">Vampir</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#allinea-arm-map">Allinea/ARM MAP</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#map-profiling-an-openmp-programme">MAP profiling an OpenMP programme</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#map-profiling-an-mpi-programme">MAP profiling an MPI programme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#map-profiling-example-castep">MAP profiling example: CASTEP</a></li>
 </ul>
 </li>
 </ul>
@@ -214,7 +213,7 @@ GUI. This can be openend by entering</p>
 </pre></div>
 </div>
 <p>This will open the basic interface (note that this will require
-X11 forwarding to be enable when connecting to NextgenIO with
+X11 forwarding to be enabled when connecting to NextgenIO with
 SSH - <a class="reference internal" href="connect.html#sec-ref-connect"><span class="std std-ref">Connecting to the System</span></a>):</p>
 <div class="figure align-center">
 <a class="reference internal image-reference" href="../_images/armmap_begin.png"><img alt="Screenshot of ARM GUI opening screen" src="../_images/armmap_begin.png" style="width: 720.0px; height: 465.0px;" /></a>
@@ -224,18 +223,67 @@ By selecting the application to be profiled, MAP will auto-detect
 the type of application (e.g. OpenMP, MPI) the associated menu
 options will be available. These options can also be set
 manually.</p>
-<p>Usage is illustrated with examples.</p>
 <div class="figure align-center">
 <a class="reference internal image-reference" href="../_images/armmap_prof.png"><img alt="Screenshot of ARM profiling GUI" src="../_images/armmap_prof.png" style="width: 443.2px; height: 520.0px;" /></a>
 </div>
-<div class="section" id="map-profiling-an-openmp-programme">
-<h3>MAP profiling an OpenMP programme<a class="headerlink" href="#map-profiling-an-openmp-programme" title="Permalink to this headline">¶</a></h3>
+<p>Alternatively one can simply run MAP from the command line (or
+from a batch script) by prepending <code class="docutils literal notranslate"><span class="pre">map</span></code> to the command to run
+the executable and adding the option <code class="docutils literal notranslate"><span class="pre">--profile</span></code> to disable the
+GUI:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">srun</span> <span class="o">--</span><span class="n">nodes</span><span class="o">=</span><span class="mi">2</span> <span class="o">--</span><span class="n">tasks</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">node</span><span class="o">=</span><span class="mi">2</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">myexec</span> <span class="o">--</span><span class="n">profile</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>MAP can show a line by line usage report of the submitted code
+over the course of the job’s runtime. To enable this feature it
+is necessary to compile the code using the debug flag. For
+example:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mpicc</span> <span class="n">mycode</span><span class="o">.</span><span class="n">c</span> <span class="o">-</span><span class="n">fopenmp</span> <span class="o">-</span><span class="n">o</span> <span class="n">myexec</span> <span class="o">-</span><span class="n">g</span>
+</pre></div>
+</div>
+<p class="last">After this compilation MAP can be called as usual upon execution.</p>
+</div>
+<div class="section" id="map-profiling-example-castep">
+<h3>MAP profiling example: CASTEP<a class="headerlink" href="#map-profiling-example-castep" title="Permalink to this headline">¶</a></h3>
+<p>This example will use the application <a class="reference internal" href="../apps/castep.html#sec-ref-castep"><span class="std std-ref">CASTEP</span></a> to
+illustrate the usage of MAP for benchmarking.</p>
 <p>Job submission can be done either directly, by selecting
 <em>Run</em>, or by submitting a batch job to the queue (see section
 see <a class="reference internal" href="job_scheduler.html#sec-ref-scheduler"><span class="std std-ref">Submitting Jobs</span></a>).</p>
+<p>The following batch script submits a CASTEP job analysing the
+practice TiN dataset, moves the resulting files to the <em>output</em>
+subdirectory, and calls MAP to profile the performance (the
+configuration is arbitrary, but has been choses such that the
+number of tasks matches the number of k-points):</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+
+#SBATCH --nodes=2
+#SBATCH --ntasks=8
+#SBATCH --cpus-per-task=12
+#SBATCH -p 2lm               #Request a node in Memory Mode
+
+#SBATCH -D /path/to/TiN
+#SBATCH -o /path/to/TiN/output/TiN.out.%A.%N.log
+#SBATCH -e /path/to/TiN/output/TiN.err.%A.%N.log
+#SBATCH --job-name=tin-job
+
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+export KMP_AFFINITY=compact
+
+DIR=&quot;/path/to/castep-dir/&quot;
+J=&quot;TiN-mp&quot;                         #Name of the executable (and the assciated files in the TiN directory)
+
+map srun &quot;${DIR}/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi&quot; &quot;${DIR}/test/TiN/$J&quot; --profile
+
+mv &quot;${DIR}test/TiN/${J}.castep&quot; &quot;${DIR}test/TiN/output&quot;
+mv &quot;${DIR}test/TiN/${J}.bands&quot; &quot;${DIR}test/TiN/output&quot;
+mv &quot;${DIR}test/TiN/${J}.bib&quot; &quot;${DIR}test/TiN/output&quot;
+mv &quot;${DIR}test/TiN/${J}.cst_esp&quot; &quot;${DIR}test/TiN/output&quot;
+
+=&gt; This seems to result in an interminable run
+</pre></div>
 </div>
-<div class="section" id="map-profiling-an-mpi-programme">
-<h3>MAP profiling an MPI programme<a class="headerlink" href="#map-profiling-an-mpi-programme" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- Which modules need to be loaded for use?
 - Are there more tools that should be described here?
 - Include examples of use?

@@ -4,6 +4,7 @@ FAQs and Common Issues
 
 - :ref:`ref-qconfig`
 - :ref:`ref-qnojobfile`
+- :ref:`ref-qsymbollookup`
 - :ref:`ref-qcastepinstall`
 
 
@@ -79,12 +80,48 @@ Slurmstepd: error: execve(): [exec-name] : No such file or directory
      .. note:: 
 
         Please note that lines in a batch script starting with *#SBATCH* are not 
-        interpreted by bash. It is therefor not possible to reduce the amount of
+        interpreted by bash. It is therefore not possible to reduce the amount of
         repetitious writing by specifying an environment variable for the start of 
         the path (as e.g. $MY_PATH will not be evaluated). Writing the full path 
         is the most reliable method.
 
 |
+
+.. _ref-qsymbollookup:
+
+Symbol Lookup Error
+^^^^^^^^^^^^^^^^^^^
+
+When trying to run an executable (using either *srun* or *mpirun*) I receive the 
+error (or similar)
+
+.. Error:: 
+
+   ./[exec-name]: symbol lookup error: /opt/intel/compilers_and_libraries_2019.3.199
+   /linux/mpi/intel64/lib/libmpifort.so.12: undefined symbol: MPI_UNWEIGHTED
+
+Here [*exec-id*] is the name of my executable:
+
+.. container:: toggle
+
+   .. container:: header
+
+      **Answer**
+
+   .. container:: text
+
+      |
+
+      This error can occur when the executable has been compiled using mpigcc in
+      combination with openmpi. Try compiling using:
+
+      .. code:: bash
+      
+         mpicc mycode.c -o myexec
+
+      Add the ``-fopenmp`` option if the application also use OpenMP.
+
+|      
 
 .. _ref-qcastepinstall:
 

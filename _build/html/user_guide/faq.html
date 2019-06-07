@@ -97,6 +97,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#some-common-issues">Some Common Issues</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#batch-job-submission-failed-requested-node-configuration-is-not-available">Batch job submission failed: Requested node configuration is not available:</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#slurmstepd-error-execve-exec-name-no-such-file-or-directory">Slurmstepd: error: execve(): [exec-name] : No such file or directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#symbol-lookup-error">Symbol Lookup Error</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#error-running-make-install-during-castep-build">Error running <em>make install</em> during CASTEP build</a></li>
 </ul>
 </li>
@@ -182,6 +183,7 @@
 <ul class="simple">
 <li><a class="reference internal" href="#ref-qconfig"><span class="std std-ref">Batch job submission failed: Requested node configuration is not available:</span></a></li>
 <li><a class="reference internal" href="#ref-qnojobfile"><span class="std std-ref">Slurmstepd: error: execve(): [exec-name] : No such file or directory</span></a></li>
+<li><a class="reference internal" href="#ref-qsymbollookup"><span class="std std-ref">Symbol Lookup Error</span></a></li>
 <li><a class="reference internal" href="#ref-qcastepinstall"><span class="std std-ref">Error running make install during CASTEP build</span></a></li>
 </ul>
 <div class="section" id="faqs">
@@ -242,11 +244,40 @@ executable, the full path needs to be specified.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Please note that lines in a batch script starting with <em>#SBATCH</em> are not
-interpreted by bash. It is therefor not possible to reduce the amount of
+interpreted by bash. It is therefore not possible to reduce the amount of
 repetitious writing by specifying an environment variable for the start of
 the path (as e.g. $MY_PATH will not be evaluated). Writing the full path
 is the most reliable method.</p>
 </div>
+</div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="symbol-lookup-error">
+<span id="ref-qsymbollookup"></span><h3>Symbol Lookup Error<a class="headerlink" href="#symbol-lookup-error" title="Permalink to this headline">¶</a></h3>
+<p>When trying to run an executable (using either <em>srun</em> or <em>mpirun</em>) I receive the
+error (or similar)</p>
+<div class="admonition error">
+<p class="first admonition-title">Error</p>
+<p class="last">./[exec-name]: symbol lookup error: /opt/intel/compilers_and_libraries_2019.3.199
+/linux/mpi/intel64/lib/libmpifort.so.12: undefined symbol: MPI_UNWEIGHTED</p>
+</div>
+<p>Here [<em>exec-id</em>] is the name of my executable:</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<strong>Answer</strong></div>
+<div class="text docutils container">
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>This error can occur when the executable has been compiled using mpigcc in
+combination with openmpi. Try compiling using:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mpicc</span> <span class="n">mycode</span><span class="o">.</span><span class="n">c</span> <span class="o">-</span><span class="n">o</span> <span class="n">myexec</span>
+</pre></div>
+</div>
+<p>Add the <code class="docutils literal notranslate"><span class="pre">-fopenmp</span></code> option if the application also use OpenMP.</p>
 </div>
 </div>
 <div class="line-block">

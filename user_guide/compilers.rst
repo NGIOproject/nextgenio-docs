@@ -154,17 +154,28 @@ compiler when running mpi code, as executables created
 with the ``mpigcc`` wrapper appear to have trouble 
 running on the NextgenIO system.
 
-Fortran Compilers
-~~~~~~~~~~~~~~~~~
+An (incomplete) overview of flags that can be set for both
+``mpicc`` and ``mpigcc``
+
++------------+------------------------------------------+
+| Flag       |    Implication                           |
++============+==========================================+
+| -o         | Specify name of output executable        |
++------------+------------------------------------------+
+| -g         | Enable debugging                         |
++------------+------------------------------------------+
+| -fopenmp   | Include OpenMP libraries                 |
++------------+------------------------------------------+
+| -O[N]      | Set the optimisation level N (=0-3)      |
++------------+------------------------------------------+
+
 
 Compiling Examples
 ~~~~~~~~~~~~~~~~~~
 
 Below we consider several examples of ways to compile
-code that uses both MPI and multithreading, using the
-`xthi <https://github.com/olcf/XC30-Training/blob/master/
-affinity/Xthi.c>`_ example. This script will display the 
-core affinity of the job.
+code that uses multithreading, MPI or a combination of
+the two.
 
 OpenMP
 ------
@@ -191,9 +202,47 @@ And for combined MPI and OpenMP applications:
 
     mpicc mix_code.c -fopenmp -o mix_exec
 
+.. note::
 
-::
+   Although there are multiple possible combinations to compile
+   code on the NextgenIO system, all executables should be able to 
+   run using *srun* and *mpirun*  with the job scheduler.
 
-    - How to run mpicc with gcc rather than icc?
+   The table below gives a brief summary of compilations setting
+   combinations that do and do not work with the two executions
+   command. Only combining ``mpigcc`` and openmpi results in an
+   error (:ref:`ref-qsymbollookup`) when executed.
+
+   +-----------------------+-----------------+-----------------+
+   | Compiler Combination  |   srun          |  mpirun         |
+   +=======================+=================+=================+
+   | icc + impi (mpicc)    | .. raw:: html   | .. raw:: html   |
+   |                       |                 |                 |
+   |                       |    &#10004;     |    &#10004;     |
+   +-----------------------+-----------------+-----------------+
+   | gcc + impi (mpicc)    | .. raw:: html   | .. raw:: html   |
+   |                       |                 |                 |
+   |                       |    &#10004      |    &#10004      |
+   +-----------------------+-----------------+-----------------+
+   | gcc + impi (mpigcc)   | .. raw:: html   | .. raw:: html   |
+   |                       |                 |                 |
+   |                       |    &#10004;     |    &#10004;     |
+   +-----------------------+-----------------+-----------------+
+   | icc + openmpi (mpicc) | .. raw:: html   | .. raw:: html   |
+   |                       |                 |                 |
+   |                       |    &#10004;     |    &#10004      |
+   +-----------------------+-----------------+-----------------+
+   | gcc + openmpi (mpicc) | .. raw:: html   | .. raw:: html   |
+   |                       |                 |                 |
+   |                       |    &#10004;     |    &#10004;     |
+   +-----------------------+-----------------+-----------------+
+   | gcc + openmpi (mpigcc)| .. raw:: html   | .. raw:: html   |
+   |                       |                 |                 |
+   |                       |    &#10008;     |    &#10008;     |
+   +-----------------------+-----------------+-----------------+
+
+   
+Fortran Compilers
+~~~~~~~~~~~~~~~~~
 
 

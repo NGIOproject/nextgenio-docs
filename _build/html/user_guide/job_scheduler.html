@@ -90,6 +90,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#slurm">Slurm</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#basic-commands">Basic Commands</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#example-subsmission-scripts">Example Subsmission Scripts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debugging">Debugging</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#should-i-use-mpirun-or-srun">Should I Use <em>mpirun</em> or <em>srun</em>?</a></li>
 </ul>
 </li>
@@ -541,8 +542,21 @@ default allocation style of the job scheduler. As with the other pinning and
 allocation settings described in this section, these options should only be invoked
 by users wishing to create a specific configuration.</p>
 </div>
+<div class="section" id="debugging">
+<h3>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h3>
+<p>If code compiles but the executable still requires debugging, <em>impi</em> allows
+for additional debuggin information to be set using the <a class="reference external" href="https://software.intel.com/en-us/mpi-developer-reference-linux-other-environment-variables">I_MPI_DEBUG</a>
+environment variable. The argument for for the variable is the level of
+debugging. Setting the variable to zero disables the printing of debugging
+information, and positive integers enable printing, with increasing level
+of detail.</p>
+<p>This option can be included in a batch script by adding the following line (e.g):</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">I_MPI_DEBUG</span><span class="o">=</span><span class="mi">5</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="should-i-use-mpirun-or-srun">
-<h3>Should I Use <em>mpirun</em> or <em>srun</em>?<a class="headerlink" href="#should-i-use-mpirun-or-srun" title="Permalink to this headline">¶</a></h3>
+<span id="srun-or-mpirun"></span><h3>Should I Use <em>mpirun</em> or <em>srun</em>?<a class="headerlink" href="#should-i-use-mpirun-or-srun" title="Permalink to this headline">¶</a></h3>
 <p>Both <code class="docutils literal notranslate"><span class="pre">mpirun</span></code> and <code class="docutils literal notranslate"><span class="pre">srun</span></code> can be used to tell the job scheduler to run
 an executable. Although the <code class="docutils literal notranslate"><span class="pre">srun</span></code> command makes use of <code class="docutils literal notranslate"><span class="pre">mpirun</span></code> to
 execute a job, there are subtle differences in the way settings, such as
