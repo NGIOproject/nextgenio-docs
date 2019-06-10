@@ -43,7 +43,7 @@ system enabled DAX. In the case of EchoFS Device DAX is
 possible on the side of the system itself, but currently
 not possible as the FS relies on FUSE to access memory.
 DevDAX implementation for GekkoFS may also be developed
-in the furure.
+in the future.
 
 
 DevDAX
@@ -125,7 +125,7 @@ the GekkoFS client, which is pre-loaded by the job application when
 launched. The client also holds a file map, containing all data 
 storage locations across the nodes. Like the other meta-data, this 
 file map is distributed over the nodes. The client maintains 
-an overview of all data and can send requests to individual deamons
+an overview of all data and can send requests to individual daemons
 to perform I/O operations.
 
 
@@ -152,7 +152,7 @@ dataClay
 dataClay is an object store designed to make use of the 
 features of SCM. It can be accessed directly by applications 
 written in an object-oriented programming language. Currently
-Java and Python are the two languages suppored by DataClay.
+Java and Python are the two languages supported by DataClay.
 A full description of the data store can be found in the 
 `DataClay Documentation <https://www.bsc.es/research-and-
 development/software-and-apps/software-list/dataclay/documentation>`_.
@@ -171,7 +171,7 @@ for user access to the objects stored in the data service.
 
 The data service handles the storage of the persistent objects, as
 well as any execution requests involving these objects. The execution
-request are expected to be mainly execution of mehods from the class
+request are expected to be mainly execution of methods from the class
 to which the given object belongs. 
 
 dataClay can be called by any application written in the
@@ -182,7 +182,7 @@ to improve performance of dataClay in combination with
 **Overview of dataClay object methods**
 
 +---------------------------------+------------------------------------------------------+
-| obj.make_peristent( )           || Store obj in dataClay, create Object ID. This method|
+| obj.make_persistent( )          || Store obj in dataClay, create Object ID. This method|
 |                                 || also allows the user to specify what language the   |
 |                                 || object should be associated with.                   |
 +---------------------------------+------------------------------------------------------+

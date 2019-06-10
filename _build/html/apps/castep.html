@@ -209,7 +209,7 @@ executable should be created nonetheless.</p>
 Possibly relevant parameters (from the perspective of performance) are
 <code class="docutils literal notranslate"><span class="pre">max_scf_cycles</span></code>, the number of iterations over the grid, and
 <code class="docutils literal notranslate"><span class="pre">write_checkpoint</span></code>,  which writes the full analysis to file in a time
-consuming step. The values can be set by adding a line to the param file,
+consuming step. The values can be set by adding a line to the .param file,
 or by editing the relevant line if the option is already included.</p>
 <p>The verbosity of the output files ( [job-name].castep ) can also be set in the
 [job-name].param file with the <code class="docutils literal notranslate"><span class="pre">iprint</span></code> option, which takes values 0-3
@@ -246,14 +246,14 @@ srun &quot;/path/to/castep-build/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi
 </pre></div>
 </div>
 <p>For the TiN and DNA test sets, in the standard configuration, the
-number of k-poins is 8 and 1 respectively. In the example above
+number of k-points is 8 and 1 respectively. In the example above
 one MPI process is assigned per k-point, and the plane wave calculations
 are spread over six cpus, each running one thread.</p>
-<p>Performance of the system will depend both on the paralellisation of
+<p>Performance of the system will depend both on the parallelisation of
 the run and on the memory mode selected.</p>
 <p>The type of parallelisation can be controlled in the batch script using
 the <code class="docutils literal notranslate"><span class="pre">--ntasks</span></code> option and the <code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREADS</span></code> variable. Some effects
-of different parallellisation are explored in <a class="reference internal" href="../user_guide/perftools.html#sec-ref-perftools"><span class="std std-ref">Performance Analysis Tools</span></a>.</p>
+of different parallelisation are explored in <a class="reference internal" href="../user_guide/perftools.html#sec-ref-perftools"><span class="std std-ref">Performance Analysis Tools</span></a>.</p>
 <p>Initial results indicate that running CASTEP on a node, or nodes, in App
 Direct mode has a considerable performance benefit over a run in Memory
 mode.</p>

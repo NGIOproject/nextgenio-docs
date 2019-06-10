@@ -40,7 +40,7 @@ job reaches the front of the queue before the prefetching is
 completed, the job is pushed back in the queue.
 
 Upon completion the DS writes data into persistent memory or 
-tranfers data to the parallel file system for storage, depending
+transfers data to the parallel file system for storage, depending
 on job specifications.
 
 ::

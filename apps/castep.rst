@@ -46,7 +46,7 @@ Various parameters for the run can be set in the *[job-name].param file*.
 Possibly relevant parameters (from the perspective of performance) are 
 ``max_scf_cycles``, the number of iterations over the grid, and 
 ``write_checkpoint``,  which writes the full analysis to file in a time 
-consuming step. The values can be set by adding a line to the param file, 
+consuming step. The values can be set by adding a line to the .param file, 
 or by editing the relevant line if the option is already included.
 
 The verbosity of the output files ( [job-name].castep ) can also be set in the
@@ -90,16 +90,16 @@ that will run the analysis of the TiN dataset:
 
 
 For the TiN and DNA test sets, in the standard configuration, the 
-number of k-poins is 8 and 1 respectively. In the example above
+number of k-points is 8 and 1 respectively. In the example above
 one MPI process is assigned per k-point, and the plane wave calculations
 are spread over six cpus, each running one thread.
 
-Performance of the system will depend both on the paralellisation of
+Performance of the system will depend both on the parallelisation of
 the run and on the memory mode selected.
 
 The type of parallelisation can be controlled in the batch script using
 the ``--ntasks`` option and the ``OMP_NUM_THREADS`` variable. Some effects
-of different parallellisation are explored in :ref:`sec-ref-perftools`.
+of different parallelisation are explored in :ref:`sec-ref-perftools`.
 
 Initial results indicate that running CASTEP on a node, or nodes, in App
 Direct mode has a considerable performance benefit over a run in Memory

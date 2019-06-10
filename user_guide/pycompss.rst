@@ -19,7 +19,7 @@ usage of resources.
 
 On the NextgenIO system PyCOMPSs can be implemented by users by
 importing the library. The object store :ref:`ref-sec-dataclay` 
-has been optmised for use in combination with PyCOMPSs.
+has been optimised for use in combination with PyCOMPSs.
 
 ::
 

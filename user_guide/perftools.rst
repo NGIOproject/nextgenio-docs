@@ -66,7 +66,8 @@ After selecting 'profiling' the menu shown below will load.
 By selecting the application to be profiled, MAP will auto-detect
 the type of application (e.g. OpenMP, MPI) the associated menu
 options will be available. These options can also be set 
-manually.
+manually. Below is an example for a CASTEP run on the TiN benchmark
+dataset:
 
 .. figure:: ../images/armmap_prof.png
    :align: center
@@ -76,18 +77,28 @@ manually.
 Alternatively one can simply run MAP from the command line (or 
 from a batch script) by prepending ``map`` to the command to run
 the executable and adding the option ``--profile`` to disable the
-GUI:
+GUI (note that the *profile* flag needs to be set immediately 
+following the *map* command):
 
 .. code:: bash
 
-   map srun --nodes=2 --tasks-per-node=2 /path/to/myexec --profile
+   map --profile srun --nodes=2 --tasks-per-node=2 /path/to/myexec 
+
+The result of a profiling run, started either from the command line
+or from the GUI, is a .map file. The information contained in this
+file can be explored using the MAP application as well. To open it
+from the command line enter:
+
+.. code:: bash
+
+   map [profile-run].map
 
 
 .. note::
 
    MAP can show a line by line usage report of the submitted code 
    over the course of the job's runtime. To enable this feature it
-   is necessary to compile the code using the debug flag. For 
+   is necessary to compile the code using the debug flag ``-g``. For 
    example:
 
    .. code:: bash
@@ -103,14 +114,15 @@ MAP profiling example: CASTEP
 This example will use the application :ref:`sec-ref-castep` to
 illustrate the usage of MAP for benchmarking.
 
-Job submission can be done either directly, by selecting 
-*Run*, or by submitting a batch job to the queue (see section
-see :ref:`sec-ref-scheduler`).
+Job submission can be done either directly, by selecting the 
+applicatation in the GUI and clicking *Submit*,  or by submitting
+a batch job to the queue (see section see :ref:`sec-ref-scheduler`)
+and calling MAP without the GUI.
 
 The following batch script submits a CASTEP job analysing the 
 practice TiN dataset, moves the resulting files to the *output*
-subdirectory, and calls MAP to profile the performance (the 
-configuration is arbitrary, but has been choses such that the
+subdirectory, and calls MAP to profile the performance (the node
+configuration is arbitrary, but has been chosen such that the
 number of tasks matches the number of k-points):
 
 .. code:: bash
@@ -133,15 +145,26 @@ number of tasks matches the number of k-points):
   DIR="/path/to/castep-dir/"
   J="TiN-mp"                         #Name of the executable (and the assciated files in the TiN directory)
 
-  map srun "${DIR}/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi" "${DIR}/test/TiN/$J" --profile
+  map --profile srun "${DIR}/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi" "${DIR}/test/TiN/$J"
 
   mv "${DIR}test/TiN/${J}.castep" "${DIR}test/TiN/output"
   mv "${DIR}test/TiN/${J}.bands" "${DIR}test/TiN/output"
   mv "${DIR}test/TiN/${J}.bib" "${DIR}test/TiN/output"
   mv "${DIR}test/TiN/${J}.cst_esp" "${DIR}test/TiN/output"
 
-  => This seems to result in an interminable run
+The results of this profiling run (viewed in the MAP GUI) should
+look like the screen below:
 
+.. figure:: ../images/armmap_tinres.png
+   :align: center
+   :scale: 50%
+   :alt: Screenshot of ARM GUI results for CASTEP TiN dataset
+
+There are many viewing options and varying levels of detail to 
+review in this data. We refer the reader to the MAP documentation
+for a discussion of these options.
+
+  
 ::
 
    - Which modules need to be loaded for use?

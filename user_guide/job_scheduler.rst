@@ -3,7 +3,7 @@
 Submitting Jobs
 ===============
 
-The NextgenIO system makes use of the an adapted version of the `Slurm 
+The NextgenIO system makes use of an adapted version of the `Slurm 
 workload manager <https://slurm.schedmd.com/overview.html>`_. The 
 adaptations make it possible for the user to make use of the various
 implementations of SCM (Storage Class Memory).
@@ -18,7 +18,7 @@ Slurm
 This section will provide a short overview of some of the basic commands
 required to run jobs with Slurm. 
 
-Please note: the NextgenIO system comes equiped with OpenMPI (version 
+Please note: the NextgenIO system comes equipped with OpenMPI (version 
 3.1.0) and Intel MPI (version 2019.3.199). The usage of Slurm should 
 reflect the choice of MPI flavour, as will indicated in the guides in
 this section where relevant.
@@ -103,19 +103,19 @@ allocate resources, specify the job to be run, and then run it. We will
 also specify the job output location. The default location for both
 standard out and standard error is the file "slurm-j[JOB_ID]". In the
 case of using batch scripts, the commands to be passed to the scheduler
-are preceded by the the `#SBATCH` comment.
+are preceded by the `#SBATCH` comment.
 
 Upon submission of the script the job will be added to the queue, until
 the requested resources become available and the job is launched.
  
 **1) Submitting a single job many times (without shared memory)**
 
-This type of parallellism is usually associated with embarrassingly
+This type of parallelism is usually associated with embarrassingly
 parallel problems.
 
 The first lines of the bash script ("myscript.sh") allocates 
 resources. Note that the default allocation of CPUs is one per 
-taks. Default units for the memory per CPU are MB. The 'array' 
+task. Default units for the memory per CPU are MB. The 'array' 
 option creates multiple instances of the same task (in this 
 example 10 instances). The task IDs are stored in the variable 
 SLURM_ARRAY_TASK_ID. We will also set the maximum run time to
@@ -156,7 +156,7 @@ We then submit the script with the following command:
 **2) Submitting a single job with shared memory using OpenMP**
 
 In case the script to be run uses multithreading, multiple 
-CPUs can be asigned to the same task. For the job to run 
+CPUs can be assigned to the same task. For the job to run 
 properly, we do need to explicitly tell Slurm to set the 
 OPM_NUM_THREADS environment variable.
 
@@ -259,7 +259,7 @@ on Multi-core support <https://slurm.schedmd.com/mc_support.html>`_.
 
 .. note::
 
-   If you would like to seem more information on CPU affinity of MPI processes
+   If you would like to see more information on CPU affinity of MPI processes
    add the following line to the batch script:
 
    .. code:: bash
@@ -281,7 +281,7 @@ default on the NextgenIO system) the logical cores are labelled 48-95, where cor
 
 *Pinning MPI processes*
 
-When using mpirun, the MPI processes can be pinned to a specfic core by setting
+When using mpirun, the MPI processes can be pinned to a specific core by setting
 the environment variable *I_MPI_PIN_PROCESSOR_LIST*. To pin four MPI processes
 to (e.g.) the first four CPUs among the allocated CPUs, add the following line to the
 batch script:
@@ -307,9 +307,9 @@ mpirun: it will be necessary to write out the list of cpu_ids in full.
 
 *Binding threads*
 
-To bind threads to specfic cores the batch script needs to set the evironment 
-variables `*OMP_PROC_BIND* <https://gcc.gnu.org/onlinedocs/libgomp/OMP_005fPROC_005fBIND.html>`_ 
-and `*OMP_NUM_PLACES* <https://gcc.gnu.org/onlinedocs/libgomp/OMP_005fPLACES.html#OMP_005fPLACES>`_.
+To bind threads to specific cores the batch script needs to set the environment 
+variables `OMP_PROC_BIND <https://gcc.gnu.org/onlinedocs/libgomp/OMP_005fPROC_005fBIND.html>`_ 
+and `OMP_NUM_PLACES <https://gcc.gnu.org/onlinedocs/libgomp/OMP_005fPLACES.html#OMP_005fPLACES>`_.
 The first of the variables simply needs to be set to *TRUE*, for the second 
 there are multiple options available (see the documentation for a full list). 
 
@@ -343,7 +343,7 @@ set to to 48 (= 192 / 4).
 
 One level above the manual pinning of threads is the setting of the core affinity
 for the multithreading. This can be done by setting the ``KMP_AFFINITY`` environment
-variable. Note that including the option *verbose* for this variable prints additiional
+variable. Note that including the option *verbose* for this variable prints additional
 core affinity information to output.
 
 The most important option for ``KMP_AFFINITY`` are *compact* and *scatter*. *compact* 
@@ -361,7 +361,7 @@ to *thread* for hyperthreading.
 
 The ``KMP_AFFINITY`` variable also allows for the explicit binding of threads to cores,
 using the *explicit* option, followed by the *proclist* options specifying the cpu_id(s) 
-(note the double quotes arround the options in this case):
+(note the double quotes around the options in this case):
 
 .. code:: bash
 
@@ -369,7 +369,7 @@ using the *explicit* option, followed by the *proclist* options specifying the c
 
 Unfortunately, pinning of threads within MPI processes does not seem to be possible using
 this option. This option would therefore only be of use for job consisting of a single
-process (with mutiple threads).
+process (with multiple threads).
    
 Some further examples of usage of ``KMP_AFFINITY`` are provided on the website for
 `NASA's HECC <https://www.nas.nasa.gov/hecc/support/kb/using-intel-openmp-thread-affinity-for-pinning_285.html>`_.
@@ -382,7 +382,7 @@ In the example above the option ``--cpus-per-task`` is not set, as the job sched
 should allocate the optimal number of cores automatically. Similarly, the option
 ``--ntasks-per-socket`` is only of use if an unusual configuration of MPI processes
 is desired. The standard distribution enforced by the job scheduler is to spread
-processes evenly accross sockets: if the number of processes matches the number of
+processes evenly across sockets: if the number of processes matches the number of
 sockets, one process will be places in each socket.
 
 The allocation of MPI processes and threads can further be controlled with the
@@ -406,7 +406,7 @@ Debugging
 ---------
 
 If code compiles but the executable still requires debugging, *impi* allows
-for additional debuggin information to be set using the `I_MPI_DEBUG 
+for additional debugging information to be set using the `I_MPI_DEBUG 
 <https://software.intel.com/en-us/mpi-developer-reference-linux-other-environment-variables>`_
 environment variable. The argument for for the variable is the level of
 debugging. Setting the variable to zero disables the printing of debugging

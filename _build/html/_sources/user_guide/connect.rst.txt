@@ -66,7 +66,7 @@ Upon connecting, use the SAFE password and replace this with a password of choic
 Connecting using SSH keys
 -------------------------
 
-After adding your public key to the autorized keys on hydra-vpn (see :ref:`Copying
+After adding your public key to the authorised keys on hydra-vpn (see :ref:`Copying
 SSH Public Key <sec-ssh-pub-remote>`), add the following lines to your .ssh/config
 file. Replace the name of the identifile with the name of your private key (e.g. if
 made with a different encryption):
@@ -88,7 +88,7 @@ made with a different encryption):
        ForwardX11Trusted yes
        User [username]
 
-Note that it is not neccesary to copy your public key to NextgenIO.
+Note that it is not necessary to copy your public key to NextgenIO.
 
 
 Using SSH Clients
@@ -176,7 +176,7 @@ resource - this can include accessing resources via a chain of SSH
 sessions.
 
 This approach combines the security of having a passphrase to access
-remote resources with the convenince of having password-less access.
+remote resources with the convenience of having password-less access.
 Having this sort of access set up makes it extremely convenient to use
 client applications to access remote resources, for example:
 
@@ -251,7 +251,7 @@ the public part of the key to the remote file:
 
 Now you can test that your key pair is working correctly by attempting
 to connect to the remote host and run a command. You should be asked
-for your key pair *passphase* (which you entered when you creasted the
+for your key pair *passphase* (which you entered when you created the
 key pair) rather than your remote machine *password*.
 
 ::

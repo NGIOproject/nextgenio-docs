@@ -238,7 +238,7 @@ the ssh command allows for X11 forwarding over the connection.</p>
 </div>
 <div class="section" id="connecting-using-ssh-keys">
 <h3>Connecting using SSH keys<a class="headerlink" href="#connecting-using-ssh-keys" title="Permalink to this headline">¶</a></h3>
-<p>After adding your public key to the autorized keys on hydra-vpn (see <a class="reference internal" href="#sec-ssh-pub-remote"><span class="std std-ref">Copying
+<p>After adding your public key to the authorised keys on hydra-vpn (see <a class="reference internal" href="#sec-ssh-pub-remote"><span class="std std-ref">Copying
 SSH Public Key</span></a>), add the following lines to your .ssh/config
 file. Replace the name of the identifile with the name of your private key (e.g. if
 made with a different encryption):</p>
@@ -258,7 +258,7 @@ made with a different encryption):</p>
    <span class="n">User</span> <span class="p">[</span><span class="n">username</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Note that it is not neccesary to copy your public key to NextgenIO.</p>
+<p>Note that it is not necessary to copy your public key to NextgenIO.</p>
 </div>
 </div>
 <div class="section" id="using-ssh-clients">
@@ -330,7 +330,7 @@ only have to enter your passphrase once per day to access any remote
 resource - this can include accessing resources via a chain of SSH
 sessions.</p>
 <p>This approach combines the security of having a passphrase to access
-remote resources with the convenince of having password-less access.
+remote resources with the convenience of having password-less access.
 Having this sort of access set up makes it extremely convenient to use
 client applications to access remote resources, for example:</p>
 <ul class="simple">
@@ -395,7 +395,7 @@ the public part of the key to the remote file:</p>
 <p>(remember to replace [username] with your username).</p>
 <p>Now you can test that your key pair is working correctly by attempting
 to connect to the remote host and run a command. You should be asked
-for your key pair <em>passphase</em> (which you entered when you creasted the
+for your key pair <em>passphase</em> (which you entered when you created the
 key pair) rather than your remote machine <em>password</em>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>-bash-4.1$ ssh [username]@hydra-vpn.epcc.ed.ac.uk &#39;date&#39;
 Enter passphrase for key &#39;/Home/user/.ssh/id_rsa&#39;: [Passphrase]

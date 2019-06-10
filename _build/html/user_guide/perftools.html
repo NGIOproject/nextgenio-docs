@@ -222,22 +222,31 @@ SSH - <a class="reference internal" href="connect.html#sec-ref-connect"><span cl
 By selecting the application to be profiled, MAP will auto-detect
 the type of application (e.g. OpenMP, MPI) the associated menu
 options will be available. These options can also be set
-manually.</p>
+manually. Below is an example for a CASTEP run on the TiN benchmark
+dataset:</p>
 <div class="figure align-center">
-<a class="reference internal image-reference" href="../_images/armmap_prof.png"><img alt="Screenshot of ARM profiling GUI" src="../_images/armmap_prof.png" style="width: 443.2px; height: 520.0px;" /></a>
+<a class="reference internal image-reference" href="../_images/armmap_prof.png"><img alt="Screenshot of ARM profiling GUI" src="../_images/armmap_prof.png" style="width: 443.2px; height: 542.4px;" /></a>
 </div>
 <p>Alternatively one can simply run MAP from the command line (or
 from a batch script) by prepending <code class="docutils literal notranslate"><span class="pre">map</span></code> to the command to run
 the executable and adding the option <code class="docutils literal notranslate"><span class="pre">--profile</span></code> to disable the
-GUI:</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">srun</span> <span class="o">--</span><span class="n">nodes</span><span class="o">=</span><span class="mi">2</span> <span class="o">--</span><span class="n">tasks</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">node</span><span class="o">=</span><span class="mi">2</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">myexec</span> <span class="o">--</span><span class="n">profile</span>
+GUI (note that the <em>profile</em> flag needs to be set immediately
+following the <em>map</em> command):</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="o">--</span><span class="n">profile</span> <span class="n">srun</span> <span class="o">--</span><span class="n">nodes</span><span class="o">=</span><span class="mi">2</span> <span class="o">--</span><span class="n">tasks</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">node</span><span class="o">=</span><span class="mi">2</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">myexec</span>
+</pre></div>
+</div>
+<p>The result of a profiling run, started either from the command line
+or from the GUI, is a .map file. The information contained in this
+file can be explored using the MAP application as well. To open it
+from the command line enter:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="p">[</span><span class="n">profile</span><span class="o">-</span><span class="n">run</span><span class="p">]</span><span class="o">.</span><span class="n">map</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>MAP can show a line by line usage report of the submitted code
 over the course of the job’s runtime. To enable this feature it
-is necessary to compile the code using the debug flag. For
+is necessary to compile the code using the debug flag <code class="docutils literal notranslate"><span class="pre">-g</span></code>. For
 example:</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mpicc</span> <span class="n">mycode</span><span class="o">.</span><span class="n">c</span> <span class="o">-</span><span class="n">fopenmp</span> <span class="o">-</span><span class="n">o</span> <span class="n">myexec</span> <span class="o">-</span><span class="n">g</span>
 </pre></div>
@@ -248,13 +257,14 @@ example:</p>
 <h3>MAP profiling example: CASTEP<a class="headerlink" href="#map-profiling-example-castep" title="Permalink to this headline">¶</a></h3>
 <p>This example will use the application <a class="reference internal" href="../apps/castep.html#sec-ref-castep"><span class="std std-ref">CASTEP</span></a> to
 illustrate the usage of MAP for benchmarking.</p>
-<p>Job submission can be done either directly, by selecting
-<em>Run</em>, or by submitting a batch job to the queue (see section
-see <a class="reference internal" href="job_scheduler.html#sec-ref-scheduler"><span class="std std-ref">Submitting Jobs</span></a>).</p>
+<p>Job submission can be done either directly, by selecting the
+applicatation in the GUI and clicking <em>Submit</em>,  or by submitting
+a batch job to the queue (see section see <a class="reference internal" href="job_scheduler.html#sec-ref-scheduler"><span class="std std-ref">Submitting Jobs</span></a>)
+and calling MAP without the GUI.</p>
 <p>The following batch script submits a CASTEP job analysing the
 practice TiN dataset, moves the resulting files to the <em>output</em>
-subdirectory, and calls MAP to profile the performance (the
-configuration is arbitrary, but has been choses such that the
+subdirectory, and calls MAP to profile the performance (the node
+configuration is arbitrary, but has been chosen such that the
 number of tasks matches the number of k-points):</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
 
@@ -274,16 +284,22 @@ export KMP_AFFINITY=compact
 DIR=&quot;/path/to/castep-dir/&quot;
 J=&quot;TiN-mp&quot;                         #Name of the executable (and the assciated files in the TiN directory)
 
-map srun &quot;${DIR}/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi&quot; &quot;${DIR}/test/TiN/$J&quot; --profile
+map --profile srun &quot;${DIR}/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi&quot; &quot;${DIR}/test/TiN/$J&quot;
 
 mv &quot;${DIR}test/TiN/${J}.castep&quot; &quot;${DIR}test/TiN/output&quot;
 mv &quot;${DIR}test/TiN/${J}.bands&quot; &quot;${DIR}test/TiN/output&quot;
 mv &quot;${DIR}test/TiN/${J}.bib&quot; &quot;${DIR}test/TiN/output&quot;
 mv &quot;${DIR}test/TiN/${J}.cst_esp&quot; &quot;${DIR}test/TiN/output&quot;
-
-=&gt; This seems to result in an interminable run
 </pre></div>
 </div>
+<p>The results of this profiling run (viewed in the MAP GUI) should
+look like the screen below:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/armmap_tinres.png"><img alt="Screenshot of ARM GUI results for CASTEP TiN dataset" src="../_images/armmap_tinres.png" style="width: 818.0px; height: 556.5px;" /></a>
+</div>
+<p>There are many viewing options and varying levels of detail to
+review in this data. We refer the reader to the MAP documentation
+for a discussion of these options.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- Which modules need to be loaded for use?
 - Are there more tools that should be described here?
 - Include examples of use?

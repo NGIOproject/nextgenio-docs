@@ -180,7 +180,7 @@
             
   <div class="section" id="submitting-jobs">
 <span id="sec-ref-scheduler"></span><h1>Submitting Jobs<a class="headerlink" href="#submitting-jobs" title="Permalink to this headline">¶</a></h1>
-<p>The NextgenIO system makes use of the an adapted version of the <a class="reference external" href="https://slurm.schedmd.com/overview.html">Slurm
+<p>The NextgenIO system makes use of an adapted version of the <a class="reference external" href="https://slurm.schedmd.com/overview.html">Slurm
 workload manager</a>. The
 adaptations make it possible for the user to make use of the various
 implementations of SCM (Storage Class Memory).</p>
@@ -191,7 +191,7 @@ introduce the new usage of Slurm on the NextgenIO system.</p>
 <h2>Slurm<a class="headerlink" href="#slurm" title="Permalink to this headline">¶</a></h2>
 <p>This section will provide a short overview of some of the basic commands
 required to run jobs with Slurm.</p>
-<p>Please note: the NextgenIO system comes equiped with OpenMPI (version
+<p>Please note: the NextgenIO system comes equipped with OpenMPI (version
 3.1.0) and Intel MPI (version 2019.3.199). The usage of Slurm should
 reflect the choice of MPI flavour, as will indicated in the guides in
 this section where relevant.</p>
@@ -302,15 +302,15 @@ allocate resources, specify the job to be run, and then run it. We will
 also specify the job output location. The default location for both
 standard out and standard error is the file “slurm-j[JOB_ID]”. In the
 case of using batch scripts, the commands to be passed to the scheduler
-are preceded by the the <cite>#SBATCH</cite> comment.</p>
+are preceded by the <cite>#SBATCH</cite> comment.</p>
 <p>Upon submission of the script the job will be added to the queue, until
 the requested resources become available and the job is launched.</p>
 <p><strong>1) Submitting a single job many times (without shared memory)</strong></p>
-<p>This type of parallellism is usually associated with embarrassingly
+<p>This type of parallelism is usually associated with embarrassingly
 parallel problems.</p>
 <p>The first lines of the bash script (“myscript.sh”) allocates
 resources. Note that the default allocation of CPUs is one per
-taks. Default units for the memory per CPU are MB. The ‘array’
+task. Default units for the memory per CPU are MB. The ‘array’
 option creates multiple instances of the same task (in this
 example 10 instances). The task IDs are stored in the variable
 SLURM_ARRAY_TASK_ID. We will also set the maximum run time to
@@ -342,7 +342,7 @@ the task IDs to the <code class="docutils literal notranslate"><span class="pre"
 </div>
 <p><strong>2) Submitting a single job with shared memory using OpenMP</strong></p>
 <p>In case the script to be run uses multithreading, multiple
-CPUs can be asigned to the same task. For the job to run
+CPUs can be assigned to the same task. For the job to run
 properly, we do need to explicitly tell Slurm to set the
 OPM_NUM_THREADS environment variable.</p>
 <p>The rest of the script looks very similar to the previous
@@ -426,7 +426,7 @@ can be specified in the batch script as well. See also the <a class="reference e
 on Multi-core support</a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>If you would like to seem more information on CPU affinity of MPI processes
+<p>If you would like to see more information on CPU affinity of MPI processes
 add the following line to the batch script:</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">I_MPI_DEBUG</span><span class="o">=</span><span class="mi">5</span>
 </pre></div>
@@ -442,7 +442,7 @@ are therefore labelled 0–47. When using hyperthreading (which is enabled by
 default on the NextgenIO system) the logical cores are labelled 48-95, where core
 48 corresponds to physical core 0, 49 to 1, and so on.</p>
 <p><em>Pinning MPI processes</em></p>
-<p>When using mpirun, the MPI processes can be pinned to a specfic core by setting
+<p>When using mpirun, the MPI processes can be pinned to a specific core by setting
 the environment variable <em>I_MPI_PIN_PROCESSOR_LIST</em>. To pin four MPI processes
 to (e.g.) the first four CPUs among the allocated CPUs, add the following line to the
 batch script:</p>
@@ -464,9 +464,9 @@ is to allow the job scheduler to allocate the CPUs for the MPI processes
 bind the threads within each proces.</p>
 </div>
 <p><em>Binding threads</em></p>
-<p>To bind threads to specfic cores the batch script needs to set the evironment
-variables <a class="reference external" href="https://gcc.gnu.org/onlinedocs/libgomp/OMP_005fPROC_005fBIND.html">*OMP_PROC_BIND*</a>
-and <a class="reference external" href="https://gcc.gnu.org/onlinedocs/libgomp/OMP_005fPLACES.html#OMP_005fPLACES">*OMP_NUM_PLACES*</a>.
+<p>To bind threads to specific cores the batch script needs to set the environment
+variables <a class="reference external" href="https://gcc.gnu.org/onlinedocs/libgomp/OMP_005fPROC_005fBIND.html">OMP_PROC_BIND</a>
+and <a class="reference external" href="https://gcc.gnu.org/onlinedocs/libgomp/OMP_005fPLACES.html#OMP_005fPLACES">OMP_NUM_PLACES</a>.
 The first of the variables simply needs to be set to <em>TRUE</em>, for the second
 there are multiple options available (see the documentation for a full list).</p>
 <p>Setting <code class="docutils literal notranslate"><span class="pre">OMP_NUM_PLACES=cores</span></code> pins threads to the physical cores they are
@@ -496,7 +496,7 @@ set to to 48 (= 192 / 4).</p>
 </div>
 <p>One level above the manual pinning of threads is the setting of the core affinity
 for the multithreading. This can be done by setting the <code class="docutils literal notranslate"><span class="pre">KMP_AFFINITY</span></code> environment
-variable. Note that including the option <em>verbose</em> for this variable prints additiional
+variable. Note that including the option <em>verbose</em> for this variable prints additional
 core affinity information to output.</p>
 <p>The most important option for <code class="docutils literal notranslate"><span class="pre">KMP_AFFINITY</span></code> are <em>compact</em> and <em>scatter</em>. <em>compact</em>
 places subsequent threads on CPUs as closely together as possible. <em>scatter</em> distributes
@@ -510,13 +510,13 @@ option. This can be set to <em>fine</em> for distribution on the level of physic
 to <em>thread</em> for hyperthreading.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">KMP_AFFINITY</span></code> variable also allows for the explicit binding of threads to cores,
 using the <em>explicit</em> option, followed by the <em>proclist</em> options specifying the cpu_id(s)
-(note the double quotes arround the options in this case):</p>
+(note the double quotes around the options in this case):</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">KMP_AFFINITY</span><span class="o">=</span><span class="s2">&quot;explicit,proclist=[cpu_id1,cpu_id2,...,cpu_idN]&quot;</span>
 </pre></div>
 </div>
 <p>Unfortunately, pinning of threads within MPI processes does not seem to be possible using
 this option. This option would therefore only be of use for job consisting of a single
-process (with mutiple threads).</p>
+process (with multiple threads).</p>
 <p>Some further examples of usage of <code class="docutils literal notranslate"><span class="pre">KMP_AFFINITY</span></code> are provided on the website for
 <a class="reference external" href="https://www.nas.nasa.gov/hecc/support/kb/using-intel-openmp-thread-affinity-for-pinning_285.html">NASA’s HECC</a>.
 This website also includes a visual example of the effects of <em>compact</em> and <em>scatter</em>
@@ -526,7 +526,7 @@ on thread distribution.</p>
 should allocate the optimal number of cores automatically. Similarly, the option
 <code class="docutils literal notranslate"><span class="pre">--ntasks-per-socket</span></code> is only of use if an unusual configuration of MPI processes
 is desired. The standard distribution enforced by the job scheduler is to spread
-processes evenly accross sockets: if the number of processes matches the number of
+processes evenly across sockets: if the number of processes matches the number of
 sockets, one process will be places in each socket.</p>
 <p>The allocation of MPI processes and threads can further be controlled with the
 <code class="docutils literal notranslate"><span class="pre">--distribution</span></code> option. This is a complicated option, with many settings. The
@@ -545,7 +545,7 @@ by users wishing to create a specific configuration.</p>
 <div class="section" id="debugging">
 <h3>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h3>
 <p>If code compiles but the executable still requires debugging, <em>impi</em> allows
-for additional debuggin information to be set using the <a class="reference external" href="https://software.intel.com/en-us/mpi-developer-reference-linux-other-environment-variables">I_MPI_DEBUG</a>
+for additional debugging information to be set using the <a class="reference external" href="https://software.intel.com/en-us/mpi-developer-reference-linux-other-environment-variables">I_MPI_DEBUG</a>
 environment variable. The argument for for the variable is the level of
 debugging. Setting the variable to zero disables the printing of debugging
 information, and positive integers enable printing, with increasing level

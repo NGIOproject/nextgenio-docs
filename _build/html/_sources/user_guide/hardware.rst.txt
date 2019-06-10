@@ -2,7 +2,7 @@ System Overview
 ===============
 
 This section will provide an overview of the system hardware, as well as
-a diagrammatic sketch of the sytem layout. 
+a diagrammatic sketch of the system layout. 
 
 There are multiple ways in which the new byte addressable storage class 
 memory (SCM)can be applied, and the different modes each have specific
@@ -106,7 +106,7 @@ When booting the platform in App direct mode, the NVDIMM namespace reserved
 for Memory mode usage is not visible to the application, and cannot be accessed.
 The App Direct reserved space on the NVDIMM functions as persistent memory
 (NVRAM). The DRAM is directly available to the application, and is used as 
-regular, low-latecy, memory. NVDIMM use in this mode is illustrated below.
+regular, low-latency, memory. NVDIMM use in this mode is illustrated below.
 
 .. raw:: html
     :file: ../images/NVDIMM_Appdirect.html

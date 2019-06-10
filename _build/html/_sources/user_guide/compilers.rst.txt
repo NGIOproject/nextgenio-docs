@@ -33,7 +33,7 @@ software) are available on the system is performed using the
 
 This will list all the names and versions of the modules available on
 the service. Not all of them may work in your account though due to,
-for example, licencing restrictions. You will notice that for many
+for example, licensing restrictions. You will notice that for many
 modules we have more than one version, each of which is identified by a
 version number. One of these versions is the default. As the
 service develops the default version will change.
@@ -78,7 +78,7 @@ If you want more info on any of the modules, you can use the
     Version 2019.3.199
 
 The simple ``module list`` command will give the names of the modules
-and their versions you have presently loaded in your envionment:
+and their versions you have presently loaded in your environment:
 
 ::
 
