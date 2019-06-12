@@ -119,7 +119,7 @@ Here [*exec-id*] is the name of my executable:
       
          mpicc mycode.c -o myexec
 
-      Add the ``-fopenmp`` option if the application also use OpenMP.
+      Add the ``-fopenmp`` option if the application also uses OpenMP.
 
 |      
 

@@ -34,7 +34,7 @@ Basic Commands
 +---------+--------------------------------------------------------------------------+
 | sinfo   || list available partitions, nodes on these partitions and the status of  |
 |         || these components. Availability is listed as either *up* or *down*.      |
-|         || For a full list of node-by-node status enter: *sinfo --long --Node*     |
+|         || For a full list of node-by-node status enter: ``sinfo --long --Node``   |
 +---------+--------------------------------------------------------------------------+
 | squeue  || list the jobs currently submitted to the system. Basic functionality    |
 |         || returns all jobs, provides the JOBID, the job owner, the requested      |
@@ -296,14 +296,40 @@ separated list of cores to which the processes should be bound. Note that it
 is not possible to specify a range of CPUs in the same manner as when using
 mpirun: it will be necessary to write out the list of cpu_ids in full.
 
-.. note:: 
+When it is not necessary to manually control which process is pinned to which
+core, one can use the option ``--cpu-bind=rank``, which pins MPI processes
+based on their rank. 
+
+.. note::
+
+   Unlike other *slurm* options it is not possible to pass ``--cpu-bind=[..]``
+   to the scheduler in the batch script using lines starting with *#SBATCH*.
+   Instead the option must be included as a flag on the srun command, e.g.:
+
+   .. code:: bash
+   
+      srun myexec --cpu-bind=map_cpu:0,11,24,36
+
+If MPI processes should be bound to the physical cores, rather than to logical 
+ones, the option ``--hint=nomultithreading`` can be passed to the scheduler.
+When working with a batch submission script, addition of the following line to the 
+script will ensure only physical cores will be used:
+
+.. code:: bash
+
+   #SBATCH --hint=nomultithread
+
+The distribution of the processes over the cores can be controlled with the 
+``--distribution`` option, if necessary.
+
+.. warning:: 
 
    When pinning MPI processes to specific cores, any threads the process will 
    create will run on *the same physical core* as the MPI process. When running
    mutiple threads per MPI process, the more reliable way of fixing core affinity
    is to allow the job scheduler to allocate the CPUs for the MPI processes 
    (possibly modified with the ``--distribution`` option, see below), and then to
-   bind the threads within each proces.
+   bind the threads within each process.
 
 *Binding threads*
 
@@ -405,7 +431,7 @@ by users wishing to create a specific configuration.
 Debugging
 ---------
 
-If code compiles but the executable still requires debugging, *impi* allows
+If the code compiles but the executable still requires debugging, *impi* allows
 for additional debugging information to be set using the `I_MPI_DEBUG 
 <https://software.intel.com/en-us/mpi-developer-reference-linux-other-environment-variables>`_
 environment variable. The argument for for the variable is the level of
@@ -439,7 +465,9 @@ between the two commands:
   Note, however, that all these setting are *overwritten* by the job scheduler
   if task allocation instructions are passed to the scheduler directly (e.g. by
   setting ``-ntasks`` in the submission script or shell).
-- ...  
+- environmental variables such as *I_MPI_PIN_PROCESSOR_LIST* and *I_MPI_DEBUG*
+  are only used by mpirun. When using srun equivalent settings need to be passed
+  to the scheduler as command options.
 
 
 

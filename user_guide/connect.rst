@@ -44,8 +44,8 @@ First Login
 -----------
 
 Once the two accounts have been approved and created, the temporary passwords can
-be found on EPCC SAFE. These passwords will altered upon the first login to the
-systems. To connect to hydra-vpn open a terminal and type:
+be found on EPCC SAFE. These passwords will be altered on the first login to the
+systems. To connect to hydra-vpn open a terminal and enter:
 
 ::
 
@@ -55,7 +55,7 @@ Use the EPCC SAFE password to connect, after which you will be asked to supply
 (and confirm) a permanent password, of your choosing. The option '-X' following 
 the ssh command allows for X11 forwarding over the connection.
 
-After connecting to hydra-vpn, connect to NextgenIO by typing:
+After connecting to hydra-vpn, connect to NextgenIO by entering:
 
 ::
 
@@ -88,7 +88,12 @@ made with a different encryption):
        ForwardX11Trusted yes
        User [username]
 
-Note that it is not necessary to copy your public key to NextgenIO.
+Note that it is not necessary to copy your public key to NextgenIO. Following
+this setup, logging in to the NextgenIO system can be done by entering
+
+.. code:: bash
+
+   ssh nextgenio
 
 
 Using SSH Clients

@@ -210,7 +210,7 @@ documentation pages</a>.</p>
 <td><div class="first last line-block">
 <div class="line">list available partitions, nodes on these partitions and the status of</div>
 <div class="line">these components. Availability is listed as either <em>up</em> or <em>down</em>.</div>
-<div class="line">For a full list of node-by-node status enter: <em>sinfo –long –Node</em></div>
+<div class="line">For a full list of node-by-node status enter: <code class="docutils literal notranslate"><span class="pre">sinfo</span> <span class="pre">--long</span> <span class="pre">--Node</span></code></div>
 </div>
 </td>
 </tr>
@@ -454,14 +454,35 @@ option <code class="docutils literal notranslate"><span class="pre">--cpu-bind=m
 separated list of cores to which the processes should be bound. Note that it
 is not possible to specify a range of CPUs in the same manner as when using
 mpirun: it will be necessary to write out the list of cpu_ids in full.</p>
+<p>When it is not necessary to manually control which process is pinned to which
+core, one can use the option <code class="docutils literal notranslate"><span class="pre">--cpu-bind=rank</span></code>, which pins MPI processes
+based on their rank.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
+<p>Unlike other <em>slurm</em> options it is not possible to pass <code class="docutils literal notranslate"><span class="pre">--cpu-bind=[..]</span></code>
+to the scheduler in the batch script using lines starting with <em>#SBATCH</em>.
+Instead the option must be included as a flag on the srun command, e.g.:</p>
+<div class="code bash last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">srun</span> <span class="n">myexec</span> <span class="o">--</span><span class="n">cpu</span><span class="o">-</span><span class="n">bind</span><span class="o">=</span><span class="n">map_cpu</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">36</span>
+</pre></div>
+</div>
+</div>
+<p>If MPI processes should be bound to the physical cores, rather than to logical
+ones, the option <code class="docutils literal notranslate"><span class="pre">--hint=nomultithreading</span></code> can be passed to the scheduler.
+When working with a batch submission script, addition of the following line to the
+script will ensure only physical cores will be used:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#SBATCH --hint=nomultithread</span>
+</pre></div>
+</div>
+<p>The distribution of the processes over the cores can be controlled with the
+<code class="docutils literal notranslate"><span class="pre">--distribution</span></code> option, if necessary.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
 <p class="last">When pinning MPI processes to specific cores, any threads the process will
 create will run on <em>the same physical core</em> as the MPI process. When running
 mutiple threads per MPI process, the more reliable way of fixing core affinity
 is to allow the job scheduler to allocate the CPUs for the MPI processes
 (possibly modified with the <code class="docutils literal notranslate"><span class="pre">--distribution</span></code> option, see below), and then to
-bind the threads within each proces.</p>
+bind the threads within each process.</p>
 </div>
 <p><em>Binding threads</em></p>
 <p>To bind threads to specific cores the batch script needs to set the environment
@@ -544,7 +565,7 @@ by users wishing to create a specific configuration.</p>
 </div>
 <div class="section" id="debugging">
 <h3>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h3>
-<p>If code compiles but the executable still requires debugging, <em>impi</em> allows
+<p>If the code compiles but the executable still requires debugging, <em>impi</em> allows
 for additional debugging information to be set using the <a class="reference external" href="https://software.intel.com/en-us/mpi-developer-reference-linux-other-environment-variables">I_MPI_DEBUG</a>
 environment variable. The argument for for the variable is the level of
 debugging. Setting the variable to zero disables the printing of debugging
@@ -571,7 +592,9 @@ The <code class="docutils literal notranslate"><span class="pre">-hosts</span></
 Note, however, that all these setting are <em>overwritten</em> by the job scheduler
 if task allocation instructions are passed to the scheduler directly (e.g. by
 setting <code class="docutils literal notranslate"><span class="pre">-ntasks</span></code> in the submission script or shell).</li>
-<li>…</li>
+<li>environmental variables such as <em>I_MPI_PIN_PROCESSOR_LIST</em> and <em>I_MPI_DEBUG</em>
+are only used by mpirun. When using srun equivalent settings need to be passed
+to the scheduler as command options.</li>
 </ul>
 </div>
 </div>

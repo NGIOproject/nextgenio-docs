@@ -20,8 +20,8 @@ From the main CASTEP-[version] directory run the following command:
 and follow the install instructions set in the makefile.
 
 In the following we will make use of two trial datasets, provided on
-the CASTEP website: `TiN <http://www.castep.org/CASTEP/TiN>`_ and `DNA 
-<http://www.castep.org/CASTEP/DNA>`_.
+the CASTEP website: `TiN <http://www.castep.org/CASTEP/TiN>`_ and 
+`DNA <http://www.castep.org/CASTEP/DNA>`_.
 
 Preparing a CASTEP job
 ----------------------
@@ -37,8 +37,8 @@ does not appear to be able to perform a dryrun
 
    In order to perform a dryrun on the nextgenio system it is necessary
    to have the serial implementation of castep available. This can be done
-   by following the initial build of the application with the ``build`` 
-   command specified above, with the command ``build install``.
+   by following the initial build of the application with the ``make`` 
+   command specified above, with the command ``make install``.
    This may result in the :ref:`ref-qcastepinstall`, however the castep.serial
    executable should be created nonetheless.
 
@@ -81,7 +81,7 @@ that will run the analysis of the TiN dataset:
 
    #SBATCH -D /path/to/TiN-directory
    #SBATCH -o /path/to/TiN-directory/TiN.out.%A.%N.log
-   #SBATCH -e /path/to/TiN-directoryTiN.err.%A.%N.log
+   #SBATCH -e /path/to/TiN-directory/TiN.err.%A.%N.log
    #SBATCH --job-name=castep-tin
 
    export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
@@ -89,7 +89,7 @@ that will run the analysis of the TiN dataset:
    srun "/path/to/castep-build/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi" "path/to/TiN-directory/TiN-mp"
 
 
-For the TiN and DNA test sets, in the standard configuration, the 
+For the TiN, and DNA test sets, in the standard configuration, the 
 number of k-points is 8 and 1 respectively. In the example above
 one MPI process is assigned per k-point, and the plane wave calculations
 are spread over six cpus, each running one thread.

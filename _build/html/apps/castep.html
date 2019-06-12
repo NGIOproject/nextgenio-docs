@@ -187,7 +187,8 @@ From the main CASTEP-[version] directory run the following command:</p>
 </div>
 <p>and follow the install instructions set in the makefile.</p>
 <p>In the following we will make use of two trial datasets, provided on
-the CASTEP website: <a class="reference external" href="http://www.castep.org/CASTEP/TiN">TiN</a> and <a class="reference external" href="http://www.castep.org/CASTEP/DNA">DNA</a>.</p>
+the CASTEP website: <a class="reference external" href="http://www.castep.org/CASTEP/TiN">TiN</a> and
+<a class="reference external" href="http://www.castep.org/CASTEP/DNA">DNA</a>.</p>
 </div>
 <div class="section" id="preparing-a-castep-job">
 <h2>Preparing a CASTEP job<a class="headerlink" href="#preparing-a-castep-job" title="Permalink to this headline">¶</a></h2>
@@ -200,8 +201,8 @@ does not appear to be able to perform a dryrun</p>
 <p class="first admonition-title">Note</p>
 <p class="last">In order to perform a dryrun on the nextgenio system it is necessary
 to have the serial implementation of castep available. This can be done
-by following the initial build of the application with the <code class="docutils literal notranslate"><span class="pre">build</span></code>
-command specified above, with the command <code class="docutils literal notranslate"><span class="pre">build</span> <span class="pre">install</span></code>.
+by following the initial build of the application with the <code class="docutils literal notranslate"><span class="pre">make</span></code>
+command specified above, with the command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code>.
 This may result in the <a class="reference internal" href="../user_guide/faq.html#ref-qcastepinstall"><span class="std std-ref">Error running make install during CASTEP build</span></a>, however the castep.serial
 executable should be created nonetheless.</p>
 </div>
@@ -237,7 +238,7 @@ that will run the analysis of the TiN dataset:</p>
 
 #SBATCH -D /path/to/TiN-directory
 #SBATCH -o /path/to/TiN-directory/TiN.out.%A.%N.log
-#SBATCH -e /path/to/TiN-directoryTiN.err.%A.%N.log
+#SBATCH -e /path/to/TiN-directory/TiN.err.%A.%N.log
 #SBATCH --job-name=castep-tin
 
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
@@ -245,7 +246,7 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 srun &quot;/path/to/castep-build/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi&quot; &quot;path/to/TiN-directory/TiN-mp&quot;
 </pre></div>
 </div>
-<p>For the TiN and DNA test sets, in the standard configuration, the
+<p>For the TiN, and DNA test sets, in the standard configuration, the
 number of k-points is 8 and 1 respectively. In the example above
 one MPI process is assigned per k-point, and the plane wave calculations
 are spread over six cpus, each running one thread.</p>

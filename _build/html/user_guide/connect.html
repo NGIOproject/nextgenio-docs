@@ -222,15 +222,15 @@ dropdown menu.</p>
 <div class="section" id="first-login">
 <h3>First Login<a class="headerlink" href="#first-login" title="Permalink to this headline">¶</a></h3>
 <p>Once the two accounts have been approved and created, the temporary passwords can
-be found on EPCC SAFE. These passwords will altered upon the first login to the
-systems. To connect to hydra-vpn open a terminal and type:</p>
+be found on EPCC SAFE. These passwords will be altered on the first login to the
+systems. To connect to hydra-vpn open a terminal and enter:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="o">-</span><span class="n">X</span> <span class="p">[</span><span class="n">username</span><span class="p">]</span><span class="nd">@hydra</span><span class="o">-</span><span class="n">vpn</span><span class="o">.</span><span class="n">epcc</span><span class="o">.</span><span class="n">ed</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span>
 </pre></div>
 </div>
 <p>Use the EPCC SAFE password to connect, after which you will be asked to supply
 (and confirm) a permanent password, of your choosing. The option ‘-X’ following
 the ssh command allows for X11 forwarding over the connection.</p>
-<p>After connecting to hydra-vpn, connect to NextgenIO by typing:</p>
+<p>After connecting to hydra-vpn, connect to NextgenIO by entering:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="o">-</span><span class="n">X</span> <span class="p">[</span><span class="n">username</span><span class="p">]</span><span class="nd">@nextgenio</span><span class="o">-</span><span class="n">login1</span>
 </pre></div>
 </div>
@@ -258,7 +258,11 @@ made with a different encryption):</p>
    <span class="n">User</span> <span class="p">[</span><span class="n">username</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Note that it is not necessary to copy your public key to NextgenIO.</p>
+<p>Note that it is not necessary to copy your public key to NextgenIO. Following
+this setup, logging in to the NextgenIO system can be done by entering</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">nextgenio</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="using-ssh-clients">
