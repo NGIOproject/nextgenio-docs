@@ -105,7 +105,6 @@
 <li class="toctree-l1"><a class="reference internal" href="halvade.html">Halvade</a></li>
 <li class="toctree-l1"><a class="reference internal" href="kmeans.html">K-Means</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monc.html">MONC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="isf.html">RSF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="openfoam.html">OpenFOAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ospray.html">OSPRay</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tiramisu.html">Tiramisu</a></li>
@@ -187,8 +186,8 @@ From the main CASTEP-[version] directory run the following command:</p>
 </div>
 <p>and follow the install instructions set in the makefile.</p>
 <p>In the following we will make use of two trial datasets, provided on
-the CASTEP website: <a class="reference external" href="http://www.castep.org/CASTEP/TiN">TiN</a> and
-<a class="reference external" href="http://www.castep.org/CASTEP/DNA">DNA</a>.</p>
+the CASTEP website: <a class="reference external" href="http://www.castep.org/CASTEP/TiN">TiN</a>,
+<a class="reference external" href="http://www.castep.org/CASTEP/Al3x3">Al3x3</a>, and <a class="reference external" href="http://www.castep.org/CASTEP/DNA">DNA</a>.</p>
 </div>
 <div class="section" id="preparing-a-castep-job">
 <h2>Preparing a CASTEP job<a class="headerlink" href="#preparing-a-castep-job" title="Permalink to this headline">¶</a></h2>
@@ -246,8 +245,8 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 srun &quot;/path/to/castep-build/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi&quot; &quot;path/to/TiN-directory/TiN-mp&quot;
 </pre></div>
 </div>
-<p>For the TiN, and DNA test sets, in the standard configuration, the
-number of k-points is 8 and 1 respectively. In the example above
+<p>For the TiN, Al3x3, and DNA test sets, in the standard configuration, the
+number of k-points is 8, 2, and 1 respectively. In the example above
 one MPI process is assigned per k-point, and the plane wave calculations
 are spread over six cpus, each running one thread.</p>
 <p>Performance of the system will depend both on the parallelisation of

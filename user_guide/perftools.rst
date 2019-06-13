@@ -172,6 +172,27 @@ spent on main thread, OpenMP, MPI etc.), fraction of max FLOPs per CPUs
 used, and memory usage. The large screen below shows the fraction of
 the runtime spent on different sections of the application.
 
+By selecting any section of the runtime (in the upper panels) and left 
+clicking in the higlighted region, it is possible to zoom in on a certain
+time. Right clicking will zoom out again.
+
+.. note:: 
+
+   As hyperthreading is switched on by default on the NextgenIO system,
+   MAP will intially display the results of the run under the assumption
+   that each pysical core represents two logical cores, *even when
+   hyperthreading was switched off manually*. To adjust this setting, 
+   adjust the number of cores in the top right corner of the GUI.
+
+   In the example in the image below all cores on a node were selected,
+   resulting in the assumption of 96 cores (2 per process). Select this 
+   setting to adjust the number of cores per process to 1, if
+   hyperthreading was switched off.
+
+   .. image:: ../images/armmap_cores_closeup.png
+      :align: center
+      :scale: 80%
+
 There are many display options and varying levels of detail to 
 review this data, and requirements will depends strongly one the 
 intention of the user. We refer the reader to the MAP documentation

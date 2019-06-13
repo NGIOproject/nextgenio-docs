@@ -98,6 +98,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#batch-job-submission-failed-requested-node-configuration-is-not-available">Batch job submission failed: Requested node configuration is not available:</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#slurmstepd-error-execve-exec-name-no-such-file-or-directory">Slurmstepd: error: execve(): [exec-name] : No such file or directory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#symbol-lookup-error">Symbol Lookup Error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#map-command-not-found">map: command not found</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#error-running-make-install-during-castep-build">Error running <em>make install</em> during CASTEP build</a></li>
 </ul>
 </li>
@@ -110,7 +111,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../apps/halvade.html">Halvade</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/kmeans.html">K-Means</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/monc.html">MONC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../apps/isf.html">RSF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/openfoam.html">OpenFOAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/ospray.html">OSPRay</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/tiramisu.html">Tiramisu</a></li>
@@ -184,6 +184,7 @@
 <li><a class="reference internal" href="#ref-qconfig"><span class="std std-ref">Batch job submission failed: Requested node configuration is not available:</span></a></li>
 <li><a class="reference internal" href="#ref-qnojobfile"><span class="std std-ref">Slurmstepd: error: execve(): [exec-name] : No such file or directory</span></a></li>
 <li><a class="reference internal" href="#ref-qsymbollookup"><span class="std std-ref">Symbol Lookup Error</span></a></li>
+<li><a class="reference internal" href="#ref-nomap"><span class="std std-ref">map: command not found</span></a></li>
 <li><a class="reference internal" href="#ref-qcastepinstall"><span class="std std-ref">Error running make install during CASTEP build</span></a></li>
 </ul>
 <div class="section" id="faqs">
@@ -230,6 +231,12 @@ cpus-per-task = 96. This is the maximum number available on a node.</p>
 </div>
 <div class="section" id="slurmstepd-error-execve-exec-name-no-such-file-or-directory">
 <span id="ref-qnojobfile"></span><h3>Slurmstepd: error: execve(): [exec-name] : No such file or directory<a class="headerlink" href="#slurmstepd-error-execve-exec-name-no-such-file-or-directory" title="Permalink to this headline">¶</a></h3>
+<p>When trying to submit a job I receive the error</p>
+<div class="admonition error">
+<p class="first admonition-title">Error</p>
+<p class="last">Slurmstepd: error: execve(): [exec-name] : No such file or directory</p>
+</div>
+<p>where [exec-name] is the name of my executable.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <strong>Answer</strong></div>
@@ -278,6 +285,30 @@ combination with openmpi. Try compiling using:</p>
 </pre></div>
 </div>
 <p>Add the <code class="docutils literal notranslate"><span class="pre">-fopenmp</span></code> option if the application also uses OpenMP.</p>
+</div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="map-command-not-found">
+<span id="ref-nomap"></span><h3>map: command not found<a class="headerlink" href="#map-command-not-found" title="Permalink to this headline">¶</a></h3>
+<p>When trying to use the ARM-MAP profiling tool I receive the following error
+message:</p>
+<div class="admonition error">
+<p class="first admonition-title">Error</p>
+<p class="last">/var/spool/slurm/d/[jobID]/slurm_script: line […]: map: command not found</p>
+</div>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<strong>Answer</strong></div>
+<div class="text docutils container">
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>This error is likely due to the <code class="docutils literal notranslate"><span class="pre">arm-forge</span></code> module not being loaded. You
+can check the list of loaded modules by entering <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">list</span></code> and load
+the required module by entering <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span> <span class="pre">arm-forge</span></code></p>
 </div>
 </div>
 <div class="line-block">

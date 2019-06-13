@@ -20,8 +20,9 @@ From the main CASTEP-[version] directory run the following command:
 and follow the install instructions set in the makefile.
 
 In the following we will make use of two trial datasets, provided on
-the CASTEP website: `TiN <http://www.castep.org/CASTEP/TiN>`_ and 
-`DNA <http://www.castep.org/CASTEP/DNA>`_.
+the CASTEP website: `TiN <http://www.castep.org/CASTEP/TiN>`_,
+`Al3x3 <http://www.castep.org/CASTEP/Al3x3>`_, and `DNA 
+<http://www.castep.org/CASTEP/DNA>`_.
 
 Preparing a CASTEP job
 ----------------------
@@ -89,8 +90,8 @@ that will run the analysis of the TiN dataset:
    srun "/path/to/castep-build/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi" "path/to/TiN-directory/TiN-mp"
 
 
-For the TiN, and DNA test sets, in the standard configuration, the 
-number of k-points is 8 and 1 respectively. In the example above
+For the TiN, Al3x3, and DNA test sets, in the standard configuration, the 
+number of k-points is 8, 2, and 1 respectively. In the example above
 one MPI process is assigned per k-point, and the plane wave calculations
 are spread over six cpus, each running one thread.
 

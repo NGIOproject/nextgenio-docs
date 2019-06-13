@@ -26,7 +26,6 @@ NEXTGenIO
    apps/halvade
    apps/kmeans
    apps/monc
-   apps/isf
    apps/openfoam
    apps/ospray
    apps/tiramisu

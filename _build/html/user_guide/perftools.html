@@ -108,7 +108,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../apps/halvade.html">Halvade</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/kmeans.html">K-Means</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/monc.html">MONC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../apps/isf.html">RSF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/openfoam.html">OpenFOAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/ospray.html">OSPRay</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/tiramisu.html">Tiramisu</a></li>
@@ -308,6 +307,22 @@ breakdown of resource usage: application activity (fraction of time
 spent on main thread, OpenMP, MPI etc.), fraction of max FLOPs per CPUs
 used, and memory usage. The large screen below shows the fraction of
 the runtime spent on different sections of the application.</p>
+<p>By selecting any section of the runtime (in the upper panels) and left
+clicking in the higlighted region, it is possible to zoom in on a certain
+time. Right clicking will zoom out again.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>As hyperthreading is switched on by default on the NextgenIO system,
+MAP will intially display the results of the run under the assumption
+that each pysical core represents two logical cores, <em>even when
+hyperthreading was switched off manually</em>. To adjust this setting,
+adjust the number of cores in the top right corner of the GUI.</p>
+<p>In the example in the image below all cores on a node were selected,
+resulting in the assumption of 96 cores (2 per process). Select this
+setting to adjust the number of cores per process to 1, if
+hyperthreading was switched off.</p>
+<a class="last reference internal image-reference" href="../_images/armmap_cores_closeup.png"><img alt="../_images/armmap_cores_closeup.png" class="align-center" src="../_images/armmap_cores_closeup.png" style="width: 614.4px; height: 155.2px;" /></a>
+</div>
 <p>There are many display options and varying levels of detail to
 review this data, and requirements will depends strongly one the
 intention of the user. We refer the reader to the MAP documentation

@@ -5,6 +5,7 @@ FAQs and Common Issues
 - :ref:`ref-qconfig`
 - :ref:`ref-qnojobfile`
 - :ref:`ref-qsymbollookup`
+- :ref:`ref-nomap`
 - :ref:`ref-qcastepinstall`
 
 
@@ -61,6 +62,14 @@ When trying to submit my batch job, I receive the error message:
 
 Slurmstepd: error: execve(): [exec-name] : No such file or directory
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When trying to submit a job I receive the error
+
+.. Error::
+
+  Slurmstepd: error: execve(): [exec-name] : No such file or directory
+
+where [exec-name] is the name of my executable.
 
 .. container:: toggle
 
@@ -122,6 +131,34 @@ Here [*exec-id*] is the name of my executable:
       Add the ``-fopenmp`` option if the application also uses OpenMP.
 
 |      
+
+.. _ref-nomap:
+
+map: command not found
+^^^^^^^^^^^^^^^^^^^^^^
+
+When trying to use the ARM-MAP profiling tool I receive the following error
+message:
+
+.. Error::
+
+   /var/spool/slurm/d/[jobID]/slurm_script: line [...]: map: command not found
+
+.. container:: toggle
+
+   .. container:: header
+
+      **Answer**
+
+   .. container:: text
+
+      |
+
+      This error is likely due to the ``arm-forge`` module not being loaded. You
+      can check the list of loaded modules by entering ``module list`` and load 
+      the required module by entering ``module load arm-forge``
+
+|
 
 .. _ref-qcastepinstall:
 
