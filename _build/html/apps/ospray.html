@@ -101,7 +101,10 @@
 <li class="toctree-l1"><a class="reference internal" href="kmeans.html">K-Means</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monc.html">MONC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="openfoam.html">OpenFOAM</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">OSPRay</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">OSPRay</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installing-ospray">Installing OSPRay</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="tiramisu.html">Tiramisu</a></li>
 </ul>
 
@@ -171,9 +174,268 @@
 <h1>OSPRay<a class="headerlink" href="#ospray" title="Permalink to this headline">¶</a></h1>
 <p>OSPRay is Intel’s Open Source Portable Ray tracing engine,
 applied in data visualisation and (interactive) rendering.
-The engine relies strongly on the <a class="reference external" href="https://www.embree.org/">Intel Embree</a> kernels. Documentation can be
-found on the <a class="reference external" href="https://www.ospray.org/documentation.html">OSPRay wbsite</a> and on the
+The engine relies on the <a class="reference external" href="https://www.embree.org/">Intel Embree</a> kernels and the <a class="reference external" href="https://ispc.github.io/index.html">Intel SPMD
+Progam Compiler</a>.
+Documentation can be found on the <a class="reference external" href="https://www.ospray.org/documentation.html">OSPRay wbsite</a> and on the
 <a class="reference external" href="https://github.com/ospray/OSPRay">OSPRay GitHub</a>.</p>
+<div class="section" id="installing-ospray">
+<h2>Installing OSPRay<a class="headerlink" href="#installing-ospray" title="Permalink to this headline">¶</a></h2>
+<p>The following is a step-by-step list to install OSPRay on the system
+Note that this will install OSPRay without graphical interfaces,
+such as the Exampleviewer. The NexgenioIO system currently does
+not have the grahical libraries installed to enable these features.</p>
+<ol class="arabic">
+<li><p class="first">Load the required modules</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">cmake</span> <span class="n">embree</span> <span class="n">glfw</span> <span class="n">mesa</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Clone the OSPRay repository</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ospray</span><span class="o">/</span><span class="n">ospray</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<p>This will create and fill a directory named <em>ospray</em> in the
+current working directory.</p>
+</li>
+<li><p class="first">Create a build directory in the repository directory</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">ospray</span>
+<span class="n">mkdir</span> <span class="n">build</span>
+</pre></div>
+</div>
+<p>Creating a separte build directory is generally helpful when
+multiple configurations of the buld are possible or required.</p>
+</li>
+<li><p class="first">Create an install directory, where the executables and header files
+will be installed.</p>
+</li>
+<li><p class="first">Configure the CMake file in the build directory. As the GUI
+CCMake is included in the <em>cmake</em> module, it is recommended to make
+use of it, as there are multiple options to set, and entering them all
+in a single command line argument may be troublesome.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For some of the options it may be necessary to request a CCMake
+configuration (hit <em>c</em>) to be prompted with the necessary command
+options. Warning messages can be exited by hitting <em>e</em> to return
+to the configuration menu. Other options (such as switching on MPI)
+can only be entered by loading the full menu of options by hitting <em>t</em>
+in the settings menu.</p>
+<p>The CCMake menu can be searced by entering ‘/’ followed by the search
+string.</p>
+<p class="last">Not all options will have to be set: this is not necessary for a
+working install of the OSPRay.</p>
+</div>
+<ol class="loweralpha">
+<li><p class="first">Enter the build directory and start the GUI</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build</span>
+<span class="n">ccmake</span> <span class="o">..</span>
+</pre></div>
+</div>
+<p>This will load the CMakeLists.txt file in the repo directory</p>
+</li>
+<li><p class="first">Start initial configuration: hit <em>c</em></p>
+</li>
+<li><p class="first">There are many settings to controll the build of the application
+(hit <em>t</em> to switch the full list on/off). Below is a list of the
+settings that will likely need to be altered and are necessary for
+a successful install on the system.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%" />
+<col width="54%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>CMAKE_BUILD_TYPE</td>
+<td>Release</td>
+</tr>
+<tr class="row-even"><td>CMAKE_INSTALL_PREFIX</td>
+<td>/path/to/install/directory</td>
+</tr>
+<tr class="row-odd"><td>OSPRAY_APPS_BENCHMARK</td>
+<td>ON</td>
+</tr>
+<tr class="row-even"><td>OSPRAY_ENABLE_TUTORIALS</td>
+<td>OFF</td>
+</tr>
+<tr class="row-odd"><td>OSPRAY_APPS_EXAMPLEVIEWER</td>
+<td>OFF</td>
+</tr>
+<tr class="row-even"><td>OSPRAY_MODULE_MPI</td>
+<td>ON</td>
+</tr>
+<tr class="row-odd"><td>BUILD_SHARED_LIBS</td>
+<td>ON</td>
+</tr>
+<tr class="row-even"><td>ISPC_EXECUTABLE</td>
+<td>/path/to/ispc-v1.9.1-linux/ispc</td>
+</tr>
+</tbody>
+</table>
+<p>OSPRay use  TBB as its threading system by default (which is
+installed on the NextgenIO system), but can also use OpenMP.
+To enable this option select:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="74%" />
+<col width="26%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>OSPRAY_TASKING_SYSTEM</td>
+<td>OpenMP</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">In case not all the required libraries and/or header files
+are found by CMake, an error message will be shown (exit with
+<em>e</em>) and the path to these files will need to be set manually.</p>
+<p>An overview of possibly problematic libraries and their
+required setting (see also the warning at the end of this
+section).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>glfw3_DIR</td>
+<td>/home/software/glfw/3.3</td>
+</tr>
+<tr class="row-even"><td>OPENGL_EGL_INCLUDE_DIR</td>
+<td>/home/software/mesa/18.0.0/include/EGL</td>
+</tr>
+<tr class="row-odd"><td>OPENGL_GLX_INCLUDE_DIR</td>
+<td>/home/software/mesa/18.0.0/include/GL</td>
+</tr>
+<tr class="row-even"><td>OPENGL_INCLUDE_DIR</td>
+<td>/home/software/mesa/18.0.0/include/GL</td>
+</tr>
+<tr class="row-odd"><td>OPENGL_egl_LIBRARY</td>
+<td>/home/software/mesa/18.0.0/lib/libEGL.so</td>
+</tr>
+<tr class="row-even"><td>OPENGL_gl_LIBRARY</td>
+<td>/home/software/mesa/18.0.0/lib/libGL.so</td>
+</tr>
+<tr class="row-odd"><td>OPENGL_opengl_LIBRARY</td>
+<td>/path/of/local/copy/lib/libOpenGL.so</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">After the final configuration (hitting <em>c</em> without being prompted for
+further input) the Makefile can be generated by hitting <em>g</em>.</p>
+<p>CCMake will most likely show a warning concerning the inability to
+guarantee a safe runtime search path. This is the result of some libraries
+being installed twice as part of different modules and will not affect the
+ability to run OSPRay after building and installing.</p>
+<p>Upon completion the Makefile should be present in te <em>build</em> directory.</p>
+</li>
+</ol>
+</li>
+<li><p class="first">Build OSPRay</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span>
+</pre></div>
+</div>
+<p>The build will take considerable time</p>
+</li>
+<li><p class="first">Install OSpray</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>This will install the executable and header files in the
+install directory specified in step 5.</p>
+</li>
+<li><p class="first">Update LD_LIBRARY_PATH</p>
+<p>Add the install path to LD_LIBRARY_PATH:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/install/directory/lib64
+</pre></div>
+</div>
+<p>It can also be useful to add the <em>bin</em> directory
+to the PATH to be able to run the executables without
+having to specify the full path:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>export PATH=$PATH:/path/to/install/directory/bin
+</pre></div>
+</div>
+<p>By adding these to lines to the .bashrc file these variables
+will be set automatically when logging into a shell.</p>
+</li>
+<li><p class="first">Optional: Enabling the Open Image Denoiser</p>
+<p>This is an extra option, which is not necessary for an operational
+build of OSPRay, but could improve performance (<em>not tested</em>). This step
+needs to be included before step 5. is completed. It will require
+the download of a separate executable and linking to its directory.</p>
+<ol class="loweralpha">
+<li><p class="first">Download Intel Open Image Denoiser</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">OpenImageDenoise</span><span class="o">/</span><span class="n">oidn</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">v0</span><span class="o">.</span><span class="mf">9.0</span><span class="o">/</span><span class="n">oidn</span><span class="o">-</span><span class="mf">0.9</span><span class="o">.</span><span class="mf">0.</span><span class="n">x86_64</span><span class="o">.</span><span class="n">linux</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+
+<span class="n">tar</span> <span class="o">-</span><span class="n">xzf</span> <span class="n">oidn</span><span class="o">-</span><span class="mf">0.9</span><span class="o">.</span><span class="mf">0.</span><span class="n">x86_64</span><span class="o">.</span><span class="n">linux</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the CMake variable</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="74%" />
+<col width="26%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>OSPRAY_APPS_ENABLE_DENOISER</td>
+<td>ON</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Set the path to the OIDN (it may be necessary to configure
+within CCMake -hit <em>c</em>- first).</p>
+<p>The directory path should point to the location of
+OpenImageDenoiseConfig.cmake:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>OpenImageDenoise_DIR</td>
+<td>/path/to/oidn-0.9.0.x86_64/lib/cmake/OpenImageDenoise/</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Known issues with OSPRay install</p>
+<ul class="last">
+<li><p class="first">Missing libraries: libOpenGL.so</p>
+<p>Workaround: create a directory with a local copy of the library</p>
+<p>A copy of the library can be found in the Debian package
+<em>libopengl0</em>, which can then be copied onto the system</p>
+<p>A more permanent solution is likely desired.</p>
+</li>
+<li><p class="first">ISPC version (1.11)</p>
+<p>This will result in:</p>
+<div class="admonition error">
+<p class="first admonition-title">Error</p>
+<p class="last">relocation R_X86_64_PC32 against symbol ‘stdout&#64;&#64;GLIBC_2.2.5’ can not be used when making a shared object; recompile with -fPIC</p>
+</div>
+<p>Workaround: Create a local install of ISPCv1.9</p>
+<p>A pre-built version of the compiler is available for download.
+Below are the instructions to install ISPC in a separate directory:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">downloads</span><span class="o">.</span><span class="n">sourceforge</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">ispcmirror</span><span class="o">/</span><span class="n">v1</span><span class="o">.</span><span class="mf">9.1</span><span class="o">/</span><span class="n">ispc</span><span class="o">-</span><span class="n">v1</span><span class="o">.</span><span class="mf">9.1</span><span class="o">-</span><span class="n">linux</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">check</span><span class="o">-</span><span class="n">certificate</span>
+
+<span class="n">tar</span> <span class="o">-</span><span class="n">xzf</span> <span class="n">ispc</span><span class="o">-</span><span class="n">v1</span><span class="o">.</span><span class="mf">9.1</span><span class="o">-</span><span class="n">linux</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<p>The ISPC executable is located in the main directory (ispc-v1.9.1-linux).
+The CMake variable ISPC_EXECUTABLE should list the directory path
+and the executable.</p>
+<p><em>Updates may be required if the modules are changed</em></p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 
 
