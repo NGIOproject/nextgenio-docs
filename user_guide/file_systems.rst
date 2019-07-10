@@ -3,22 +3,22 @@
 File Systems and Storage
 ========================
 
-In order to make use non-volatile memory (NVM) NextgenIO
-makes use of a variety of file systems: both `EchoFS`_ and
+In order to exploit non-volatile memory (NVM) NextgenIO
+makes use of different file systems: both `EchoFS`_ and
 `GekkoFS`_ can be used by the Data Scheduler for stage-in 
 and stage-out operations. The use of GekkoFS will be 
-favoured over that of of EchoFS, as GekkoFS has a higher
+favoured over that of of echoFS, as GekkoFS has a higher
 performance and can be mounted on multiple nodes 
 simultaneously.
 
 `dataClay`_ provides object class storage and can be used
-by applications based on object oriented code directly.
+directly by applications based on object oriented code.
 
 If the platform mode is set to Memory Mode, NVDIMM 
 namespaces reserved for App Direct mode require an 
-interface to allow application Direct Access (DAX).
-This can be in the form of a DAX enabled file system
-mounted on the memory (`FSDAX`_) or Device DAX
+interface to allow applications Direct Access (DAX).
+This interface  can be in the form of a DAX enabled file
+system mounted on the memory (`FSDAX`_) or Device DAX
 (`DevDAX`_).
 
 Direct Access (DAX)
@@ -27,24 +27,22 @@ Direct Access (DAX)
 FSDAX
 -----
 
-There are several file systems that allow for direct
-access of application to the NVM, such as ext4, 
-ext3, XFS, and ramfs. On NextgenIO the file system
-used for FSDAX is ext4.
+There are several file systems that enable direct to
+the NVM for applications, such as ext4, ext3, XFS, 
+and ramfs. On NextgenIO the file system used for FSDAX 
+is ext4.
  
 Once the file system is mounted on the NVM App
 Direct partition (i.e. the namespace in the NVM 
 reserved for direct access), applications can access
 the memory with the use of the memory mapping function
-( mmap( ) ) provided by the PMDK.
+provided by the PMDK ( mmap( ) ).
 
-The burst-buffers EchoFS and GekkoFS make use of file
-system enabled DAX. In the case of EchoFS Device DAX is
-possible on the side of the system itself, but currently
-not possible as the FS relies on FUSE to access memory.
-DevDAX implementation for GekkoFS may also be developed
-in the future.
-
+EchoFS and GekkoFS make use of file system-enabled DAX. 
+Device DAX is technically possible for EchoFS, but this
+feature is currently not enabled as the FS relies on
+FUSE to access memory. DevDAX for GekkoFS may also be
+implemented in the future.
 
 DevDAX
 ------
@@ -55,10 +53,11 @@ intervention of a file system.
 
 ::
 
-   Is there a specified method for this type of access?
+   Is there a specified method for this type of access
+   on NGIO (that users need to know about)?
 
 
-EchoFS
+echoFS
 ~~~~~~
 
 This file system allows for POSIX-like NVM based 
@@ -67,7 +66,7 @@ storage, and is used by the Data Scheduler to prefetch
 (PFS/storage) to the computing nodes, and to write 
 data from the computing nodes to the PFS upon completion
 (stage-out). In contrast to GekkoFS, EchoFS is mounted
-on single nodes.
+on individual nodes.
 
 EchoFS operates as a temporary, ad-hoc file system on
 the computing nodes and on the PFS. It exists only as 
@@ -83,21 +82,15 @@ nodes. EchoFS prefetches the required data, based on the
 job's data requirements passed on by the Scheduler.
 
 Once stage-in has been completed, the batch job can 
-execute. The application can access the loaded files
+execute. The application in the job can access the loaded files
 via standard POSIX I/O functions, making the system
-compatible with legacy applications. The NVRAM functions
-as a faster form of traditional storage.
+compatible with legacy applications. In this configuration 
+the NVRAM functions as a faster form of traditional storage.
 
 Any new files created during the job are written into 
-the NVM buffers, only transferring to storage 
+the NVM buffers, only transferring to long term storage 
 (stage-out) once the job is completed. echofs therefore 
 operates as a burst buffer.
-
-::
-
-   - Can a choice between the two be specfied by the
-     users? (i.e.: do users need to understand the 
-     difference between them?)
 
 GekkoFS
 ~~~~~~~
@@ -111,9 +104,9 @@ batch job. In these ways it is similar to echofs.
 
 There are important differences between the file-systems, though.
 GekkoFS forms a collaborative burst buffer, acting as a single 
-file system for all directly accessible memory on the nodes
-allocated to the job by the Job Scheduler. Data and metadata is 
-distributed in blocks over the available storage space.
+file system for the directly accessible memory, combining the memory
+on all the nodes allocated to the job by the Job Scheduler. Data and 
+metadata are distributed in blocks over the available storage space.
 
 The Gekko File System functions as an interposition library, which
 redirects all file system operations requested by the job to 
@@ -171,8 +164,8 @@ for user access to the objects stored in the data service.
 
 The data service handles the storage of the persistent objects, as
 well as any execution requests involving these objects. The execution
-request are expected to be mainly execution of methods from the class
-to which the given object belongs. 
+request are expected to be mainly for methods from the class to which
+the given object belongs. 
 
 dataClay can be called by any application written in the
 supported languages, however specific effort has been made

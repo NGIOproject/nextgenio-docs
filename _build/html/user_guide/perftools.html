@@ -207,7 +207,7 @@ module:</p>
 </pre></div>
 </div>
 <p>When the module is loaded, the easiest use of MAP is through the
-GUI. This can be openend by entering</p>
+GUI. This can be opened by entering</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$&gt; map
 </pre></div>
 </div>
@@ -259,7 +259,7 @@ example:</p>
 <p>This example will use the application <a class="reference internal" href="../apps/castep.html#sec-ref-castep"><span class="std std-ref">CASTEP</span></a> to
 illustrate the usage of MAP for benchmarking.</p>
 <p>Job submission can be done either directly, by selecting the
-applicatation in the GUI and clicking <em>Submit</em>,  or by submitting
+application in the GUI and clicking <em>Submit</em>,  or by submitting
 a batch job to the queue (see section see <a class="reference internal" href="job_scheduler.html#sec-ref-scheduler"><span class="std std-ref">Submitting Jobs</span></a>)
 and calling MAP without the GUI.</p>
 <p>The following batch script submits a CASTEP job analysing the
@@ -275,7 +275,7 @@ generally of significant impact on performance.</p>
 #SBATCH --nodes=2
 #SBATCH --ntasks=8
 #SBATCH --cpus-per-task=12
-#SBATCH -p 2lm          #Request a node in Memory Mode
+#SBATCH -p 2lm          #Request nodes in Memory Mode
 #SBATCH
 
 #SBATCH -D /path/to/TiN
@@ -308,7 +308,7 @@ spent on main thread, OpenMP, MPI etc.), fraction of max FLOPs per CPUs
 used, and memory usage. The large screen below shows the fraction of
 the runtime spent on different sections of the application.</p>
 <p>By selecting any section of the runtime (in the upper panels) and left
-clicking in the higlighted region, it is possible to zoom in on a certain
+clicking in the highlighted region, it is possible to zoom in on a certain
 time. Right clicking will zoom out again.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -327,15 +327,10 @@ hyperthreading was switched off.</p>
 review this data, and requirements will depends strongly one the
 intention of the user. We refer the reader to the MAP documentation
 for a discussion of these options.</p>
-<p>When using CASTEP as a benchmark appication for the NextgenIO system
+<p>When using CASTEP as a benchmark application for the NextgenIO system
 there are various options to consider, most importantly the platform
 memory mode, the parallel configuration, and whether there is a
 difference between using mpirun and srun.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- Which modules need to be loaded for use?
-- Are there more tools that should be described here?
-- Include examples of use?
-</pre></div>
-</div>
 </div>
 </div>
 </div>

@@ -9,20 +9,33 @@ For full details on the on this software package please refer to the
 Building CASTEP
 ---------------
 
-Extracting the .tar file will create the CASTEP-[version] directory.
-Place the file *linux_x86_64_ifort19.mk* in the directory *obj/platforms*.
-From the main CASTEP-[version] directory run the following command:
+The first requirement is a copy of the .tar file containing the CASTEP
+libraries and installer. Extracting the .tar file will create the 
+CASTEP-[version] directory. 
+
+.. code:: bash
+
+   tar -xzf  CASTEP-[version].tar
+
+Place the file *linux_x86_64_ifort19.mk* in the directory 
+*CASTEP-[version]/obj/platforms*. From within the
+CASTEP-[version] directory run the following command:
 
 .. code::  bash
 
    make COMMS_ARCH=mpi FFTW=fftw3 MATHLIBS=mkl10
 
-and follow the install instructions set in the makefile.
+and follow the install instructions when prompted (the instructions
+are set in the makefile).
 
 In the following we will make use of two trial datasets, provided on
 the CASTEP website: `TiN <http://www.castep.org/CASTEP/TiN>`_,
 `Al3x3 <http://www.castep.org/CASTEP/Al3x3>`_, and `DNA 
 <http://www.castep.org/CASTEP/DNA>`_.
+
+::
+
+   How will the required linux makefile be made available to users?
 
 Preparing a CASTEP job
 ----------------------
@@ -38,8 +51,8 @@ does not appear to be able to perform a dryrun
 
    In order to perform a dryrun on the nextgenio system it is necessary
    to have the serial implementation of castep available. This can be done
-   by following the initial build of the application with the ``make`` 
-   command specified above, with the command ``make install``.
+   conducting the initial build of the application that uses the ``make`` 
+   command specified above, and follow this with the command ``make install``.
    This may result in the :ref:`ref-qcastepinstall`, however the castep.serial
    executable should be created nonetheless.
 

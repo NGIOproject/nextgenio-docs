@@ -195,7 +195,7 @@ the number of tasks and, if desired, the amount of memory per core.
    #SBATCH --ntasks=10
    #SBATCH --time=60:00
    #SBATCH --mem-per-cpu=150
-   #
+   
    #SBATCH --job-name=mpi_job
    #SBATCH --output=op_file.txt
 
@@ -217,7 +217,9 @@ The following script requests four nodes (total number of cpus=4*48=
 192). Two MPI processes are requested per node, as each node has 
 two sockets this should allocate one process per socket. The script 
 requests all physical cores on the node, with a 1:1 ratio of threads
-to physical cores (i.e. not making use of hyperthreading).
+to physical cores, however to prevent  making use of hyperthreading, 
+the option ``--hint=nomultihreading`` needs to be passed to the
+scheduler.
 
 .. code:: bash
 
@@ -226,6 +228,7 @@ to physical cores (i.e. not making use of hyperthreading).
    #SBATCH --ntasks=8               
    #SBATCH --ntasks-per-node=2      ##This should be scheduled automatically
    #SBATCH --cpus-per-task=24       ##This should be scheduled automatically
+   #SBATCH --hint=nomultithread     ##Disable hyperthreading
 
    #SBATCH --job-name=mpi-omp-job
 
@@ -394,7 +397,7 @@ using the *explicit* option, followed by the *proclist* options specifying the c
    export KMP_AFFINITY="explicit,proclist=[cpu_id1,cpu_id2,...,cpu_idN]"
 
 Unfortunately, pinning of threads within MPI processes does not seem to be possible using
-this option. This option would therefore only be of use for job consisting of a single
+this option. It would therefore only be of use for a job consisting of a single
 process (with multiple threads).
    
 Some further examples of usage of ``KMP_AFFINITY`` are provided on the website for
@@ -468,8 +471,6 @@ between the two commands:
 - environmental variables such as *I_MPI_PIN_PROCESSOR_LIST* and *I_MPI_DEBUG*
   are only used by mpirun. When using srun equivalent settings need to be passed
   to the scheduler as command options.
-
-
 
 
 Slurm on NextgenIO

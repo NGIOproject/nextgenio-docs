@@ -370,7 +370,7 @@ the number of tasks and, if desired, the amount of memory per core.</p>
 <span class="c1">#SBATCH --ntasks=10</span>
 <span class="c1">#SBATCH --time=60:00</span>
 <span class="c1">#SBATCH --mem-per-cpu=150</span>
-<span class="c1">#</span>
+
 <span class="c1">#SBATCH --job-name=mpi_job</span>
 <span class="c1">#SBATCH --output=op_file.txt</span>
 
@@ -389,12 +389,15 @@ part is to allocate the correct number of cores, to be passed as the
 192). Two MPI processes are requested per node, as each node has
 two sockets this should allocate one process per socket. The script
 requests all physical cores on the node, with a 1:1 ratio of threads
-to physical cores (i.e. not making use of hyperthreading).</p>
+to physical cores, however to prevent  making use of hyperthreading,
+the option <code class="docutils literal notranslate"><span class="pre">--hint=nomultihreading</span></code> needs to be passed to the
+scheduler.</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>!#/bin/bash
 #SBATCH --nodes=4
 #SBATCH --ntasks=8
 #SBATCH --ntasks-per-node=2      ##This should be scheduled automatically
 #SBATCH --cpus-per-task=24       ##This should be scheduled automatically
+#SBATCH --hint=nomultithread     ##Disable hyperthreading
 
 #SBATCH --job-name=mpi-omp-job
 
@@ -535,7 +538,7 @@ using the <em>explicit</em> option, followed by the <em>proclist</em> options sp
 </pre></div>
 </div>
 <p>Unfortunately, pinning of threads within MPI processes does not seem to be possible using
-this option. This option would therefore only be of use for job consisting of a single
+this option. It would therefore only be of use for a job consisting of a single
 process (with multiple threads).</p>
 <p>Some further examples of usage of <code class="docutils literal notranslate"><span class="pre">KMP_AFFINITY</span></code> are provided on the website for
 <a class="reference external" href="https://www.nas.nasa.gov/hecc/support/kb/using-intel-openmp-thread-affinity-for-pinning_285.html">NASA’s HECC</a>.

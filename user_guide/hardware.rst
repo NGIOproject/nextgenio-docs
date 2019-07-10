@@ -111,11 +111,6 @@ regular, low-latency, memory. NVDIMM use in this mode is illustrated below.
 .. raw:: html
     :file: ../images/NVDIMM_Appdirect.html
 
-::
-
-   Should we include 'striped persistent AppDirect'? 
-
-
 Memory Configurations
 ---------------------
 
@@ -126,16 +121,13 @@ system are:
 
 ::
 
-    There are multiple options, which ones should be included?
-
-::
-
-    Should it be possible for users to change the namespace partitions 
-    on the NVDIMMs? If so, an explanation should be included here.
+    - There are multiple options, which ones should be included?
+    - An explanation and overview of the the implemented namespace 
+      partitions on the NVDIMMs might be helpful here, to help users
+      better understand what their choice of platform mode implies.
 
 User control over the configuration in which the nodes are booted is
 described in the section on the :ref:`sec-ref-scheduler`.
-
 
 Layout
 ~~~~~~

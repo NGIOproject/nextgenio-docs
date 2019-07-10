@@ -5,15 +5,16 @@ Modules
 ~~~~~~~
 The application development environment on NextgenIO is primarily
 controlled through the *modules* environment. By loading and switching
-modules you control the compilers, libraries and software available.
+modules users can control the compilers, libraries and software available.
 
-This means that for compiling on Cirrus you typically set the compiler
-you wish to use using the appropriate modules, then load all the
-required library modules (e.g. numerical libraries, IO format libraries).
+This means that for compiling on NextgenIO the desired compiler is set by 
+loading the appropriate module. The required library modules (e.g. 
+numerical libraries, IO format libraries) should also be loaded.
 
-Additionally, if you are compiling parallel applications using MPI 
-you will need to load one of the MPI environments
-and use the appropriate compiler wrapper scripts.
+Additionally, when compiling parallel applications that make use of MPI 
+it is necessary to ensure one of the MPI environments is loaded.
+Compilation should then be done using the appropriate compiler 
+wrapper scripts.
 
 Basic usage of the ``module`` command is covered below. For
 full documentation please see the  `Linux manual page on modules
@@ -32,11 +33,10 @@ software) are available on the system is performed using the
     ...
 
 This will list all the names and versions of the modules available on
-the service. Not all of them may work in your account though due to,
-for example, licensing restrictions. You will notice that for many
-modules we have more than one version, each of which is identified by a
-version number. One of these versions is the default. As the
-service develops the default version will change.
+the system. For several modules there is more than one version, each of 
+which is identified by a version number. One of these versions is 
+the default, this is the version that will be loaded when requesting
+a module by the name only (and not the version number).
 
 You can list all the modules of a particular type by providing an
 argument to the ``module avail`` command. For example, to list all
@@ -129,8 +129,9 @@ C/C++ Compilers
 ~~~~~~~~~~~~~~~
 
 Various compilers are available on NextgenIO. Different
-combinations of compilers for multithreading and MPI code 
-can be used, although performance may vary.
+combinations of compilers may be used for applications
+using multithreading and/or MPI, although performance may
+vary.
 
 The available C/C++ compilers are ``icc`` (the Intel
 compiler) and ``gcc`` (the GNU compiler), and the available
@@ -244,5 +245,30 @@ And for combined MPI and OpenMP applications:
    
 Fortran Compilers
 ~~~~~~~~~~~~~~~~~
+
+GNU and Intel Fortran compilers are available on the NextgenIO
+system. The compilers are available by default (i.e. no modules
+need to be loaded before calling them). 
+
+For compilation with the default gnu compiler:
+
+.. code:: bash
+
+   gfortran fort_code.f -o fort_exec
+
+To use another version of the GNU compiler use e.g.:
+
+.. code:: bash
+
+   f95 fort95_code.f -o fort_exec
+
+The use of the Intel compiler is identical:
+
+.. code:: bash
+
+   ifort fort_code -o fort_exec
+
+
+
 
 

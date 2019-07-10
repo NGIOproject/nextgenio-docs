@@ -43,9 +43,3 @@ Upon completion the DS writes data into persistent memory or
 transfers data to the parallel file system for storage, depending
 on job specifications.
 
-::
-
-   Questions:
-   - Are node configuration managed by Slurm or by Data Scheduler?
-   - Can/should users set I/O hints?
-   

@@ -178,16 +178,26 @@
 <a class="reference external" href="http://www.castep.org/">CASTEP documentation</a>.</p>
 <div class="section" id="building-castep">
 <h2>Building CASTEP<a class="headerlink" href="#building-castep" title="Permalink to this headline">¶</a></h2>
-<p>Extracting the .tar file will create the CASTEP-[version] directory.
-Place the file <em>linux_x86_64_ifort19.mk</em> in the directory <em>obj/platforms</em>.
-From the main CASTEP-[version] directory run the following command:</p>
+<p>The first requirement is a copy of the .tar file containing the CASTEP
+libraries and installer. Extracting the .tar file will create the
+CASTEP-[version] directory.</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="o">-</span><span class="n">xzf</span>  <span class="n">CASTEP</span><span class="o">-</span><span class="p">[</span><span class="n">version</span><span class="p">]</span><span class="o">.</span><span class="n">tar</span>
+</pre></div>
+</div>
+<p>Place the file <em>linux_x86_64_ifort19.mk</em> in the directory
+<em>CASTEP-[version]/obj/platforms</em>. From within the
+CASTEP-[version] directory run the following command:</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">COMMS_ARCH</span><span class="o">=</span><span class="n">mpi</span> <span class="n">FFTW</span><span class="o">=</span><span class="n">fftw3</span> <span class="n">MATHLIBS</span><span class="o">=</span><span class="n">mkl10</span>
 </pre></div>
 </div>
-<p>and follow the install instructions set in the makefile.</p>
+<p>and follow the install instructions when prompted (the instructions
+are set in the makefile).</p>
 <p>In the following we will make use of two trial datasets, provided on
 the CASTEP website: <a class="reference external" href="http://www.castep.org/CASTEP/TiN">TiN</a>,
 <a class="reference external" href="http://www.castep.org/CASTEP/Al3x3">Al3x3</a>, and <a class="reference external" href="http://www.castep.org/CASTEP/DNA">DNA</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>How will the required linux makefile be made available to users?
+</pre></div>
+</div>
 </div>
 <div class="section" id="preparing-a-castep-job">
 <h2>Preparing a CASTEP job<a class="headerlink" href="#preparing-a-castep-job" title="Permalink to this headline">¶</a></h2>
@@ -200,8 +210,8 @@ does not appear to be able to perform a dryrun</p>
 <p class="first admonition-title">Note</p>
 <p class="last">In order to perform a dryrun on the nextgenio system it is necessary
 to have the serial implementation of castep available. This can be done
-by following the initial build of the application with the <code class="docutils literal notranslate"><span class="pre">make</span></code>
-command specified above, with the command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code>.
+conducting the initial build of the application that uses the <code class="docutils literal notranslate"><span class="pre">make</span></code>
+command specified above, and follow this with the command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code>.
 This may result in the <a class="reference internal" href="../user_guide/faq.html#ref-qcastepinstall"><span class="std std-ref">Error running make install during CASTEP build</span></a>, however the castep.serial
 executable should be created nonetheless.</p>
 </div>

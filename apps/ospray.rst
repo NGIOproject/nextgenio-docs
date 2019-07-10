@@ -15,8 +15,8 @@ Installing OSPRay
 
 The following is a step-by-step list to install OSPRay on the system
 Note that this will install OSPRay without graphical interfaces,
-such as the Exampleviewer. The NexgenioIO system currently does 
-not have the grahical libraries installed to enable these features.
+such as the Exampleviewer. The NextgenioIO system currently does 
+not have the graphical libraries installed to enable these features.
 
 1. Load the required modules
 
@@ -41,8 +41,8 @@ not have the grahical libraries installed to enable these features.
       cd ospray
       mkdir build
  
-   Creating a separte build directory is generally helpful when 
-   multiple configurations of the buld are possible or required.
+   Creating a separate build directory is generally helpful when 
+   multiple configurations of the build are possible or required.
 
 4. Create an install directory, where the executables and header files
    will be installed.
@@ -128,7 +128,7 @@ not have the grahical libraries installed to enable these features.
       being installed twice as part of different modules and will not affect the 
       ability to run OSPRay after building and installing. 
 
-      Upon completion the Makefile should be present in te *build* directory.
+      Upon completion the Makefile should be present in the *build* directory.
 
 6. Build OSPRay
 

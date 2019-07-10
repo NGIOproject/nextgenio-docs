@@ -187,13 +187,14 @@
 <h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
 <p>The application development environment on NextgenIO is primarily
 controlled through the <em>modules</em> environment. By loading and switching
-modules you control the compilers, libraries and software available.</p>
-<p>This means that for compiling on Cirrus you typically set the compiler
-you wish to use using the appropriate modules, then load all the
-required library modules (e.g. numerical libraries, IO format libraries).</p>
-<p>Additionally, if you are compiling parallel applications using MPI
-you will need to load one of the MPI environments
-and use the appropriate compiler wrapper scripts.</p>
+modules users can control the compilers, libraries and software available.</p>
+<p>This means that for compiling on NextgenIO the desired compiler is set by
+loading the appropriate module. The required library modules (e.g.
+numerical libraries, IO format libraries) should also be loaded.</p>
+<p>Additionally, when compiling parallel applications that make use of MPI
+it is necessary to ensure one of the MPI environments is loaded.
+Compilation should then be done using the appropriate compiler
+wrapper scripts.</p>
 <p>Basic usage of the <code class="docutils literal notranslate"><span class="pre">module</span></code> command is covered below. For
 full documentation please see the  <a class="reference external" href="http://linux.die.net/man/1/module">Linux manual page on modules</a>.</p>
 <div class="section" id="information-on-the-available-modules">
@@ -206,11 +207,10 @@ software) are available on the system is performed using the
 </pre></div>
 </div>
 <p>This will list all the names and versions of the modules available on
-the service. Not all of them may work in your account though due to,
-for example, licensing restrictions. You will notice that for many
-modules we have more than one version, each of which is identified by a
-version number. One of these versions is the default. As the
-service develops the default version will change.</p>
+the system. For several modules there is more than one version, each of
+which is identified by a version number. One of these versions is
+the default, this is the version that will be loaded when requesting
+a module by the name only (and not the version number).</p>
 <p>You can list all the modules of a particular type by providing an
 argument to the <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">avail</span></code> command. For example, to list all
 available versions of the MPI library:</p>
@@ -286,8 +286,9 @@ module will result in an error.</p>
 <div class="section" id="c-c-compilers">
 <h2>C/C++ Compilers<a class="headerlink" href="#c-c-compilers" title="Permalink to this headline">¶</a></h2>
 <p>Various compilers are available on NextgenIO. Different
-combinations of compilers for multithreading and MPI code
-can be used, although performance may vary.</p>
+combinations of compilers may be used for applications
+using multithreading and/or MPI, although performance may
+vary.</p>
 <p>The available C/C++ compilers are <code class="docutils literal notranslate"><span class="pre">icc</span></code> (the Intel
 compiler) and <code class="docutils literal notranslate"><span class="pre">gcc</span></code> (the GNU compiler), and the available
 MPI libraries are <em>openmpi</em> and <em>impi</em> (Intel’s MPI
@@ -410,6 +411,21 @@ error (<a class="reference internal" href="faq.html#ref-qsymbollookup"><span cla
 </div>
 <div class="section" id="fortran-compilers">
 <h2>Fortran Compilers<a class="headerlink" href="#fortran-compilers" title="Permalink to this headline">¶</a></h2>
+<p>GNU and Intel Fortran compilers are available on the NextgenIO
+system. The compilers are available by default (i.e. no modules
+need to be loaded before calling them).</p>
+<p>For compilation with the default gnu compiler:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gfortran</span> <span class="n">fort_code</span><span class="o">.</span><span class="n">f</span> <span class="o">-</span><span class="n">o</span> <span class="n">fort_exec</span>
+</pre></div>
+</div>
+<p>To use another version of the GNU compiler use e.g.:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f95</span> <span class="n">fort95_code</span><span class="o">.</span><span class="n">f</span> <span class="o">-</span><span class="n">o</span> <span class="n">fort_exec</span>
+</pre></div>
+</div>
+<p>The use of the Intel compiler is identical:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ifort</span> <span class="n">fort_code</span> <span class="o">-</span><span class="n">o</span> <span class="n">fort_exec</span>
+</pre></div>
+</div>
 </div>
 </div>
 

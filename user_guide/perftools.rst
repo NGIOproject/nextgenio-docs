@@ -47,7 +47,7 @@ module:
     $> module load arm-forge
 
 When the module is loaded, the easiest use of MAP is through the
-GUI. This can be openend by entering 
+GUI. This can be opened by entering 
 
 ::
 
@@ -117,7 +117,7 @@ This example will use the application :ref:`sec-ref-castep` to
 illustrate the usage of MAP for benchmarking.
 
 Job submission can be done either directly, by selecting the 
-applicatation in the GUI and clicking *Submit*,  or by submitting
+application in the GUI and clicking *Submit*,  or by submitting
 a batch job to the queue (see section see :ref:`sec-ref-scheduler`)
 and calling MAP without the GUI.
 
@@ -137,7 +137,7 @@ generally of significant impact on performance.
   #SBATCH --nodes=2
   #SBATCH --ntasks=8
   #SBATCH --cpus-per-task=12
-  #SBATCH -p 2lm          #Request a node in Memory Mode 
+  #SBATCH -p 2lm          #Request nodes in Memory Mode 
   #SBATCH 
 
   #SBATCH -D /path/to/TiN
@@ -173,7 +173,7 @@ used, and memory usage. The large screen below shows the fraction of
 the runtime spent on different sections of the application.
 
 By selecting any section of the runtime (in the upper panels) and left 
-clicking in the higlighted region, it is possible to zoom in on a certain
+clicking in the highlighted region, it is possible to zoom in on a certain
 time. Right clicking will zoom out again.
 
 .. note:: 
@@ -198,15 +198,8 @@ review this data, and requirements will depends strongly one the
 intention of the user. We refer the reader to the MAP documentation
 for a discussion of these options.
 
-When using CASTEP as a benchmark appication for the NextgenIO system 
+When using CASTEP as a benchmark application for the NextgenIO system 
 there are various options to consider, most importantly the platform 
 memory mode, the parallel configuration, and whether there is a 
 difference between using mpirun and srun.
-
-
-::
-
-   - Which modules need to be loaded for use?
-   - Are there more tools that should be described here?
-   - Include examples of use?
 

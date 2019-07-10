@@ -23,9 +23,5 @@ has been optimised for use in combination with PyCOMPSs.
 
 ::
 
-   - Do users need to load a module in order to ne able to load
-     the library?
-   - Does PyCOMPSs have special implementations involving SCM?
-   => Include worked examples of applications using PyCOMPSs
-
+   - Will PyCOMPSs be included as a module?
 

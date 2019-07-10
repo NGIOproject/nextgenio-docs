@@ -38,7 +38,7 @@ again choosing a username.
 
 You can follow the progress of the request under the *login accounts* tab in
 the EPCC SAFE main menu, where the requested accounts should now appear in the
-dropdown menu.
+drop down menu.
 
 First Login
 -----------
