@@ -7,6 +7,7 @@ FAQs and Common Issues
 - :ref:`ref-qsymbollookup`
 - :ref:`ref-nomap`
 - :ref:`ref-qcastepinstall`
+- :ref:`ref-ospray_mpiinit`
 
 
 FAQs
@@ -182,4 +183,55 @@ Error running *make install* during CASTEP build
       The latter may be of use for performing dryruns on any input files.
 
 |
+
+.. _ref-ospray_mpiinit:
+
+Error running OSPRay MPI
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+When trying to run OSPRay with the ``--osp:mpi`` setting, I receive the
+following error:
+
+.. Error::
+
+   osp:api: could not find module initializer ospray_init_module_mpi
+
+.. container:: toggle
+
+   .. container:: header
+
+      **Answer**
+
+   .. container:: text
+
+      |
+
+      This error may occur when running OSPRay with the ``--osp:mpi`` setting.
+      A possible cause is that library path is not linked correctly. In order to
+      use MPI with OSPRay it is necessary to set *LD_LIBARY_PATH* to the OSPRay 
+      build directory:
+
+      .. code:: bash
+
+         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/build/directory
+
+|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

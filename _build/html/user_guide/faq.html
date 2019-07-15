@@ -100,6 +100,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#symbol-lookup-error">Symbol Lookup Error</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#map-command-not-found">map: command not found</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#error-running-make-install-during-castep-build">Error running <em>make install</em> during CASTEP build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#error-running-ospray-mpi">Error running OSPRay MPI</a></li>
 </ul>
 </li>
 </ul>
@@ -186,6 +187,7 @@
 <li><a class="reference internal" href="#ref-qsymbollookup"><span class="std std-ref">Symbol Lookup Error</span></a></li>
 <li><a class="reference internal" href="#ref-nomap"><span class="std std-ref">map: command not found</span></a></li>
 <li><a class="reference internal" href="#ref-qcastepinstall"><span class="std std-ref">Error running make install during CASTEP build</span></a></li>
+<li><a class="reference internal" href="#ref-ospray-mpiinit"><span class="std std-ref">Error running OSPRay MPI</span></a></li>
 </ul>
 <div class="section" id="faqs">
 <h2>FAQs<a class="headerlink" href="#faqs" title="Permalink to this headline">¶</a></h2>
@@ -329,6 +331,34 @@ for CASTEP. However, the initial command <code class="docutils literal notransla
 <span class="pre">MATHLIBS=mkl10</span></code> should have built an executable <code class="docutils literal notranslate"><span class="pre">castep.mpi</span></code> and similarly
 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> will have produced a functional executable <code class="docutils literal notranslate"><span class="pre">castep.serial</span></code>.
 The latter may be of use for performing dryruns on any input files.</p>
+</div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="error-running-ospray-mpi">
+<span id="ref-ospray-mpiinit"></span><h3>Error running OSPRay MPI<a class="headerlink" href="#error-running-ospray-mpi" title="Permalink to this headline">¶</a></h3>
+<p>When trying to run OSPRay with the <code class="docutils literal notranslate"><span class="pre">--osp:mpi</span></code> setting, I receive the
+following error:</p>
+<div class="admonition error">
+<p class="first admonition-title">Error</p>
+<p class="last">osp:api: could not find module initializer ospray_init_module_mpi</p>
+</div>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<strong>Answer</strong></div>
+<div class="text docutils container">
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>This error may occur when running OSPRay with the <code class="docutils literal notranslate"><span class="pre">--osp:mpi</span></code> setting.
+A possible cause is that library path is not linked correctly. In order to
+use MPI with OSPRay it is necessary to set <em>LD_LIBARY_PATH</em> to the OSPRay
+build directory:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/build/directory
+</pre></div>
+</div>
 </div>
 </div>
 <div class="line-block">

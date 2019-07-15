@@ -98,6 +98,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#map-profiling-example-castep">MAP profiling example: CASTEP</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-arm-mpi-wrapper-libraries">Building the ARM MPI Wrapper Libraries</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQs and Common Issues</a></li>
@@ -332,6 +333,33 @@ there are various options to consider, most importantly the platform
 memory mode, the parallel configuration, and whether there is a
 difference between using mpirun and srun.</p>
 </div>
+</div>
+<div class="section" id="building-the-arm-mpi-wrapper-libraries">
+<span id="sec-ref-maplib"></span><h2>Building the ARM MPI Wrapper Libraries<a class="headerlink" href="#building-the-arm-mpi-wrapper-libraries" title="Permalink to this headline">¶</a></h2>
+<p>For some applications it is necessary to link MAP libraries into the
+executable during the build, to appropriately measure MPI usage (see
+e.g. <a class="reference internal" href="../apps/ospray.html#sec-ref-ospray"><span class="std std-ref">OSPRay</span></a>). The necessary libraries can be built
+using the command <code class="docutils literal notranslate"><span class="pre">make-profiler-libraries</span></code>. This will print the following
+output:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$&gt; make-profiler-libraries
+
+Creating shared libraries in [current/directory]
+Created the libraries:
+libmap-sampler.so       (and .so.1, .so.1.0, .so.1.0.0)
+libmap-sampler-pmpi.so  (and .so.1, .so.1.0, .so.1.0.0)
+
+To instrument a program, add these compiler options:
+   compilation for use with MAP - not required for Performance Reports:
+      -g (and -O3 etc.)
+   linking (both MAP and Performance Reports):
+      -L[current/directory] -lmap-sampler-pmpi -lmap-sampler -Wl,--eh-frame-hdr -Wl,-rpath=[current/directory]
+
+Note: These libraries must be on the same NFS/Lustre/GPFS filesystem as your
+program.
+</pre></div>
+</div>
+<p>The two dynamic libraries can now be linked in during the compilation
+of the executable.</p>
 </div>
 </div>
 

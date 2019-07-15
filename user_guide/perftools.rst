@@ -203,3 +203,39 @@ there are various options to consider, most importantly the platform
 memory mode, the parallel configuration, and whether there is a 
 difference between using mpirun and srun.
 
+
+.. _sec-ref-maplib:
+
+Building the ARM MPI Wrapper Libraries
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For some applications it is necessary to link MAP libraries into the
+executable during the build, to appropriately measure MPI usage (see
+e.g. :ref:`sec-ref-ospray`). The necessary libraries can be built
+using the command ``make-profiler-libraries``. This will print the following
+output:
+
+.. code:: bash
+
+   $> make-profiler-libraries
+
+   Creating shared libraries in [current/directory]
+   Created the libraries:
+   libmap-sampler.so       (and .so.1, .so.1.0, .so.1.0.0)
+   libmap-sampler-pmpi.so  (and .so.1, .so.1.0, .so.1.0.0)
+
+   To instrument a program, add these compiler options:
+      compilation for use with MAP - not required for Performance Reports:
+         -g (and -O3 etc.)
+      linking (both MAP and Performance Reports):
+         -L[current/directory] -lmap-sampler-pmpi -lmap-sampler -Wl,--eh-frame-hdr -Wl,-rpath=[current/directory]
+
+   Note: These libraries must be on the same NFS/Lustre/GPFS filesystem as your
+   program.
+
+
+The two dynamic libraries can now be linked in during the compilation
+of the executable.
+
+
+

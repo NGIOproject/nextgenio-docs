@@ -1,3 +1,5 @@
+.. _sec-ref-ospray:
+
 OSPRay
 ======
 
@@ -136,7 +138,7 @@ not have the graphical libraries installed to enable these features.
 
       make
 
-   The build will take considerable time
+   The build may take considerable time
 
 7. Install OSpray
 
@@ -147,9 +149,12 @@ not have the graphical libraries installed to enable these features.
    This will install the executable and header files in the
    install directory specified in step 5.
 
+
 8. Update LD_LIBRARY_PATH
 
-   Add the install path to LD_LIBRARY_PATH:
+   Add the build path to LD_LIBRARY_PATH (note: linking to the
+   install path may lead to the error :ref:`ref-ospray_mpiinit` 
+   when trying to use MPI):
 
    .. code:: bash
 
@@ -163,11 +168,96 @@ not have the graphical libraries installed to enable these features.
 
       export PATH=$PATH:/path/to/install/directory/bin
       
-   By adding these to lines to the .bashrc file these variables
+   By adding these lines to the .bashrc file these variables
    will be set automatically when logging into a shell.
 
 
-9. Optional: Enabling the Open Image Denoiser
+9. **Optional**: Include MAP MPI wrappers in ospBenchmark
+
+   To enable MAP profiling of the benchmarking application included
+   in the OSPRay build, two MAP libraries need to be linked to the
+   *ospBenchmark* executable (Note: this assumes the CMake variable 
+   OSPRAY_APPS_BENCHMARK is the to ON). Instructions on how to build
+   the MAP libraries can be found in the section :ref:`sec-ref-maplib`.
+
+   The libraries need to be linked by modifying one of the commands in 
+   the makefile. This requires some small modifications to the step 
+   outlined about above:
+
+   a. Set the CMake variable 
+
+      ============================ ==========
+       CMAKE_VERBOSE_MAKEFILE       ON
+      ============================ ==========
+
+   b. Save the output of running ``make``:
+
+      .. code:: bash
+
+         make > make_output
+
+   c. Create the MPI Wrapper libraries in the build directory
+
+      .. code:: bash
+
+         make-profiler-libraries
+
+   d. Search for the relevant command, which links the libraries and 
+      object code for *ospBenchmark*:
+
+      .. code:: bash
+
+         cat make_output | grep ospBenchmark
+
+      The required part of the output will resemble:
+
+      ::    
+
+         [ 88%] Linking CXX executable ../../ospBenchmark
+
+         cd /path/to/build/directory/apps/bench && 
+         /home/software/cmake/3.14.4/bin/cmake -E cmake_link_script CMakeFiles/ospBenchmark.dir/link.txt --verbose=1
+         /opt/intel/compilers_and_libraries_2019.3.199/linux/bin/intel64/icpc  -static-intel -Wall -fPIC -fno-strict-aliasing 
+         -no-ansi-alias -DNOMINMAX -Wno-unknown-pragmas  -DNDEBUG -O3  -rdynamic CMakeFiles/ospBenchmark.dir/bench.cpp.o  
+         -o ../../ospBenchmark -Wl,-rpath,/path/to/build/directory: ../../libospray_app.a 
+         ../../libospray_sg.so.1.8.5 ../../libospray.so.1.8.5 ../../libospray_tfn.so.1.8.5 ../../libospray_json.so.1.8.5 
+         ../../libospray_common.so.1.8.5 -pthread /opt/intel/compilers_and_libraries_2019.3.199/linux/tbb/lib/intel64/gcc4.7/libtbb.so.2 
+         /opt/intel/compilers_and_libraries_2019.3.199/linux/tbb/lib/intel64/gcc4.7/libtbbmalloc.so.2 
+         -ldl
+
+   e. Modify the command and enter (the added lines are marked with a (*) ):
+
+      .. code:: bash
+
+         cd /path/to/build/directory/apps/bench && 
+         /home/software/cmake/3.14.4/bin/cmake -E cmake_link_script CMakeFiles/ospBenchmark.dir/link.txt --verbose=1
+         /opt/intel/compilers_and_libraries_2019.3.199/linux/bin/intel64/icpc  -static-intel -Wall -fPIC -fno-strict-aliasing 
+         -no-ansi-alias -DNOMINMAX -Wno-unknown-pragmas  -DNDEBUG -O3  -rdynamic CMakeFiles/ospBenchmark.dir/bench.cpp.o  
+         -o ../../ospBenchmark -Wl,-rpath,/path/to/build/directory: ../../libospray_app.a 
+         ../../libospray_sg.so.1.8.5 ../../libospray.so.1.8.5 ../../libospray_tfn.so.1.8.5 ../../libospray_json.so.1.8.5 
+         ../../libospray_common.so.1.8.5 -pthread /opt/intel/compilers_and_libraries_2019.3.199/linux/tbb/lib/intel64/gcc4.7/libtbb.so.2          /opt/intel/compilers_and_libraries_2019.3.199/linux/tbb/lib/intel64/gcc4.7/libtbbmalloc.so.2 
+         (*) /path/to/build/directory/libmap-sampler.so
+         (*) /path/to/build/directory/libmap-sampler-pmpi.so
+         -ldl
+
+   f. Install OSPRay (return to the main build directory before running
+      this command)
+
+      .. code:: bash
+
+         make install
+
+   g. After running ``make install`` the two libraries need to be visible
+      to the *ospBenchmark** application. This can be achieved either by 
+      including the location in LD_LIBRARY_PATH or by copyng the wrappers
+      to the install location of the OSPRay libraries. To copy the libraries 
+      (assuming they were built in the OSPRay build directory):
+
+      .. code:: bash
+
+         cp /path/to/build/directory/libmap* /path/to/install/directory/lib64
+
+10. **Optional**: Enabling the Open Image Denoiser
 
    This is an extra option, which is not necessary for an operational
    build of OSPRay, but could improve performance (*not tested*). This step

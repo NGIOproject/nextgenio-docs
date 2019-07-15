@@ -171,7 +171,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="ospray">
-<h1>OSPRay<a class="headerlink" href="#ospray" title="Permalink to this headline">¶</a></h1>
+<span id="sec-ref-ospray"></span><h1>OSPRay<a class="headerlink" href="#ospray" title="Permalink to this headline">¶</a></h1>
 <p>OSPRay is Intel’s Open Source Portable Ray tracing engine,
 applied in data visualisation and (interactive) rendering.
 The engine relies on the <a class="reference external" href="https://www.embree.org/">Intel Embree</a> kernels and the <a class="reference external" href="https://ispc.github.io/index.html">Intel SPMD
@@ -336,7 +336,7 @@ ability to run OSPRay after building and installing.</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span>
 </pre></div>
 </div>
-<p>The build will take considerable time</p>
+<p>The build may take considerable time</p>
 </li>
 <li><p class="first">Install OSpray</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">install</span>
@@ -346,7 +346,9 @@ ability to run OSPRay after building and installing.</p>
 install directory specified in step 5.</p>
 </li>
 <li><p class="first">Update LD_LIBRARY_PATH</p>
-<p>Add the install path to LD_LIBRARY_PATH:</p>
+<p>Add the build path to LD_LIBRARY_PATH (note: linking to the
+install path may lead to the error <a class="reference internal" href="../user_guide/faq.html#ref-ospray-mpiinit"><span class="std std-ref">osp:api: could not find module initializer ospray_init_module_mpi</span></a>
+when trying to use MPI):</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/install/directory/lib64
 </pre></div>
 </div>
@@ -356,11 +358,98 @@ having to specify the full path:</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>export PATH=$PATH:/path/to/install/directory/bin
 </pre></div>
 </div>
-<p>By adding these to lines to the .bashrc file these variables
+<p>By adding these lines to the .bashrc file these variables
 will be set automatically when logging into a shell.</p>
 </li>
-<li><p class="first">Optional: Enabling the Open Image Denoiser</p>
-<p>This is an extra option, which is not necessary for an operational
+<li><p class="first"><strong>Optional</strong>: Include MAP MPI wrappers in ospBenchmark</p>
+<p>To enable MAP profiling of the benchmarking application included
+in the OSPRay build, two MAP libraries need to be linked to the
+<em>ospBenchmark</em> executable (Note: this assumes the CMake variable
+OSPRAY_APPS_BENCHMARK is the to ON). Instructions on how to build
+the MAP libraries can be found in the section <a class="reference internal" href="../user_guide/perftools.html#sec-ref-maplib"><span class="std std-ref">Building the ARM MPI Wrapper Libraries</span></a>.</p>
+<p>The libraries need to be linked by modifying one of the commands in
+the makefile. This requires some small modifications to the step
+outlined about above:</p>
+<ol class="loweralpha">
+<li><p class="first">Set the CMake variable</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="74%" />
+<col width="26%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>CMAKE_VERBOSE_MAKEFILE</td>
+<td>ON</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Save the output of running <code class="docutils literal notranslate"><span class="pre">make</span></code>:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="o">&gt;</span> <span class="n">make_output</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create the MPI Wrapper libraries in the build directory</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span><span class="o">-</span><span class="n">profiler</span><span class="o">-</span><span class="n">libraries</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Search for the relevant command, which links the libraries and
+object code for <em>ospBenchmark</em>:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="n">make_output</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">ospBenchmark</span>
+</pre></div>
+</div>
+<p>The required part of the output will resemble:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="mi">88</span><span class="o">%</span><span class="p">]</span> <span class="n">Linking</span> <span class="n">CXX</span> <span class="n">executable</span> <span class="o">../../</span><span class="n">ospBenchmark</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">bench</span> <span class="o">&amp;&amp;</span>
+<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">software</span><span class="o">/</span><span class="n">cmake</span><span class="o">/</span><span class="mf">3.14</span><span class="o">.</span><span class="mi">4</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">cmake</span> <span class="o">-</span><span class="n">E</span> <span class="n">cmake_link_script</span> <span class="n">CMakeFiles</span><span class="o">/</span><span class="n">ospBenchmark</span><span class="o">.</span><span class="n">dir</span><span class="o">/</span><span class="n">link</span><span class="o">.</span><span class="n">txt</span> <span class="o">--</span><span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+<span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">intel</span><span class="o">/</span><span class="n">compilers_and_libraries_2019</span><span class="o">.</span><span class="mf">3.199</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">intel64</span><span class="o">/</span><span class="n">icpc</span>  <span class="o">-</span><span class="n">static</span><span class="o">-</span><span class="n">intel</span> <span class="o">-</span><span class="n">Wall</span> <span class="o">-</span><span class="n">fPIC</span> <span class="o">-</span><span class="n">fno</span><span class="o">-</span><span class="n">strict</span><span class="o">-</span><span class="n">aliasing</span>
+<span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">ansi</span><span class="o">-</span><span class="n">alias</span> <span class="o">-</span><span class="n">DNOMINMAX</span> <span class="o">-</span><span class="n">Wno</span><span class="o">-</span><span class="n">unknown</span><span class="o">-</span><span class="n">pragmas</span>  <span class="o">-</span><span class="n">DNDEBUG</span> <span class="o">-</span><span class="n">O3</span>  <span class="o">-</span><span class="n">rdynamic</span> <span class="n">CMakeFiles</span><span class="o">/</span><span class="n">ospBenchmark</span><span class="o">.</span><span class="n">dir</span><span class="o">/</span><span class="n">bench</span><span class="o">.</span><span class="n">cpp</span><span class="o">.</span><span class="n">o</span>
+<span class="o">-</span><span class="n">o</span> <span class="o">../../</span><span class="n">ospBenchmark</span> <span class="o">-</span><span class="n">Wl</span><span class="p">,</span><span class="o">-</span><span class="n">rpath</span><span class="p">,</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">directory</span><span class="p">:</span> <span class="o">../../</span><span class="n">libospray_app</span><span class="o">.</span><span class="n">a</span>
+<span class="o">../../</span><span class="n">libospray_sg</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">5</span> <span class="o">../../</span><span class="n">libospray</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">5</span> <span class="o">../../</span><span class="n">libospray_tfn</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">5</span> <span class="o">../../</span><span class="n">libospray_json</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">5</span>
+<span class="o">../../</span><span class="n">libospray_common</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">5</span> <span class="o">-</span><span class="n">pthread</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">intel</span><span class="o">/</span><span class="n">compilers_and_libraries_2019</span><span class="o">.</span><span class="mf">3.199</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">tbb</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">intel64</span><span class="o">/</span><span class="n">gcc4</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">libtbb</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span>
+<span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">intel</span><span class="o">/</span><span class="n">compilers_and_libraries_2019</span><span class="o">.</span><span class="mf">3.199</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">tbb</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">intel64</span><span class="o">/</span><span class="n">gcc4</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">libtbbmalloc</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span>
+<span class="o">-</span><span class="n">ldl</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Modify the command and enter (the added lines are marked with a (*) ):</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">bench</span> <span class="o">&amp;&amp;</span>
+<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">software</span><span class="o">/</span><span class="n">cmake</span><span class="o">/</span><span class="mf">3.14</span><span class="o">.</span><span class="mi">4</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">cmake</span> <span class="o">-</span><span class="n">E</span> <span class="n">cmake_link_script</span> <span class="n">CMakeFiles</span><span class="o">/</span><span class="n">ospBenchmark</span><span class="o">.</span><span class="n">dir</span><span class="o">/</span><span class="n">link</span><span class="o">.</span><span class="n">txt</span> <span class="o">--</span><span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+<span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">intel</span><span class="o">/</span><span class="n">compilers_and_libraries_2019</span><span class="o">.</span><span class="mf">3.199</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">intel64</span><span class="o">/</span><span class="n">icpc</span>  <span class="o">-</span><span class="n">static</span><span class="o">-</span><span class="n">intel</span> <span class="o">-</span><span class="n">Wall</span> <span class="o">-</span><span class="n">fPIC</span> <span class="o">-</span><span class="n">fno</span><span class="o">-</span><span class="n">strict</span><span class="o">-</span><span class="n">aliasing</span>
+<span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">ansi</span><span class="o">-</span><span class="n">alias</span> <span class="o">-</span><span class="n">DNOMINMAX</span> <span class="o">-</span><span class="n">Wno</span><span class="o">-</span><span class="n">unknown</span><span class="o">-</span><span class="n">pragmas</span>  <span class="o">-</span><span class="n">DNDEBUG</span> <span class="o">-</span><span class="n">O3</span>  <span class="o">-</span><span class="n">rdynamic</span> <span class="n">CMakeFiles</span><span class="o">/</span><span class="n">ospBenchmark</span><span class="o">.</span><span class="n">dir</span><span class="o">/</span><span class="n">bench</span><span class="o">.</span><span class="n">cpp</span><span class="o">.</span><span class="n">o</span>
+<span class="o">-</span><span class="n">o</span> <span class="o">../../</span><span class="n">ospBenchmark</span> <span class="o">-</span><span class="n">Wl</span><span class="p">,</span><span class="o">-</span><span class="n">rpath</span><span class="p">,</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">directory</span><span class="p">:</span> <span class="o">../../</span><span class="n">libospray_app</span><span class="o">.</span><span class="n">a</span>
+<span class="o">../../</span><span class="n">libospray_sg</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">5</span> <span class="o">../../</span><span class="n">libospray</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">5</span> <span class="o">../../</span><span class="n">libospray_tfn</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">5</span> <span class="o">../../</span><span class="n">libospray_json</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">5</span>
+<span class="o">../../</span><span class="n">libospray_common</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">5</span> <span class="o">-</span><span class="n">pthread</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">intel</span><span class="o">/</span><span class="n">compilers_and_libraries_2019</span><span class="o">.</span><span class="mf">3.199</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">tbb</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">intel64</span><span class="o">/</span><span class="n">gcc4</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">libtbb</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span>          <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">intel</span><span class="o">/</span><span class="n">compilers_and_libraries_2019</span><span class="o">.</span><span class="mf">3.199</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">tbb</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">intel64</span><span class="o">/</span><span class="n">gcc4</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">libtbbmalloc</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span>
+<span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">libmap</span><span class="o">-</span><span class="n">sampler</span><span class="o">.</span><span class="n">so</span>
+<span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">libmap</span><span class="o">-</span><span class="n">sampler</span><span class="o">-</span><span class="n">pmpi</span><span class="o">.</span><span class="n">so</span>
+<span class="o">-</span><span class="n">ldl</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Install OSPRay (return to the main build directory before running
+this command)</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">install</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">After running <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> the two libraries need to be visible
+to the <em>ospBenchmark*</em> application. This can be achieved either by
+including the location in LD_LIBRARY_PATH or by copyng the wrappers
+to the install location of the OSPRay libraries. To copy the libraries
+(assuming they were built in the OSPRay build directory):</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">libmap</span><span class="o">*</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">install</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">lib64</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p class="first"><strong>Optional</strong>: Enabling the Open Image Denoiser</p>
+</li>
+</ol>
+<blockquote>
+<div><p>This is an extra option, which is not necessary for an operational
 build of OSPRay, but could improve performance (<em>not tested</em>). This step
 needs to be included before step 5. is completed. It will require
 the download of a separate executable and linking to its directory.</p>
@@ -402,8 +491,7 @@ OpenImageDenoiseConfig.cmake:</p>
 </table>
 </li>
 </ol>
-</li>
-</ol>
+</div></blockquote>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>Known issues with OSPRay install</p>
