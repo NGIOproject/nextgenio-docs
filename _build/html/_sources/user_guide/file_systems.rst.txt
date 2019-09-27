@@ -4,18 +4,19 @@ File Systems and Storage
 ========================
 
 In order to exploit non-volatile memory (NVM) NextgenIO
-makes use of different file systems: both `EchoFS`_ and
-`GekkoFS`_ can be used by the Data Scheduler for stage-in 
-and stage-out operations. The use of GekkoFS will be 
-favoured over that of of echoFS, as GekkoFS has a higher
-performance and can be mounted on multiple nodes 
-simultaneously.
+makes use of the file system `GekkoFS`_, which can be
+used by the Data Scheduler for stage-in 
+and stage-out operations.
+
+.. The use of GekkoFS will be 
+   favoured over that of of echoFS, as GekkoFS has a higher
+   performance and can be mounted on multiple nodes 
+   simultaneously.
 
 `dataClay`_ provides object class storage and can be used
 directly by applications based on object oriented code.
 
-If the platform mode is set to Memory Mode, NVDIMM 
-namespaces reserved for App Direct mode require an 
+NVDIMM partitions reserved for App Direct mode require an 
 interface to allow applications Direct Access (DAX).
 This interface  can be in the form of a DAX enabled file
 system mounted on the memory (`FSDAX`_) or Device DAX
@@ -27,7 +28,7 @@ Direct Access (DAX)
 FSDAX
 -----
 
-There are several file systems that enable direct to
+There are several file systems that enable access to
 the NVM for applications, such as ext4, ext3, XFS, 
 and ramfs. On NextgenIO the file system used for FSDAX 
 is ext4.
@@ -35,8 +36,8 @@ is ext4.
 Once the file system is mounted on the NVM App
 Direct partition (i.e. the namespace in the NVM 
 reserved for direct access), applications can access
-the memory with the use of the memory mapping function
-provided by the PMDK ( mmap( ) ).
+the memory in the same manner as in a traditional file
+system.
 
 EchoFS and GekkoFS make use of file system-enabled DAX. 
 Device DAX is technically possible for EchoFS, but this
@@ -49,48 +50,45 @@ DevDAX
 
 Device Direct Access implies that an application can 
 perform byte-level operations in the NVM without 
-intervention of a file system.
+intervention of a file system. In contrast to FSDAX which
+provides a a block-device that can support a DAX-enabled filesystem,
+this mode emits a single character device file (/dev/daxX.Y). For more
+details see the `pmem.io website <http://pmem.io/ndctl/ndctl-create-namespace.html>`_ 
 
-::
+.. echoFS
+   ~~~~~~
 
-   Is there a specified method for this type of access
-   on NGIO (that users need to know about)?
+   This file system allows for POSIX-like NVM based 
+   storage, and is used by the Data Scheduler to prefetch
+   (stage-in) data from the parallel file system 
+   (PFS/storage) to the computing nodes, and to write 
+   data from the computing nodes to the PFS upon completion
+   (stage-out). In contrast to GekkoFS, EchoFS is mounted
+   on individual nodes.
 
+   EchoFS operates as a temporary, ad-hoc file system on
+   the computing nodes and on the PFS. It exists only as 
+   long as the batch job needs it. It hides any memory
+   hierarchies present in the computing node (see the section
+   on :ref:`sec-ref-memmodes`), and presents the node to the OS
+   as a virtual storage device with a single mount point.
 
-echoFS
-~~~~~~
+   Following the submission of a batch job, provided the 
+   required resources are available, the Data Scheduler creates
+   an instance of EchoFS on each of the allocated computing 
+   nodes. EchoFS prefetches the required data, based on the
+   job's data requirements passed on by the Scheduler.
 
-This file system allows for POSIX-like NVM based 
-storage, and is used by the Data Scheduler to prefetch
-(stage-in) data from the parallel file system 
-(PFS/storage) to the computing nodes, and to write 
-data from the computing nodes to the PFS upon completion
-(stage-out). In contrast to GekkoFS, EchoFS is mounted
-on individual nodes.
+   Once stage-in has been completed, the batch job can 
+   execute. The application in the job can access the loaded files
+   via standard POSIX I/O functions, making the system
+   compatible with legacy applications. In this configuration 
+   the NVRAM functions as a faster form of traditional storage.
 
-EchoFS operates as a temporary, ad-hoc file system on
-the computing nodes and on the PFS. It exists only as 
-long as the batch job needs it. It hides any memory
-hierarchies present in the computing node (see the section
-on :ref:`sec-ref-memmodes`), and presents the node to the OS
-as a virtual storage device with a single mount point.
-
-Following the submission of a batch job, provided the 
-required resources are available, the Data Scheduler creates
-an instance of EchoFS on each of the allocated computing 
-nodes. EchoFS prefetches the required data, based on the
-job's data requirements passed on by the Scheduler.
-
-Once stage-in has been completed, the batch job can 
-execute. The application in the job can access the loaded files
-via standard POSIX I/O functions, making the system
-compatible with legacy applications. In this configuration 
-the NVRAM functions as a faster form of traditional storage.
-
-Any new files created during the job are written into 
-the NVM buffers, only transferring to long term storage 
-(stage-out) once the job is completed. echofs therefore 
-operates as a burst buffer.
+   Any new files created during the job are written into 
+   the NVM buffers, only transferring to long term storage 
+   (stage-out) once the job is completed. echofs therefore 
+   operates as a burst buffer.
 
 GekkoFS
 ~~~~~~~
@@ -98,23 +96,22 @@ GekkoFS
 This file system allows for POSIX-like NVM storage operations, 
 and acts as an ad-hoc file-system for the lifetime of a single
 batch job. POSIX compliance has been tested on OpenFOAM and python
-applications [1]_. GekkoFS can therefore operate as a burst-buffer, 
+applications [1]_. GekkoFS can operate as a burst-buffer, 
 performing stage-in and stage-out data transfers for the scheduled
-batch job. In these ways it is similar to echofs. 
+batch job. In these ways it is similar to echoFS. 
 
-There are important differences between the file-systems, though.
 GekkoFS forms a collaborative burst buffer, acting as a single 
 file system for the directly accessible memory, combining the memory
 on all the nodes allocated to the job by the Job Scheduler. Data and 
 metadata are distributed in blocks over the available storage space.
 
-The Gekko File System functions as an interposition library, which
+The file system functions as an interposition library, which
 redirects all file system operations requested by the job to 
 file-system daemons running on the nodes. The system layout is 
 illustrated in figure 1. 
 
 The interception of file-system operation commands is performed by
-the GekkoFS client, which is pre-loaded by the job application when
+the GekkoFS client, which is pre-loaded by the application when
 launched. The client also holds a file map, containing all data 
 storage locations across the nodes. Like the other meta-data, this 
 file map is distributed over the nodes. The client maintains 
@@ -151,7 +148,7 @@ A full description of the data store can be found in the
 development/software-and-apps/software-list/dataclay/documentation>`_.
 
 A main functionality of the data store is to allow users to
-make any application created object persistent in memory. Storing
+make any application-created object persistent in memory. Storing
 an object in this manner not only saves it for later use, but 
 also allows the object to be called from other applications. 
 dataClay is able to make use of both FSDAX and DevDAX to access

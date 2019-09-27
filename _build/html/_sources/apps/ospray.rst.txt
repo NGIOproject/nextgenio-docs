@@ -67,7 +67,7 @@ not have the graphical libraries installed to enable these features.
       string.
 
       Not all options will have to be set: this is not necessary for a 
-      working install of the OSPRay.
+      working install of OSPRay.
 
    a. Enter the build directory and start the GUI
 
@@ -96,7 +96,7 @@ not have the graphical libraries installed to enable these features.
       ISPC_EXECUTABLE               /path/to/ispc-v1.9.1-linux/ispc
       ============================ =================================
 
-      OSPRay use  TBB as its threading system by default (which is 
+      OSPRay uses TBB as its threading system by default (which is 
       installed on the NextgenIO system), but can also use OpenMP.
       To enable this option select:
 

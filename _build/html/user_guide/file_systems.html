@@ -94,7 +94,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#devdax">DevDAX</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#echofs">echoFS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#gekkofs">GekkoFS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dataclay">dataClay</a></li>
 </ul>
@@ -108,8 +107,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../apps/castep.html">CASTEP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/halvade.html">Halvade</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../apps/kmeans.html">K-Means</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../apps/monc.html">MONC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/openfoam.html">OpenFOAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/ospray.html">OSPRay</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/tiramisu.html">Tiramisu</a></li>
@@ -180,16 +177,12 @@
   <div class="section" id="file-systems-and-storage">
 <span id="sec-ref-filesystems"></span><h1>File Systems and Storage<a class="headerlink" href="#file-systems-and-storage" title="Permalink to this headline">¶</a></h1>
 <p>In order to exploit non-volatile memory (NVM) NextgenIO
-makes use of different file systems: both <a class="reference internal" href="#echofs">EchoFS</a> and
-<a class="reference internal" href="#gekkofs">GekkoFS</a> can be used by the Data Scheduler for stage-in
-and stage-out operations. The use of GekkoFS will be
-favoured over that of of echoFS, as GekkoFS has a higher
-performance and can be mounted on multiple nodes
-simultaneously.</p>
+makes use of the file system <a class="reference internal" href="#gekkofs">GekkoFS</a>, which can be
+used by the Data Scheduler for stage-in
+and stage-out operations.</p>
 <p><a class="reference internal" href="#dataclay">dataClay</a> provides object class storage and can be used
 directly by applications based on object oriented code.</p>
-<p>If the platform mode is set to Memory Mode, NVDIMM
-namespaces reserved for App Direct mode require an
+<p>NVDIMM partitions reserved for App Direct mode require an
 interface to allow applications Direct Access (DAX).
 This interface  can be in the form of a DAX enabled file
 system mounted on the memory (<a class="reference internal" href="#fsdax">FSDAX</a>) or Device DAX
@@ -198,15 +191,15 @@ system mounted on the memory (<a class="reference internal" href="#fsdax">FSDAX<
 <h2>Direct Access (DAX)<a class="headerlink" href="#direct-access-dax" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="fsdax">
 <h3>FSDAX<a class="headerlink" href="#fsdax" title="Permalink to this headline">¶</a></h3>
-<p>There are several file systems that enable direct to
+<p>There are several file systems that enable access to
 the NVM for applications, such as ext4, ext3, XFS,
 and ramfs. On NextgenIO the file system used for FSDAX
 is ext4.</p>
 <p>Once the file system is mounted on the NVM App
 Direct partition (i.e. the namespace in the NVM
 reserved for direct access), applications can access
-the memory with the use of the memory mapping function
-provided by the PMDK ( mmap( ) ).</p>
+the memory in the same manner as in a traditional file
+system.</p>
 <p>EchoFS and GekkoFS make use of file system-enabled DAX.
 Device DAX is technically possible for EchoFS, but this
 feature is currently not enabled as the FS relies on
@@ -217,62 +210,30 @@ implemented in the future.</p>
 <h3>DevDAX<a class="headerlink" href="#devdax" title="Permalink to this headline">¶</a></h3>
 <p>Device Direct Access implies that an application can
 perform byte-level operations in the NVM without
-intervention of a file system.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Is there a specified method for this type of access
-on NGIO (that users need to know about)?
-</pre></div>
+intervention of a file system. In contrast to FSDAX which
+provides a a block-device that can support a DAX-enabled filesystem,
+this mode emits a single character device file (/dev/daxX.Y). For more
+details see the <a class="reference external" href="http://pmem.io/ndctl/ndctl-create-namespace.html">pmem.io website</a></p>
 </div>
-</div>
-</div>
-<div class="section" id="echofs">
-<h2>echoFS<a class="headerlink" href="#echofs" title="Permalink to this headline">¶</a></h2>
-<p>This file system allows for POSIX-like NVM based
-storage, and is used by the Data Scheduler to prefetch
-(stage-in) data from the parallel file system
-(PFS/storage) to the computing nodes, and to write
-data from the computing nodes to the PFS upon completion
-(stage-out). In contrast to GekkoFS, EchoFS is mounted
-on individual nodes.</p>
-<p>EchoFS operates as a temporary, ad-hoc file system on
-the computing nodes and on the PFS. It exists only as
-long as the batch job needs it. It hides any memory
-hierarchies present in the computing node (see the section
-on <a class="reference internal" href="hardware.html#sec-ref-memmodes"><span class="std std-ref">Memory Modes</span></a>), and presents the node to the OS
-as a virtual storage device with a single mount point.</p>
-<p>Following the submission of a batch job, provided the
-required resources are available, the Data Scheduler creates
-an instance of EchoFS on each of the allocated computing
-nodes. EchoFS prefetches the required data, based on the
-job’s data requirements passed on by the Scheduler.</p>
-<p>Once stage-in has been completed, the batch job can
-execute. The application in the job can access the loaded files
-via standard POSIX I/O functions, making the system
-compatible with legacy applications. In this configuration
-the NVRAM functions as a faster form of traditional storage.</p>
-<p>Any new files created during the job are written into
-the NVM buffers, only transferring to long term storage
-(stage-out) once the job is completed. echofs therefore
-operates as a burst buffer.</p>
 </div>
 <div class="section" id="gekkofs">
 <h2>GekkoFS<a class="headerlink" href="#gekkofs" title="Permalink to this headline">¶</a></h2>
 <p>This file system allows for POSIX-like NVM storage operations,
 and acts as an ad-hoc file-system for the lifetime of a single
 batch job. POSIX compliance has been tested on OpenFOAM and python
-applications <a class="footnote-reference" href="#id3" id="id1">[1]</a>. GekkoFS can therefore operate as a burst-buffer,
+applications <a class="footnote-reference" href="#id3" id="id1">[1]</a>. GekkoFS can operate as a burst-buffer,
 performing stage-in and stage-out data transfers for the scheduled
-batch job. In these ways it is similar to echofs.</p>
-<p>There are important differences between the file-systems, though.
-GekkoFS forms a collaborative burst buffer, acting as a single
+batch job. In these ways it is similar to echoFS.</p>
+<p>GekkoFS forms a collaborative burst buffer, acting as a single
 file system for the directly accessible memory, combining the memory
 on all the nodes allocated to the job by the Job Scheduler. Data and
 metadata are distributed in blocks over the available storage space.</p>
-<p>The Gekko File System functions as an interposition library, which
+<p>The file system functions as an interposition library, which
 redirects all file system operations requested by the job to
 file-system daemons running on the nodes. The system layout is
 illustrated in figure 1.</p>
 <p>The interception of file-system operation commands is performed by
-the GekkoFS client, which is pre-loaded by the job application when
+the GekkoFS client, which is pre-loaded by the application when
 launched. The client also holds a file map, containing all data
 storage locations across the nodes. Like the other meta-data, this
 file map is distributed over the nodes. The client maintains
@@ -309,7 +270,7 @@ Java and Python are the two languages supported by DataClay.
 A full description of the data store can be found in the
 <a class="reference external" href="https://www.bsc.es/research-and-development/software-and-apps/software-list/dataclay/documentation">DataClay Documentation</a>.</p>
 <p>A main functionality of the data store is to allow users to
-make any application created object persistent in memory. Storing
+make any application-created object persistent in memory. Storing
 an object in this manner not only saves it for later use, but
 also allows the object to be called from other applications.
 dataClay is able to make use of both FSDAX and DevDAX to access

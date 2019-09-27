@@ -15,7 +15,7 @@ CASTEP-[version] directory.
 
 .. code:: bash
 
-   tar -xzf  CASTEP-[version].tar
+   tar -xf  CASTEP-[version].tar
 
 Place the file *linux_x86_64_ifort19.mk* in the directory 
 *CASTEP-[version]/obj/platforms*. From within the
@@ -28,14 +28,20 @@ CASTEP-[version] directory run the following command:
 and follow the install instructions when prompted (the instructions
 are set in the makefile).
 
+To make the executable accessible to :ref:`sec-ref-map` add the 
+option ``BUILD=intermediate`` to the make command:
+
+.. code::  bash
+
+   make COMMS_ARCH=mpi FFTW=fftw3 MATHLIBS=mkl10 BUILD=intermediate
+
+
 In the following we will make use of two trial datasets, provided on
 the CASTEP website: `TiN <http://www.castep.org/CASTEP/TiN>`_,
 `Al3x3 <http://www.castep.org/CASTEP/Al3x3>`_, and `DNA 
 <http://www.castep.org/CASTEP/DNA>`_.
 
-::
-
-   How will the required linux makefile be made available to users?
+.. How will the required linux makefile be made available to users?
 
 Preparing a CASTEP job
 ----------------------

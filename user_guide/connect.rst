@@ -19,7 +19,7 @@ Acquiring Permissions
 ---------------------
 
 In order to access the NEXTGenIO machine, you will have to acquire access to both
-the gateway machine, called hydra-vpn, and the machine itself. Access to both
+the gateway machine, called hydra-vpn, and to the NGIO machine itself. Access to both
 systems is granted via the `SAFE system <https://safe.epcc.ed.ac.uk/safadmin/>`_ 
 (Note that this is not the same SAFE as the one used for access to ARCHER). 
 If you do not have an account with the SAFE system yet, follow the *create 

@@ -91,10 +91,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#basic-commands">Basic Commands</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#example-subsmission-scripts">Example Subsmission Scripts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#debugging">Debugging</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#should-i-use-mpirun-or-srun">Should I Use <em>mpirun</em> or <em>srun</em>?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#differences-betweene-mpirun-and-srun">Differences betweene <em>mpirun</em> and <em>srun</em></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#slurm-on-nextgenio">Slurm on NextgenIO</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
@@ -108,8 +107,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../apps/castep.html">CASTEP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/halvade.html">Halvade</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../apps/kmeans.html">K-Means</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../apps/monc.html">MONC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/openfoam.html">OpenFOAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/ospray.html">OSPRay</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/tiramisu.html">Tiramisu</a></li>
@@ -189,13 +186,8 @@ introduce the new usage of Slurm on the NextgenIO system.</p>
 <div class="section" id="slurm">
 <h2>Slurm<a class="headerlink" href="#slurm" title="Permalink to this headline">¶</a></h2>
 <p>This section will provide a short overview of some of the basic commands
-required to run jobs with Slurm.</p>
-<p>Please note: the NextgenIO system comes equipped with OpenMPI (version
-3.1.0) and Intel MPI (version 2019.3.199). The usage of Slurm should
-reflect the choice of MPI flavour, as will indicated in the guides in
-this section where relevant.</p>
-<p>For a detailed manual on the use of Slurm, please consult the <a class="reference external" href="https://slurm.schedmd.com/documentation.html">Slurm
-documentation pages</a>.</p>
+required to run jobs with Slurm. For a detailed manual on the use of Slurm,
+please consult the <a class="reference external" href="https://slurm.schedmd.com/documentation.html">Slurm documentation pages</a>.</p>
 <div class="section" id="basic-commands">
 <h3>Basic Commands<a class="headerlink" href="#basic-commands" title="Permalink to this headline">¶</a></h3>
 <p><strong>System Status</strong></p>
@@ -213,7 +205,15 @@ documentation pages</a>.</p>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td>squeue</td>
+<tr class="row-even"><td>sview</td>
+<td><div class="first last line-block">
+<div class="line">launch a GUI providing an overview of the nodes and node usage. Within</div>
+<div class="line">the GUI individual nodes can be selected to find more detailed</div>
+<div class="line">information on each.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>squeue</td>
 <td><div class="first last line-block">
 <div class="line">list the jobs currently submitted to the system. Basic functionality</div>
 <div class="line">returns all jobs, provides the JOBID, the job owner, the requested</div>
@@ -222,7 +222,7 @@ documentation pages</a>.</p>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td>scontrol</td>
+<tr class="row-even"><td>scontrol</td>
 <td><div class="first last line-block">
 <div class="line">combined with options <em>show node</em> it will list more detailed, node</div>
 <div class="line">specific information. The nextgenio compute nodes are labelled</div>
@@ -322,7 +322,7 @@ one hour per cpu.</p>
 </pre></div>
 </div>
 <p>The next lines specify the job name, the  output filename,
-and the directory the input and output are stored. The most
+and the directory in which the input and output are stored. The most
 reliable method is to always specify the full path (see also
 <a class="reference internal" href="faq.html#ref-qnojobfile"><span class="std std-ref">Slurmstepd: error: execve(): [exec-name] : No such file or directory</span></a>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#SBATCH --job-name=par_job</span>
@@ -342,8 +342,8 @@ the task IDs to the <code class="docutils literal notranslate"><span class="pre"
 <p><strong>2) Submitting a single job with shared memory using OpenMP</strong></p>
 <p>In case the script to be run uses multithreading, multiple
 CPUs can be assigned to the same task. For the job to run
-properly, we do need to explicitly tell Slurm to set the
-OPM_NUM_THREADS environment variable.</p>
+properly, we do need to set the OPM_NUM_THREADS environment
+variable.</p>
 <p>The rest of the script looks very similar to the previous
 case:</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
@@ -382,14 +382,15 @@ the number of tasks and, if desired, the amount of memory per core.</p>
 </pre></div>
 </div>
 <p><strong>4) Submitting a hybrid MPI/OpenMP job</strong></p>
-<p>For a job that combines MPI and multithreading the most important
+<p>For a job that combines MPI and multithreading an important
 part is to allocate the correct number of cores, to be passed as the
-<code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREAD</span></code> variable.</p>
+<code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREAD</span></code> variable. Requesting more cores per task than are
+available on the task’s node will result in an error.</p>
 <p>The following script requests four nodes (total number of cpus=4*48=
-192). Two MPI processes are requested per node, as each node has
+192). Two MPI processes are requested per node: as each node has
 two sockets this should allocate one process per socket. The script
 requests all physical cores on the node, with a 1:1 ratio of threads
-to physical cores, however to prevent  making use of hyperthreading,
+to physical cores. To prevent  making use of hyperthreading,
 the option <code class="docutils literal notranslate"><span class="pre">--hint=nomultihreading</span></code> needs to be passed to the
 scheduler.</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>!#/bin/bash
@@ -411,12 +412,12 @@ srun myexec
 <p><strong>Hyperthreading: difference between srun and mpirun</strong></p>
 <p>For most job submissions it makes no difference whether mpirun
 or srun is used to execute the job. However, there is a difference
-in how the two count the number of available cores <em>when using
-hyperthreading</em>.</p>
+in how the two count the number of available cores when using
+hyperthreading.</p>
 <p>When requesting a number of cores (per MPI process), using
 <code class="docutils literal notranslate"><span class="pre">--cpus-per-task</span></code>, mpirun will allocate this as the number of
 <strong>logical</strong> cores, whereas srun will use this number to allocate
-<strong>physical</strong> cores, unless the option <em>–overcommit</em> is passed to it.</p>
+<strong>physical</strong> cores, unless the option <em>overcommit</em> is passed to it.</p>
 <p>Passing the option to srun in a batch script can be done by adding the
 line <code class="docutils literal notranslate"><span class="pre">#SBATCH</span> <span class="pre">--overcommit</span></code>.</p>
 <p class="last">If one attempts to request all available logical cores on a node
@@ -461,7 +462,7 @@ core, one can use the option <code class="docutils literal notranslate"><span cl
 based on their rank.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Unlike other <em>slurm</em> options it is not possible to pass <code class="docutils literal notranslate"><span class="pre">--cpu-bind=[..]</span></code>
+<p>Unlike other <em>Slurm</em> options it is not possible to pass <code class="docutils literal notranslate"><span class="pre">--cpu-bind=[..]</span></code>
 to the scheduler in the batch script using lines starting with <em>#SBATCH</em>.
 Instead the option must be included as a flag on the srun command, e.g.:</p>
 <div class="code bash last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">srun</span> <span class="n">myexec</span> <span class="o">--</span><span class="n">cpu</span><span class="o">-</span><span class="n">bind</span><span class="o">=</span><span class="n">map_cpu</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">36</span>
@@ -481,13 +482,13 @@ script will ensure only physical cores will be used:</p>
 <p class="first admonition-title">Warning</p>
 <p class="last">When pinning MPI processes to specific cores, any threads the process will
 create will run on <em>the same physical core</em> as the MPI process. When running
-mutiple threads per MPI process, the more reliable way of fixing core affinity
+multiple threads per MPI process, the more reliable way of fixing core affinity
 is to allow the job scheduler to allocate the CPUs for the MPI processes
 (possibly modified with the <code class="docutils literal notranslate"><span class="pre">--distribution</span></code> option, see below), and then to
 bind the threads within each process.</p>
 </div>
 <p><em>Binding threads</em></p>
-<p>To bind threads to specific cores the batch script needs to set the environment
+<p>To bind OpenMP threads to specific cores the batch script needs to set the environment
 variables <a class="reference external" href="https://gcc.gnu.org/onlinedocs/libgomp/OMP_005fPROC_005fBIND.html">OMP_PROC_BIND</a>
 and <a class="reference external" href="https://gcc.gnu.org/onlinedocs/libgomp/OMP_005fPLACES.html#OMP_005fPLACES">OMP_NUM_PLACES</a>.
 The first of the variables simply needs to be set to <em>TRUE</em>, for the second
@@ -517,12 +518,12 @@ set to to 48 (= 192 / 4).</p>
 <span class="n">srun</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">myexec</span>
 </pre></div>
 </div>
-<p>One level above the manual pinning of threads is the setting of the core affinity
-for the multithreading. This can be done by setting the <code class="docutils literal notranslate"><span class="pre">KMP_AFFINITY</span></code> environment
+<p>One level above the manual pinning of threads is setting the core affinity
+for multithreading. This can be controlled by setting the <code class="docutils literal notranslate"><span class="pre">KMP_AFFINITY</span></code> environment
 variable. Note that including the option <em>verbose</em> for this variable prints additional
 core affinity information to output.</p>
-<p>The most important option for <code class="docutils literal notranslate"><span class="pre">KMP_AFFINITY</span></code> are <em>compact</em> and <em>scatter</em>. <em>compact</em>
-places subsequent threads on CPUs as closely together as possible. <em>scatter</em> distributes
+<p>The most important options for <code class="docutils literal notranslate"><span class="pre">KMP_AFFINITY</span></code> are <em>compact</em> and <em>scatter</em>. <em>compact</em>
+places sequential threads on CPUs as closely together as possible. <em>scatter</em> distributes
 threads by placing them on CPUs that are spaced apart as much as possible. To use these
 options via a batch script and show the results in output, add (e.g.) the following line:</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">KMP_AFFINITY</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span><span class="n">compact</span>
@@ -540,12 +541,8 @@ using the <em>explicit</em> option, followed by the <em>proclist</em> options sp
 <p>Unfortunately, pinning of threads within MPI processes does not seem to be possible using
 this option. It would therefore only be of use for a job consisting of a single
 process (with multiple threads).</p>
-<p>Some further examples of usage of <code class="docutils literal notranslate"><span class="pre">KMP_AFFINITY</span></code> are provided on the website for
-<a class="reference external" href="https://www.nas.nasa.gov/hecc/support/kb/using-intel-openmp-thread-affinity-for-pinning_285.html">NASA’s HECC</a>.
-This website also includes a visual example of the effects of <em>compact</em> and <em>scatter</em>
-on thread distribution.</p>
 <p><em>Other task distribution options</em></p>
-<p>In the example above the option <code class="docutils literal notranslate"><span class="pre">--cpus-per-task</span></code> is not set, as the job scheduler
+<p>In the example above, the option <code class="docutils literal notranslate"><span class="pre">--cpus-per-task</span></code> is not set, as the job scheduler
 should allocate the optimal number of cores automatically. Similarly, the option
 <code class="docutils literal notranslate"><span class="pre">--ntasks-per-socket</span></code> is only of use if an unusual configuration of MPI processes
 is desired. The standard distribution enforced by the job scheduler is to spread
@@ -554,20 +551,20 @@ sockets, one process will be places in each socket.</p>
 <p>The allocation of MPI processes and threads can further be controlled with the
 <code class="docutils literal notranslate"><span class="pre">--distribution</span></code> option. This is a complicated option, with many settings. The
 basic example below (which would be included in the batch script) tells the scheduler
-to allocate in a cyclic manner, i.e. per node or per socket, and the threads in a
-block manner, i.e. all together:</p>
+to allocate the processes in a cyclic manner, i.e. per node or per socket, and the
+threads in a block manner, i.e. all together:</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#SBATCH --distribution cyclic:block</span>
 </pre></div>
 </div>
-<p>The first part of the option’s settings set the distribution of the tasks, the
-second sets the distribution of the threads. The <code class="docutils literal notranslate"><span class="pre">cyclic:block</span></code> matches the
+<p>The first part of the option’s settings controls the distribution of the tasks, the
+second controls the distribution of the threads. The <code class="docutils literal notranslate"><span class="pre">cyclic:block</span></code> matches the
 default allocation style of the job scheduler. As with the other pinning and
 allocation settings described in this section, these options should only be invoked
-by users wishing to create a specific configuration.</p>
+by users wishing to create a specific and unusual configuration.</p>
 </div>
 <div class="section" id="debugging">
 <h3>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h3>
-<p>If the code compiles but the executable still requires debugging, <em>impi</em> allows
+<p>If the code compiles but the executable still requires debugging, <em>mpirun</em> allows
 for additional debugging information to be set using the <a class="reference external" href="https://software.intel.com/en-us/mpi-developer-reference-linux-other-environment-variables">I_MPI_DEBUG</a>
 environment variable. The argument for for the variable is the level of
 debugging. Setting the variable to zero disables the printing of debugging
@@ -578,16 +575,16 @@ of detail.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="should-i-use-mpirun-or-srun">
-<span id="srun-or-mpirun"></span><h3>Should I Use <em>mpirun</em> or <em>srun</em>?<a class="headerlink" href="#should-i-use-mpirun-or-srun" title="Permalink to this headline">¶</a></h3>
-<p>Both <code class="docutils literal notranslate"><span class="pre">mpirun</span></code> and <code class="docutils literal notranslate"><span class="pre">srun</span></code> can be used to tell the job scheduler to run
+<div class="section" id="differences-betweene-mpirun-and-srun">
+<span id="srun-or-mpirun"></span><h3>Differences betweene <em>mpirun</em> and <em>srun</em><a class="headerlink" href="#differences-betweene-mpirun-and-srun" title="Permalink to this headline">¶</a></h3>
+<p>Both <code class="docutils literal notranslate"><span class="pre">mpirun</span></code> and <code class="docutils literal notranslate"><span class="pre">srun</span></code> can be used to tell the job scheduler to launch
 an executable. Although the <code class="docutils literal notranslate"><span class="pre">srun</span></code> command makes use of <code class="docutils literal notranslate"><span class="pre">mpirun</span></code> to
 execute a job, there are subtle differences in the way settings, such as
 environment variables set in a batch script or shell, are passed to each
-command. Below is a list of differences to be aware off when switching
+command. Below is a list of differences to be aware off when choosing
 between the two commands:</p>
 <ul class="simple">
-<li>mpirun has its own set of commands to pass task distribution commands
+<li>mpirun has its own set of commands to pass node configurations and task distributions
 to the scheduler: <code class="docutils literal notranslate"><span class="pre">-n</span></code> sets the number of tasks (MPI processes) to be
 created and <code class="docutils literal notranslate"><span class="pre">-ppn</span></code> sets the number of processes to be placed per node.
 The <code class="docutils literal notranslate"><span class="pre">-hosts</span></code> option can be used to specify the specific nodes to be used.
@@ -598,12 +595,6 @@ setting <code class="docutils literal notranslate"><span class="pre">-ntasks</sp
 are only used by mpirun. When using srun equivalent settings need to be passed
 to the scheduler as command options.</li>
 </ul>
-</div>
-</div>
-<div class="section" id="slurm-on-nextgenio">
-<h2>Slurm on NextgenIO<a class="headerlink" href="#slurm-on-nextgenio" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Some</span> <span class="n">examples</span> <span class="n">are</span> <span class="n">probably</span> <span class="n">the</span> <span class="n">quickest</span> <span class="n">to</span> <span class="n">show</span> <span class="n">the</span> <span class="n">way</span> <span class="n">here</span>
-</pre></div>
 </div>
 </div>
 </div>

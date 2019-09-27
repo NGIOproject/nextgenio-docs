@@ -21,7 +21,5 @@ On the NextgenIO system PyCOMPSs can be implemented by users by
 importing the library. The object store :ref:`ref-sec-dataclay` 
 has been optimised for use in combination with PyCOMPSs.
 
-::
-
-   - Will PyCOMPSs be included as a module?
+.. Will PyCOMPSs be included as a module?
 

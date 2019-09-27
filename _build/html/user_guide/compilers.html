@@ -112,8 +112,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../apps/castep.html">CASTEP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/halvade.html">Halvade</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../apps/kmeans.html">K-Means</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../apps/monc.html">MONC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/openfoam.html">OpenFOAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/ospray.html">OSPRay</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/tiramisu.html">Tiramisu</a></li>
@@ -186,22 +184,21 @@
 <div class="section" id="modules">
 <h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
 <p>The application development environment on NextgenIO is primarily
-controlled through the <em>modules</em> environment. By loading and switching
-modules users can control the compilers, libraries and software available.</p>
+controlled through <em>modules</em>. By loading and switching
+modules users can control the compilers, libraries, and available software.</p>
 <p>This means that for compiling on NextgenIO the desired compiler is set by
 loading the appropriate module. The required library modules (e.g.
 numerical libraries, IO format libraries) should also be loaded.</p>
 <p>Additionally, when compiling parallel applications that make use of MPI
 it is necessary to ensure one of the MPI environments is loaded.
-Compilation should then be done using the appropriate compiler
+Compilation should then be performed using the appropriate compiler
 wrapper scripts.</p>
 <p>Basic usage of the <code class="docutils literal notranslate"><span class="pre">module</span></code> command is covered below. For
 full documentation please see the  <a class="reference external" href="http://linux.die.net/man/1/module">Linux manual page on modules</a>.</p>
 <div class="section" id="information-on-the-available-modules">
 <h3>Information on the available modules<a class="headerlink" href="#information-on-the-available-modules" title="Permalink to this headline">¶</a></h3>
-<p>Finding out which modules (and hence which compilers, libraries and
-software) are available on the system is performed using the
-<code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">avail</span></code> command:</p>
+<p>Finding out which modules (and hence which compilers, libraries, and
+software) are available on the system is done with the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$&gt;  module avail
 ...
 </pre></div>

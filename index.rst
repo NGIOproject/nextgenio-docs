@@ -24,8 +24,6 @@ NEXTGenIO
 
    apps/castep
    apps/halvade
-   apps/kmeans
-   apps/monc
    apps/openfoam
    apps/ospray
    apps/tiramisu

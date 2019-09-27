@@ -98,8 +98,6 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="castep.html">CASTEP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="halvade.html">Halvade</a></li>
-<li class="toctree-l1"><a class="reference internal" href="kmeans.html">K-Means</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monc.html">MONC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="openfoam.html">OpenFOAM</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">OSPRay</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#installing-ospray">Installing OSPRay</a></li>
@@ -223,7 +221,7 @@ in the settings menu.</p>
 <p>The CCMake menu can be searced by entering ‘/’ followed by the search
 string.</p>
 <p class="last">Not all options will have to be set: this is not necessary for a
-working install of the OSPRay.</p>
+working install of OSPRay.</p>
 </div>
 <ol class="loweralpha">
 <li><p class="first">Enter the build directory and start the GUI</p>
@@ -271,7 +269,7 @@ a successful install on the system.</p>
 </tr>
 </tbody>
 </table>
-<p>OSPRay use  TBB as its threading system by default (which is
+<p>OSPRay uses TBB as its threading system by default (which is
 installed on the NextgenIO system), but can also use OpenMP.
 To enable this option select:</p>
 <table border="1" class="docutils">
@@ -347,7 +345,7 @@ install directory specified in step 5.</p>
 </li>
 <li><p class="first">Update LD_LIBRARY_PATH</p>
 <p>Add the build path to LD_LIBRARY_PATH (note: linking to the
-install path may lead to the error <a class="reference internal" href="../user_guide/faq.html#ref-ospray-mpiinit"><span class="std std-ref">osp:api: could not find module initializer ospray_init_module_mpi</span></a>
+install path may lead to the error <a class="reference internal" href="../user_guide/faq.html#ref-ospray-mpiinit"><span class="std std-ref">Error running OSPRay MPI</span></a>
 when trying to use MPI):</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/install/directory/lib64
 </pre></div>

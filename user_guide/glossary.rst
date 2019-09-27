@@ -16,7 +16,7 @@ Glossary
 | NVDIMM                || Non-Volatile Dual In-line Memory module; a DIMM using NVRAM |
 |                       || instead of standard DRAM                                    |
 +-----------------------+--------------------------------------------------------------+
-| NVM                   || Non-Volatile Memory                                         |
+| NVM                   || Non-Volatile Memory (see SCM)                               |
 +-----------------------+--------------------------------------------------------------+
 | NVRAM                 || Non-Volatile Random Access Memory; persistent memory,       |
 |                       || SCM used in a processor's main memory                       |

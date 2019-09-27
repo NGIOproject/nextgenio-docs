@@ -16,10 +16,6 @@ The official site for Score-P can be found `here
 documentation is located `here <http://scorepci.pages.
 jsc.fz-juelich.de/scorep-pipelines/docs/scorep-5.0/html/>`__.
 
-::
-
-    - Need to include Score-p at compilation time
-
 
 Vampir
 ~~~~~~
@@ -29,6 +25,7 @@ the post mortem analysis of parallel application runs. The website
 for Vampir can be found `here <https://vampir.eu>`__, and a tutorial
 can be accessed `here <https://vampir.eu/tutorial>`__.
 
+.. _sec-ref-map:
 
 Allinea/ARM MAP
 ~~~~~~~~~~~~~~~

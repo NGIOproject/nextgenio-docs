@@ -52,28 +52,30 @@ be booted in two different modes. Switching between platform modes requires
 a reboot of the nodes. 
 
 At the NVDIMM level the SCM can be partitioned, reserving sections of the SCM to 
-operate in one of the modes listed above. This implies that different
-memory modes can exist in different partitions on the same NVDIMM at the same time.
-These partitions are managed by the memory controller, but a more abstract level
-of access is made possible through the use of namespaces. The namespaces contain
-the different memory modes available on the NVDIMM, and determine the way in which
-the OS and applications see that particular memory partition. 
+operate in one of two modes. This implies that different
+memory 'reservations' can exist in different partitions on the same NVDIMM simultaneously.
+These partitions are managed by the memory controller. The two modes are 'memory
+mode' and 'App Direct' mode respectively. The choice of mode influences how 
+the SCM can be accessed in the different platform modes.
 
-Namespaces are subdivisions of Memory Pools, which are BIOS mapped physical 
-memory ranges. The Memory Pools are classed as either volatile or persistent, 
-and switching between the two requires rebooting the node. Namespaces, on the other
-hand, can be reallocated within existing Memory Pools without a reboot.
+A more abstract level
+of access is made possible through the use of namespaces.  Namespaces are subdivisions
+of Memory Pools, which are BIOS mapped physical memory ranges. The Memory Pools
+are classed as either volatile or persistent, and switching between the two
+requires rebooting the node. Namespaces, on the other hand, can be 
+reallocated within existing Memory Pools without a reboot. Namespaces can only
+be created on SCM reserved in the 'App Direct' mode.
 
 The choice of platform mode impacts the usage of the different reserved 
-namespaces on the NVDIMM. The platform level modes are:
+partitions on the NVDIMM. The platform level modes are:
 
-1. **Memory mode**: In Memory mode, also known as two-level memory mode, the byte-addressable persistent memory is transparent to applications and represents the main memory space, while DRAM effectively becomes the last level cache. In this mode, the persistent properties of the technology are not exploited because coherence between DRAM and persistent memory cannot be guaranteed. Applications do not have to be modified to use the persistent memory in this mode. All data objects are stored by default in the DCPMM and must be handled as volatile like DRAM data.
-2. **App Direct mode**: In AppDirect mode, also referred to as one-level memory mode, the persistent memory is only accessible via direct load and store operations and its primary use is as very fast byte-addressable non- volatile local storage. In this mode, applications can only exploit the persistent memory either if they manage it directly or if system software provides an interface (e.g. through a file system that is mounted on the persistent memory). In this mode, the DRAM is available as low latency main memory. 
+1. **Memory mode**: In Memory mode, also known as two-level memory mode (2LM), the byte-addressable persistent memory is transparent to applications and represents the main memory space, while DRAM effectively becomes the last level cache. In this mode, the persistent properties of the technology are not exploited because coherence between DRAM and persistent memory cannot be guaranteed. Applications do not have to be modified to use the persistent memory in this mode. All data objects are stored by default in the DCPMM and must be handled as volatile, like DRAM data.
+2. **App Direct mode**: In AppDirect mode, also referred to as one-level memory mode (1LM), the persistent memory is only accessible via direct load and store operations. Its primary use is as fast byte-addressable non-volatile local storage. In this mode, applications can only exploit the persistent memory either if they manage it directly or if system software provides an interface (e.g. through a file system that is mounted on the persistent memory). In this mode, the DRAM is available as low latency main memory.
 
 The functionality of the NVDIMMs under these different platform modes is
 shown in schematic form in figure 2. The left side of the figure shows use
 in Memory mode, and the right side use in App Direct mode. Note that the 
-use of any storage namespace on the nodes is unaffected by the choice of
+use of any *storage* namespace on the nodes is unaffected by the choice of
 platform mode.
 
 .. figure:: ../images/mem_use.png
@@ -82,7 +84,7 @@ platform mode.
     :alt: diagramme of NVDIMM partitions and usage
 
     **Figure 2** The different possible namespace partitions on the NVDIMMs
-    (storage, space for Memory mode, and App Direct mode) and the way these
+    (storage, space for Memory mode, and space for App Direct mode) and the way these
     partitions are visible to the OS and applications in the different
     platform modes.
 
@@ -95,7 +97,7 @@ mode.
 When booting the platform in Memory mode an application can see the full 
 available NVRAM, but cannot see the DRAM. The DRAM is used as cache. The 
 namespace reserved for App Direct needs to be made available by mounting
-it with a file system (such as DAX, see :ref:`sec-ref-filesystems`). This
+it with a file system (see :ref:`sec-ref-filesystems`). This
 mode is illustrated in the diagram below, which shows a single NVDIMM 
 (*top*) and DRAM DIMM (*bottom*).
 
@@ -116,15 +118,9 @@ Memory Configurations
 
 There is a large number of possible configurations of the system, as different
 nodes can be set up with different uses of the NVRAM, and the space allocation
-on the NVDIMMs can be different as well. The main setups used in the NextgenIO 
-system are:
-
-::
-
-    - There are multiple options, which ones should be included?
-    - An explanation and overview of the the implemented namespace 
-      partitions on the NVDIMMs might be helpful here, to help users
-      better understand what their choice of platform mode implies.
+on the NVDIMMs can be different as well. The main NVDIMM configuration used on
+the NextgenIO system is a mix of the two partitions, to avoid downtime due to 
+node reboots following a switch in platform mode.
 
 User control over the configuration in which the nodes are booted is
 described in the section on the :ref:`sec-ref-scheduler`.

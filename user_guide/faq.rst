@@ -39,7 +39,7 @@ When trying to submit my batch job, I receive the error message:
      It is possible that the batch scripts requests more cores per node than can 
      be allocated. When using the ``cpus-per-task`` option in the batch script, 
      the maximum number of cores to be requested per task is 48 (the number of 
-     physical cpus on the node). 
+     physical cpus on an NGIO node). 
 
      If the intention is (e.g.) to use the total number of available logical 
      cores in a single node, by using hyperthreading, the following code can be
@@ -92,8 +92,7 @@ where [exec-name] is the name of my executable.
         Please note that lines in a batch script starting with *#SBATCH* are not 
         interpreted by bash. It is therefore not possible to reduce the amount of
         repetitious writing by specifying an environment variable for the start of 
-        the path (as e.g. $MY_PATH will not be evaluated). Writing the full path 
-        is the most reliable method.
+        the path when specifying directories such as ``#SBATCH -D``.
 
 |
 

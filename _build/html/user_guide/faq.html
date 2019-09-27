@@ -110,8 +110,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../apps/castep.html">CASTEP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/halvade.html">Halvade</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../apps/kmeans.html">K-Means</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../apps/monc.html">MONC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/openfoam.html">OpenFOAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/ospray.html">OSPRay</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../apps/tiramisu.html">Tiramisu</a></li>
@@ -211,7 +209,7 @@
 <p>It is possible that the batch scripts requests more cores per node than can
 be allocated. When using the <code class="docutils literal notranslate"><span class="pre">cpus-per-task</span></code> option in the batch script,
 the maximum number of cores to be requested per task is 48 (the number of
-physical cpus on the node).</p>
+physical cpus on an NGIO node).</p>
 <p>If the intention is (e.g.) to use the total number of available logical
 cores in a single node, by using hyperthreading, the following code can be
 used to request the correct resources. In this example we request a single
@@ -255,8 +253,7 @@ executable, the full path needs to be specified.</p>
 <p class="last">Please note that lines in a batch script starting with <em>#SBATCH</em> are not
 interpreted by bash. It is therefore not possible to reduce the amount of
 repetitious writing by specifying an environment variable for the start of
-the path (as e.g. $MY_PATH will not be evaluated). Writing the full path
-is the most reliable method.</p>
+the path when specifying directories such as <code class="docutils literal notranslate"><span class="pre">#SBATCH</span> <span class="pre">-D</span></code>.</p>
 </div>
 </div>
 </div>

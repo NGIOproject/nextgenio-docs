@@ -4,8 +4,8 @@ Modules and Compilers
 Modules
 ~~~~~~~
 The application development environment on NextgenIO is primarily
-controlled through the *modules* environment. By loading and switching
-modules users can control the compilers, libraries and software available.
+controlled through *modules*. By loading and switching
+modules users can control the compilers, libraries, and available software.
 
 This means that for compiling on NextgenIO the desired compiler is set by 
 loading the appropriate module. The required library modules (e.g. 
@@ -13,7 +13,7 @@ numerical libraries, IO format libraries) should also be loaded.
 
 Additionally, when compiling parallel applications that make use of MPI 
 it is necessary to ensure one of the MPI environments is loaded.
-Compilation should then be done using the appropriate compiler 
+Compilation should then be performed using the appropriate compiler 
 wrapper scripts.
 
 Basic usage of the ``module`` command is covered below. For
@@ -23,9 +23,8 @@ full documentation please see the  `Linux manual page on modules
 Information on the available modules
 ------------------------------------
 
-Finding out which modules (and hence which compilers, libraries and
-software) are available on the system is performed using the
-``module avail`` command:
+Finding out which modules (and hence which compilers, libraries, and
+software) are available on the system is done with the following command:
 
 ::
 

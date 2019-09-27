@@ -16,15 +16,14 @@ Slurm
 ~~~~~
 
 This section will provide a short overview of some of the basic commands
-required to run jobs with Slurm. 
+required to run jobs with Slurm. For a detailed manual on the use of Slurm,
+please consult the `Slurm documentation pages <https://slurm.schedmd.com/documentation.html>`_.
 
-Please note: the NextgenIO system comes equipped with OpenMPI (version 
-3.1.0) and Intel MPI (version 2019.3.199). The usage of Slurm should 
-reflect the choice of MPI flavour, as will indicated in the guides in
-this section where relevant.
+.. Please note: the NextgenIO system comes equipped with OpenMPI (version 
+   3.1.0) and Intel MPI (version 2019.3.199). The usage of Slurm should 
+   reflect the choice of MPI flavour, as will indicated in the guides in
+   this section where relevant.
 
-For a detailed manual on the use of Slurm, please consult the `Slurm 
-documentation pages <https://slurm.schedmd.com/documentation.html>`_.
 
 Basic Commands
 --------------
@@ -35,6 +34,10 @@ Basic Commands
 | sinfo   || list available partitions, nodes on these partitions and the status of  |
 |         || these components. Availability is listed as either *up* or *down*.      |
 |         || For a full list of node-by-node status enter: ``sinfo --long --Node``   |
++---------+--------------------------------------------------------------------------+
+| sview   || launch a GUI providing an overview of the nodes and node usage. Within  |
+|         || the GUI individual nodes can be selected to find more detailed          |
+|         || information on each.                                                    |
 +---------+--------------------------------------------------------------------------+
 | squeue  || list the jobs currently submitted to the system. Basic functionality    |
 |         || returns all jobs, provides the JOBID, the job owner, the requested      |
@@ -130,7 +133,7 @@ one hour per cpu.
     #SBATCH --array=1-10
 
 The next lines specify the job name, the  output filename,
-and the directory the input and output are stored. The most 
+and the directory in which the input and output are stored. The most 
 reliable method is to always specify the full path (see also
 :ref:`ref-qnojobfile`):
 
@@ -157,8 +160,8 @@ We then submit the script with the following command:
 
 In case the script to be run uses multithreading, multiple 
 CPUs can be assigned to the same task. For the job to run 
-properly, we do need to explicitly tell Slurm to set the 
-OPM_NUM_THREADS environment variable.
+properly, we do need to set the OPM_NUM_THREADS environment
+variable.
 
 The rest of the script looks very similar to the previous
 case:
@@ -209,15 +212,16 @@ The script is submitted by entering:
 
 **4) Submitting a hybrid MPI/OpenMP job**
 
-For a job that combines MPI and multithreading the most important
+For a job that combines MPI and multithreading an important
 part is to allocate the correct number of cores, to be passed as the
-``OMP_NUM_THREAD`` variable.
+``OMP_NUM_THREAD`` variable. Requesting more cores per task than are
+available on the task's node will result in an error.
 
 The following script requests four nodes (total number of cpus=4*48=
-192). Two MPI processes are requested per node, as each node has 
+192). Two MPI processes are requested per node: as each node has 
 two sockets this should allocate one process per socket. The script 
 requests all physical cores on the node, with a 1:1 ratio of threads
-to physical cores, however to prevent  making use of hyperthreading, 
+to physical cores. To prevent  making use of hyperthreading, 
 the option ``--hint=nomultihreading`` needs to be passed to the
 scheduler.
 
@@ -240,13 +244,13 @@ scheduler.
 
    For most job submissions it makes no difference whether mpirun
    or srun is used to execute the job. However, there is a difference
-   in how the two count the number of available cores *when using 
-   hyperthreading*. 
+   in how the two count the number of available cores when using 
+   hyperthreading. 
 
    When requesting a number of cores (per MPI process), using 
    ``--cpus-per-task``, mpirun will allocate this as the number of 
    **logical** cores, whereas srun will use this number to allocate 
-   **physical** cores, unless the option *--overcommit* is passed to it.
+   **physical** cores, unless the option *overcommit* is passed to it.
 
    Passing the option to srun in a batch script can be done by adding the 
    line ``#SBATCH --overcommit``.
@@ -305,7 +309,7 @@ based on their rank.
 
 .. note::
 
-   Unlike other *slurm* options it is not possible to pass ``--cpu-bind=[..]``
+   Unlike other *Slurm* options it is not possible to pass ``--cpu-bind=[..]``
    to the scheduler in the batch script using lines starting with *#SBATCH*.
    Instead the option must be included as a flag on the srun command, e.g.:
 
@@ -329,14 +333,14 @@ The distribution of the processes over the cores can be controlled with the
 
    When pinning MPI processes to specific cores, any threads the process will 
    create will run on *the same physical core* as the MPI process. When running
-   mutiple threads per MPI process, the more reliable way of fixing core affinity
+   multiple threads per MPI process, the more reliable way of fixing core affinity
    is to allow the job scheduler to allocate the CPUs for the MPI processes 
    (possibly modified with the ``--distribution`` option, see below), and then to
    bind the threads within each process.
 
 *Binding threads*
 
-To bind threads to specific cores the batch script needs to set the environment 
+To bind OpenMP threads to specific cores the batch script needs to set the environment 
 variables `OMP_PROC_BIND <https://gcc.gnu.org/onlinedocs/libgomp/OMP_005fPROC_005fBIND.html>`_ 
 and `OMP_NUM_PLACES <https://gcc.gnu.org/onlinedocs/libgomp/OMP_005fPLACES.html#OMP_005fPLACES>`_.
 The first of the variables simply needs to be set to *TRUE*, for the second 
@@ -370,13 +374,13 @@ set to to 48 (= 192 / 4).
 
    srun /path/to/myexec
 
-One level above the manual pinning of threads is the setting of the core affinity
-for the multithreading. This can be done by setting the ``KMP_AFFINITY`` environment
+One level above the manual pinning of threads is setting the core affinity
+for multithreading. This can be controlled by setting the ``KMP_AFFINITY`` environment
 variable. Note that including the option *verbose* for this variable prints additional
 core affinity information to output.
 
-The most important option for ``KMP_AFFINITY`` are *compact* and *scatter*. *compact* 
-places subsequent threads on CPUs as closely together as possible. *scatter* distributes
+The most important options for ``KMP_AFFINITY`` are *compact* and *scatter*. *compact* 
+places sequential threads on CPUs as closely together as possible. *scatter* distributes
 threads by placing them on CPUs that are spaced apart as much as possible. To use these
 options via a batch script and show the results in output, add (e.g.) the following line:
 
@@ -399,15 +403,10 @@ using the *explicit* option, followed by the *proclist* options specifying the c
 Unfortunately, pinning of threads within MPI processes does not seem to be possible using
 this option. It would therefore only be of use for a job consisting of a single
 process (with multiple threads).
-   
-Some further examples of usage of ``KMP_AFFINITY`` are provided on the website for
-`NASA's HECC <https://www.nas.nasa.gov/hecc/support/kb/using-intel-openmp-thread-affinity-for-pinning_285.html>`_.
-This website also includes a visual example of the effects of *compact* and *scatter*
-on thread distribution.
 
 *Other task distribution options*
 
-In the example above the option ``--cpus-per-task`` is not set, as the job scheduler
+In the example above, the option ``--cpus-per-task`` is not set, as the job scheduler
 should allocate the optimal number of cores automatically. Similarly, the option
 ``--ntasks-per-socket`` is only of use if an unusual configuration of MPI processes
 is desired. The standard distribution enforced by the job scheduler is to spread
@@ -417,24 +416,24 @@ sockets, one process will be places in each socket.
 The allocation of MPI processes and threads can further be controlled with the
 ``--distribution`` option. This is a complicated option, with many settings. The
 basic example below (which would be included in the batch script) tells the scheduler
-to allocate in a cyclic manner, i.e. per node or per socket, and the threads in a
-block manner, i.e. all together: 
+to allocate the processes in a cyclic manner, i.e. per node or per socket, and the 
+threads in a block manner, i.e. all together: 
 
 .. code:: bash 
 
    #SBATCH --distribution cyclic:block
 
-The first part of the option's settings set the distribution of the tasks, the 
-second sets the distribution of the threads. The ``cyclic:block`` matches the 
+The first part of the option's settings controls the distribution of the tasks, the 
+second controls the distribution of the threads. The ``cyclic:block`` matches the 
 default allocation style of the job scheduler. As with the other pinning and 
 allocation settings described in this section, these options should only be invoked
-by users wishing to create a specific configuration.
+by users wishing to create a specific and unusual configuration.
 
 
 Debugging
 ---------
 
-If the code compiles but the executable still requires debugging, *impi* allows
+If the code compiles but the executable still requires debugging, *mpirun* allows
 for additional debugging information to be set using the `I_MPI_DEBUG 
 <https://software.intel.com/en-us/mpi-developer-reference-linux-other-environment-variables>`_
 environment variable. The argument for for the variable is the level of
@@ -451,17 +450,17 @@ This option can be included in a batch script by adding the following line (e.g)
 
 .. _srun_or_mpirun:
 
-Should I Use *mpirun* or *srun*?
---------------------------------
+Differences betweene *mpirun* and *srun*
+----------------------------------------
 
-Both ``mpirun`` and ``srun`` can be used to tell the job scheduler to run 
+Both ``mpirun`` and ``srun`` can be used to tell the job scheduler to launch
 an executable. Although the ``srun`` command makes use of ``mpirun`` to 
 execute a job, there are subtle differences in the way settings, such as 
 environment variables set in a batch script or shell, are passed to each 
-command. Below is a list of differences to be aware off when switching 
+command. Below is a list of differences to be aware off when choosing 
 between the two commands:
 
-- mpirun has its own set of commands to pass task distribution commands
+- mpirun has its own set of commands to pass node configurations and task distributions 
   to the scheduler: ``-n`` sets the number of tasks (MPI processes) to be
   created and ``-ppn`` sets the number of processes to be placed per node.
   The ``-hosts`` option can be used to specify the specific nodes to be used.
@@ -473,10 +472,7 @@ between the two commands:
   to the scheduler as command options.
 
 
-Slurm on NextgenIO
-~~~~~~~~~~~~~~~~~~
-
-::
-
-    Some examples are probably the quickest to show the way here
+.. Slurm on NextgenIO
+   ~~~~~~~~~~~~~~~~~~
+   Some examples are probably the quickest to show the way here
 
