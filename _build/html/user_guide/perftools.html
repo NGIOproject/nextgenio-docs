@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Performance Analysis Tools &mdash; nextgenio-docs  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="FAQs and Common Issues" href="faq.html" />
+    <link rel="prev" title="PyCOMPSs" href="pycompss.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> nextgenio-docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hardware.html">System Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connect.html">Connecting to the System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="job_scheduler.html">Submitting Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_scheduler.html">Data Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_systems.html">File Systems and Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compilers.html">Modules and Compilers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pycompss.html">PyCOMPSs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Performance Analysis Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#score-p">Score-P</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vampir">Vampir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#allinea-arm-map">Allinea/ARM MAP</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#map-profiling-example-castep">MAP profiling example: CASTEP</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-arm-mpi-wrapper-libraries">Building the ARM MPI Wrapper Libraries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQs and Common Issues</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../apps/castep.html">CASTEP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/halvade.html">Halvade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/openfoam.html">OpenFOAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/ospray.html">OSPRay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apps/tiramisu.html">Tiramisu</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">nextgenio-docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Performance Analysis Tools</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/user_guide/perftools.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="performance-analysis-tools">
+<span id="sec-ref-perftools"></span><h1>Performance Analysis Tools<a class="headerlink" href="#performance-analysis-tools" title="Permalink to this headline">¶</a></h1>
+<p>Various performance analysis tools are installed on the
+NextgenIO system.</p>
+<div class="section" id="score-p">
+<h2>Score-P<a class="headerlink" href="#score-p" title="Permalink to this headline">¶</a></h2>
+<p>Score-P provides an infrastructure to use various measurement
+tools, including <a class="reference internal" href="#vampir">Vampir</a>, for parallel applications.
+The official site for Score-P can be found <a class="reference external" href="https://www.vi-hps.org/projects/score-p/">here</a>, and the
+documentation is located <a class="reference external" href="http://scorepci.pages.jsc.fz-juelich.de/scorep-pipelines/docs/scorep-5.0/html/">here</a>.</p>
+</div>
+<div class="section" id="vampir">
+<h2>Vampir<a class="headerlink" href="#vampir" title="Permalink to this headline">¶</a></h2>
+<p>Vampir provides an interactive event trace visualiser, allowing
+the post mortem analysis of parallel application runs. The website
+for Vampir can be found <a class="reference external" href="https://vampir.eu">here</a>, and a tutorial
+can be accessed <a class="reference external" href="https://vampir.eu/tutorial">here</a>.</p>
+</div>
+<div class="section" id="allinea-arm-map">
+<span id="sec-ref-map"></span><h2>Allinea/ARM MAP<a class="headerlink" href="#allinea-arm-map" title="Permalink to this headline">¶</a></h2>
+<p>ARM Map is a source level application profiler, designed to
+evaluate parallel applications. The official website is located
+<a class="reference external" href="https://www.arm.com/products/development-tools/server-and-hpc/forge/map">here</a>, and an introduction can be found <a class="reference external" href="https://developer.arm.com/docs/101136/latest/map/getting-started">here</a>.</p>
+<p>On NextgenIO ARM Map can be accessed after loading the <code class="docutils literal notranslate"><span class="pre">arm-forge</span></code>
+module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$&gt; module load arm-forge
+</pre></div>
+</div>
+<p>When the module is loaded, the easiest use of MAP is through the
+GUI. This can be opened by entering</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$&gt; map
+</pre></div>
+</div>
+<p>This will open the basic interface (note that this will require
+X11 forwarding to be enabled when connecting to NextgenIO with
+SSH - <a class="reference internal" href="connect.html#sec-ref-connect"><span class="std std-ref">Connecting to the System</span></a>):</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/armmap_begin.png"><img alt="Screenshot of ARM GUI opening screen" src="../_images/armmap_begin.png" style="width: 720.0px; height: 465.0px;" /></a>
+</div>
+<p>After selecting ‘profiling’ the menu shown below will load.
+By selecting the application to be profiled, MAP will auto-detect
+the type of application (e.g. OpenMP, MPI) the associated menu
+options will be available. These options can also be set
+manually. Below is an example for a CASTEP run on the TiN benchmark
+dataset:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/armmap_prof.png"><img alt="Screenshot of ARM profiling GUI" src="../_images/armmap_prof.png" style="width: 443.2px; height: 542.4px;" /></a>
+</div>
+<p>Alternatively one can simply run MAP from the command line (or
+from a batch script) by prepending <code class="docutils literal notranslate"><span class="pre">map</span></code> to the command to run
+the executable and adding the option <code class="docutils literal notranslate"><span class="pre">--profile</span></code> to disable the
+GUI (note that the <em>profile</em> flag needs to be set immediately
+following the <em>map</em> command):</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="o">--</span><span class="n">profile</span> <span class="n">srun</span> <span class="o">--</span><span class="n">nodes</span><span class="o">=</span><span class="mi">2</span> <span class="o">--</span><span class="n">tasks</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">node</span><span class="o">=</span><span class="mi">2</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">myexec</span>
+</pre></div>
+</div>
+<p>The result of a profiling run, started either from the command line
+or from the GUI, is a .map file. The information contained in this
+file can be explored using the MAP application as well. To open it
+from the command line enter:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="p">[</span><span class="n">profile</span><span class="o">-</span><span class="n">run</span><span class="p">]</span><span class="o">.</span><span class="n">map</span>
+</pre></div>
+</div>
+<p>Here <em>[profile-run]</em> is the name generated by MAP that specifies the
+run.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>MAP can show a line by line usage report of the submitted code
+over the course of the job’s runtime. To enable this feature it
+is necessary to compile the code using the debug flag <code class="docutils literal notranslate"><span class="pre">-g</span></code>. For
+example:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mpicc</span> <span class="n">mycode</span><span class="o">.</span><span class="n">c</span> <span class="o">-</span><span class="n">fopenmp</span> <span class="o">-</span><span class="n">o</span> <span class="n">myexec</span> <span class="o">-</span><span class="n">g</span>
+</pre></div>
+</div>
+<p class="last">After this compilation MAP can be called as usual upon execution.</p>
+</div>
+<div class="section" id="map-profiling-example-castep">
+<h3>MAP profiling example: CASTEP<a class="headerlink" href="#map-profiling-example-castep" title="Permalink to this headline">¶</a></h3>
+<p>This example will use the application <a class="reference internal" href="../apps/castep.html#sec-ref-castep"><span class="std std-ref">CASTEP</span></a> to
+illustrate the usage of MAP for benchmarking.</p>
+<p>Job submission can be done either directly, by selecting the
+application in the GUI and clicking <em>Submit</em>,  or by submitting
+a batch job to the queue (see section see <a class="reference internal" href="job_scheduler.html#sec-ref-scheduler"><span class="std std-ref">Submitting Jobs</span></a>)
+and calling MAP without the GUI.</p>
+<p>The following batch script submits a CASTEP job analysing the
+practice TiN dataset (assumed to be stored in a subdirectory named
+<em>TiN</em>), calls MAP to profile the performance, and
+moves the resulting files to the <em>TiN/output</em> subdirectory. The node
+configuration has been chosen such that the number of tasks matches
+the number of k-points, which is eight for the TiN dataset. The choice
+of memory configuration in the example below is arbitrary, but is
+generally of significant impact on performance.</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+
+#SBATCH --nodes=2
+#SBATCH --ntasks=8
+#SBATCH --cpus-per-task=12
+#SBATCH -p 2lm          #Request nodes in Memory Mode
+#SBATCH
+
+#SBATCH -D /path/to/TiN
+#SBATCH -o /path/to/TiN/output/TiN.out.%A.%N.log  # %A prints the PID, %N prints the NodeID
+#SBATCH -e /path/to/TiN/output/TiN.err.%A.%N.log
+#SBATCH --job-name=tin-job
+
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+export KMP_AFFINITY=compact
+
+DIR=&quot;/path/to/castep-dir/&quot;
+J=&quot;TiN-mp&quot;              #Name of the executable (and the associated files in the TiN directory)
+
+map --profile srun &quot;${DIR}/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi&quot; &quot;${DIR}/TiN/$J&quot;
+
+mv &quot;${DIR}test/TiN/${J}.castep&quot; &quot;${DIR}test/TiN/output&quot;
+mv &quot;${DIR}test/TiN/${J}.bands&quot; &quot;${DIR}test/TiN/output&quot;
+mv &quot;${DIR}test/TiN/${J}.bib&quot; &quot;${DIR}test/TiN/output&quot;
+mv &quot;${DIR}test/TiN/${J}.cst_esp&quot; &quot;${DIR}test/TiN/output&quot;
+</pre></div>
+</div>
+<p>The results of this profiling run (viewed in the MAP GUI) should
+look like the screen below:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/armmap_tinres.png"><img alt="Screenshot of ARM GUI results for CASTEP TiN dataset" src="../_images/armmap_tinres.png" style="width: 818.0px; height: 556.5px;" /></a>
+</div>
+<p>In the default view of the GUI shown above the upper panel displays a
+breakdown of resource usage: application activity (fraction of time
+spent on main thread, OpenMP, MPI etc.), fraction of max FLOPs per CPUs
+used, and memory usage. The large screen below shows the fraction of
+the runtime spent on different sections of the application.</p>
+<p>By selecting any section of the runtime (in the upper panels) and left
+clicking in the highlighted region, it is possible to zoom in on a certain
+time. Right clicking will zoom out again.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>As hyperthreading is switched on by default on the NextgenIO system,
+MAP will intially display the results of the run under the assumption
+that each pysical core represents two logical cores, <em>even when
+hyperthreading was switched off manually</em>. To adjust this setting,
+adjust the number of cores in the top right corner of the GUI.</p>
+<p>In the example in the image below all cores on a node were selected,
+resulting in the assumption of 96 cores (2 per process). Select this
+setting to adjust the number of cores per process to 1, if
+hyperthreading was switched off.</p>
+<a class="last reference internal image-reference" href="../_images/armmap_cores_closeup.png"><img alt="../_images/armmap_cores_closeup.png" class="align-center" src="../_images/armmap_cores_closeup.png" style="width: 614.4px; height: 155.2px;" /></a>
+</div>
+<p>There are many display options and varying levels of detail to
+review this data, and requirements will depends strongly one the
+intention of the user. We refer the reader to the MAP documentation
+for a discussion of these options.</p>
+<p>When using CASTEP as a benchmark application for the NextgenIO system
+there are various options to consider, most importantly the platform
+memory mode, the parallel configuration, and whether there is a
+difference between using mpirun and srun.</p>
+</div>
+</div>
+<div class="section" id="building-the-arm-mpi-wrapper-libraries">
+<span id="sec-ref-maplib"></span><h2>Building the ARM MPI Wrapper Libraries<a class="headerlink" href="#building-the-arm-mpi-wrapper-libraries" title="Permalink to this headline">¶</a></h2>
+<p>For some applications it is necessary to link MAP libraries into the
+executable during the build, to appropriately measure MPI usage (see
+e.g. <a class="reference internal" href="../apps/ospray.html#sec-ref-ospray"><span class="std std-ref">OSPRay</span></a>). The necessary libraries can be built
+using the command <code class="docutils literal notranslate"><span class="pre">make-profiler-libraries</span></code>. This will print the following
+output:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$&gt; make-profiler-libraries
+
+Creating shared libraries in [current/directory]
+Created the libraries:
+libmap-sampler.so       (and .so.1, .so.1.0, .so.1.0.0)
+libmap-sampler-pmpi.so  (and .so.1, .so.1.0, .so.1.0.0)
+
+To instrument a program, add these compiler options:
+   compilation for use with MAP - not required for Performance Reports:
+      -g (and -O3 etc.)
+   linking (both MAP and Performance Reports):
+      -L[current/directory] -lmap-sampler-pmpi -lmap-sampler -Wl,--eh-frame-hdr -Wl,-rpath=[current/directory]
+
+Note: These libraries must be on the same NFS/Lustre/GPFS filesystem as your
+program.
+</pre></div>
+</div>
+<p>The two dynamic libraries can now be linked in during the compilation
+of the executable.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="faq.html" class="btn btn-neutral float-right" title="FAQs and Common Issues" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pycompss.html" class="btn btn-neutral float-left" title="PyCOMPSs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, nextgenio_project
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

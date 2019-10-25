@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>CASTEP &mdash; nextgenio-docs  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Halvade" href="halvade.html" />
+    <link rel="prev" title="FAQs and Common Issues" href="../user_guide/faq.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> nextgenio-docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/hardware.html">System Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/connect.html">Connecting to the System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/job_scheduler.html">Submitting Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/data_scheduler.html">Data Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/file_systems.html">File Systems and Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/compilers.html">Modules and Compilers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/pycompss.html">PyCOMPSs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/perftools.html">Performance Analysis Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/faq.html">FAQs and Common Issues</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Applications</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CASTEP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#building-castep">Building CASTEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#preparing-a-castep-job">Preparing a CASTEP job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#executing-a-castep-job">Executing a CASTEP job</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="halvade.html">Halvade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openfoam.html">OpenFOAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ospray.html">OSPRay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tiramisu.html">Tiramisu</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">nextgenio-docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>CASTEP</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/apps/castep.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="castep">
+<span id="sec-ref-castep"></span><h1>CASTEP<a class="headerlink" href="#castep" title="Permalink to this headline">¶</a></h1>
+<p>For full details on the on this software package please refer to the
+<a class="reference external" href="http://www.castep.org/">CASTEP documentation</a>.</p>
+<div class="section" id="building-castep">
+<h2>Building CASTEP<a class="headerlink" href="#building-castep" title="Permalink to this headline">¶</a></h2>
+<p>The first requirement is a copy of the .tar file containing the CASTEP
+libraries and installer. Extracting the .tar file will create the
+CASTEP-[version] directory.</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="o">-</span><span class="n">xf</span>  <span class="n">CASTEP</span><span class="o">-</span><span class="p">[</span><span class="n">version</span><span class="p">]</span><span class="o">.</span><span class="n">tar</span>
+</pre></div>
+</div>
+<p>Place the file <em>linux_x86_64_ifort19.mk</em> in the directory
+<em>CASTEP-[version]/obj/platforms</em>. From within the
+CASTEP-[version] directory run the following command:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">COMMS_ARCH</span><span class="o">=</span><span class="n">mpi</span> <span class="n">FFTW</span><span class="o">=</span><span class="n">fftw3</span> <span class="n">MATHLIBS</span><span class="o">=</span><span class="n">mkl10</span>
+</pre></div>
+</div>
+<p>and follow the install instructions when prompted (the instructions
+are set in the makefile).</p>
+<p>To make the executable accessible to <a class="reference internal" href="../user_guide/perftools.html#sec-ref-map"><span class="std std-ref">Allinea/ARM MAP</span></a> add the
+option <code class="docutils literal notranslate"><span class="pre">BUILD=intermediate</span></code> to the make command:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">COMMS_ARCH</span><span class="o">=</span><span class="n">mpi</span> <span class="n">FFTW</span><span class="o">=</span><span class="n">fftw3</span> <span class="n">MATHLIBS</span><span class="o">=</span><span class="n">mkl10</span> <span class="n">BUILD</span><span class="o">=</span><span class="n">intermediate</span>
+</pre></div>
+</div>
+<p>In the following we will make use of two trial datasets, provided on
+the CASTEP website: <a class="reference external" href="http://www.castep.org/CASTEP/TiN">TiN</a>,
+<a class="reference external" href="http://www.castep.org/CASTEP/Al3x3">Al3x3</a>, and <a class="reference external" href="http://www.castep.org/CASTEP/DNA">DNA</a>.</p>
+</div>
+<div class="section" id="preparing-a-castep-job">
+<h2>Preparing a CASTEP job<a class="headerlink" href="#preparing-a-castep-job" title="Permalink to this headline">¶</a></h2>
+<p>Basic information about the content of the input files and way CASTEP
+will execute the job can be found by doing a dryrun of the job first:
+<code class="docutils literal notranslate"><span class="pre">castep.serial</span> <span class="pre">[job-name]</span> <span class="pre">-dryrun</span></code></p>
+<p>Here the castep implementation is serial, as the <code class="docutils literal notranslate"><span class="pre">castep.mpi</span></code> command
+does not appear to be able to perform a dryrun</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In order to perform a dryrun on the nextgenio system it is necessary
+to have the serial implementation of castep available. This can be done
+conducting the initial build of the application that uses the <code class="docutils literal notranslate"><span class="pre">make</span></code>
+command specified above, and follow this with the command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code>.
+This may result in the <a class="reference internal" href="../user_guide/faq.html#ref-qcastepinstall"><span class="std std-ref">Error running make install during CASTEP build</span></a>, however the castep.serial
+executable should be created nonetheless.</p>
+</div>
+<p>Various parameters for the run can be set in the <em>[job-name].param file</em>.
+Possibly relevant parameters (from the perspective of performance) are
+<code class="docutils literal notranslate"><span class="pre">max_scf_cycles</span></code>, the number of iterations over the grid, and
+<code class="docutils literal notranslate"><span class="pre">write_checkpoint</span></code>,  which writes the full analysis to file in a time
+consuming step. The values can be set by adding a line to the .param file,
+or by editing the relevant line if the option is already included.</p>
+<p>The verbosity of the output files ( [job-name].castep ) can also be set in the
+[job-name].param file with the <code class="docutils literal notranslate"><span class="pre">iprint</span></code> option, which takes values 0-3
+in increasing level of verbosity. For maximum verbosity add the following
+line to the .param file :</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iprint</span> <span class="p">:</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<p>The recommended minimum number of cores to request for a CASTEP run
+is the total number of k-points (representing the sampling grid
+of electron wave vectors). The k-points for a specific run setup can be
+found by doing a dryrun first. Per k-point the calculation is spread
+further (to solve for the plane waves), and split among the available
+threads.</p>
+</div>
+<div class="section" id="executing-a-castep-job">
+<h2>Executing a CASTEP job<a class="headerlink" href="#executing-a-castep-job" title="Permalink to this headline">¶</a></h2>
+<p>The following is an example batch script to submit to the job scheduler
+that will run the analysis of the TiN dataset:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+
+#SBATCH --nodes=1
+#SBATCH --ntasks=8
+#SBATCH --cpus-per-task=6
+
+#SBATCH -D /path/to/TiN-directory
+#SBATCH -o /path/to/TiN-directory/TiN.out.%A.%N.log
+#SBATCH -e /path/to/TiN-directory/TiN.err.%A.%N.log
+#SBATCH --job-name=castep-tin
+
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+
+srun &quot;/path/to/castep-build/CASTEP-18.1/obj/linux_x86_64_ifort19/castep.mpi&quot; &quot;path/to/TiN-directory/TiN-mp&quot;
+</pre></div>
+</div>
+<p>For the TiN, Al3x3, and DNA test sets, in the standard configuration, the
+number of k-points is 8, 2, and 1 respectively. In the example above
+one MPI process is assigned per k-point, and the plane wave calculations
+are spread over six cpus, each running one thread.</p>
+<p>Performance of the system will depend both on the parallelisation of
+the run and on the memory mode selected.</p>
+<p>The type of parallelisation can be controlled in the batch script using
+the <code class="docutils literal notranslate"><span class="pre">--ntasks</span></code> option and the <code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREADS</span></code> variable. Some effects
+of different parallelisation are explored in <a class="reference internal" href="../user_guide/perftools.html#sec-ref-perftools"><span class="std std-ref">Performance Analysis Tools</span></a>.</p>
+<p>Initial results indicate that running CASTEP on a node, or nodes, in App
+Direct mode has a considerable performance benefit over a run in Memory
+mode.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="halvade.html" class="btn btn-neutral float-right" title="Halvade" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../user_guide/faq.html" class="btn btn-neutral float-left" title="FAQs and Common Issues" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, nextgenio_project
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>
